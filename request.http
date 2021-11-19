@@ -1,0 +1,67 @@
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+    "username":"tri",
+    "password":"1234",
+    "email":"trilxag1003@gmail.com",
+    "phone":"0903234765"
+}
+
+#########################################
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "username":"tri",
+    "password":"1234"
+}
+
+#########################################
+POST http://localhost:5000/api/products/store
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjcxY2MxZWQwNDM1NTY3NjMxMTRlIiwiaWF0IjoxNjM3MjQ5NDg5fQ.sQi5cZJl6737w9-ECXNWFobZb0H2eY5xcqjyzAC9Nas
+
+{
+   "name":"Royal Canin Urinary S/O – Thức Ăn Hạt Cho Mèo Bị Sỏi Thận",
+   "brand":"NUTRIENCE",
+   "price":300000,
+   "imageRepresent":"https://scontent.fsgn2-2.fna.fbcdn.net/v/t39.30808-6/p843x403/257544041_1976106609229359_1434567248597624283_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=825194&_nc_ohc=HwZDgZ99_l0AX_5t8us&_nc_ht=scontent.fsgn2-2.fna&oh=c96b976c0eff50f86cebf71560681717&oe=619829E9",
+   "warehouses":[
+       {
+           "color":"#ff0000",
+           "amoutImport":300
+       },
+       {
+           "color":"#ffff00",
+           "amoutImport":300
+       }
+   ],
+   "titleFeature":"title Feature",
+   "contentFeature":"content Feature",
+   "titleDescribe":"title Describe",
+   "contentDescribe":"content Describe"
+}
+#####
+PUT http://localhost:5000/api/products/61968a52c3f081542e91b764
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjcxY2MxZWQwNDM1NTY3NjMxMTRlIiwiaWF0IjoxNjM3MjQ5NDg5fQ.sQi5cZJl6737w9-ECXNWFobZb0H2eY5xcqjyzAC9Nas
+
+{
+   "name":"Royal Canin Urinary S/O – Thức Ăn Hạt Cho Mèo Bị Sỏi Thận",
+   "brand":"Royal Canin",
+   "price":500000,
+   "imageRepresent":"https://scontent.fsgn2-2.fna.fbcdn.net/v/t39.30808-6/p843x403/257544041_1976106609229359_1434567248597624283_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=825194&_nc_ohc=HwZDgZ99_l0AX_5t8us&_nc_ht=scontent.fsgn2-2.fna&oh=c96b976c0eff50f86cebf71560681717&oe=619829E9",
+   "titleFeature":"update title Feature",
+   "contentFeature":"update content Feature",
+   "titleDescribe":"update title Describe",
+   "contentDescribe":" update content Describe"
+}
+######
+GET http://localhost:5000/api/products
+
+#####
+GET  http://localhost:5000/api/products/search?search=product2
+
+####
+GET  http://localhost:5000/api/products/sortPrice?sort=-1
