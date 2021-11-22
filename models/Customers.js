@@ -29,6 +29,10 @@ const Customers = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Permissons',
         required: true,
+    },
+    emailComfirm:{
+        type:Boolean,
+        default:false,
     }
 }, {
     timestamps: true,

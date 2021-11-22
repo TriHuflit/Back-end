@@ -4,21 +4,38 @@ const WareHouses = require('../models/WareHouses');
 const Feature = require('../models/FeatureProducts');
 const Describe = require('../models/DescribeProducts');
 const { multipleMongoosetoObject } = require('../ulti/mongoose');
+const fs=require('fs');
 class ProductsController {
-    //[GET] 
-    index(req, res, next) {
+    //[GET] /api/products/
+    async index(req, res, next) {
         Products.find({}).then(products => res.json({ products: multipleMongoosetoObject(products) })).catch(next);
+    }
+    //[GET] /api/products/:slug
+    async detail(req,res,next){
+        const product =await Product.findOne({slug:req.params.slug});
+        if(!product){
+            res.status(400).json({success:false,message:"Product not found !"});
+        }
+      
+        const describe= await Describe.find({idProducts});
+        const feature =await Feature.find({idProducts});
+        const warehouses=await WareHouses.find({idProducts});
+
+        return res.status(200).json({success:false,product});
     }
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
+       
         const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
         if (brand) {
-            try {
+            try {    
                 const { name,
-                    price, imageRepresent,
+                    price,
                     titleFeature, contentFeature,
                     titleDescribe, contentDescribe
                 } = req.body;
+                const imageRepresent=req.file.path;
+              
                 const product = new Products({
                     name,
                     idBrand: brand,
@@ -26,6 +43,7 @@ class ProductsController {
                     imageRepresent
                 });
                 await product.save();
+              
                 if (product) {
                     const feature = new Feature({
                         title: titleFeature,
@@ -38,7 +56,8 @@ class ProductsController {
                     });
                     await describe.save();
                     const { warehouses } = req.body;
-                    warehouses.forEach(async warehouse => {
+                    warehouses.forEach(async warehouse => {    
+                       
                         warehouse = new WareHouses({
                             idProducts: product._id,
                             idCustomer: req.CustomerId,
@@ -58,7 +77,7 @@ class ProductsController {
         else res.status(401).json({ success: false, message: "Brand incorrect !" })
 
     }
-    //[PUT] api/product/:id  --- update product-----
+    //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
         const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
         const { name, price,
@@ -73,7 +92,7 @@ class ProductsController {
                 price,
                 imageRepresent
             };
-            const productUpdateCondition = { _id: req.params.id };
+            const productUpdateCondition = { slug: req.params.slug };
 
             const updateProduct = await Products.findOneAndUpdate(productUpdateCondition, product, { new: true });
 

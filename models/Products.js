@@ -1,6 +1,7 @@
 const mongooes = require('mongoose');
 const Schema = mongooes.Schema;
-
+const slug = require('mongoose-slug-generator');
+mongooes.plugin(slug);
 const Products = new Schema({
     name: {
         type: String,
@@ -16,10 +17,13 @@ const Products = new Schema({
         required: true,
     },
     imageRepresent: {
-        data: Buffer,
-        contentType: String,
+        type:String
     },
-
+    slug:{
+        type:String,
+        slug:'name',
+        unique:true
+    }
 }, {
     timestamps: true,
 })

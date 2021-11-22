@@ -20,7 +20,7 @@ Content-Type: application/json
 #########################################
 POST http://localhost:5000/api/products/store
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjcxY2MxZWQwNDM1NTY3NjMxMTRlIiwiaWF0IjoxNjM3MjQ5NDg5fQ.sQi5cZJl6737w9-ECXNWFobZb0H2eY5xcqjyzAC9Nas
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjEzMmNiYmRhZDEzYjA3MDA3NzYwIiwiaWF0IjoxNjM3NTA5MjQ1fQ.AsKKUyE1CmAHDgtBROgH5K_DEySkRi06uL73Gn3o5Qg
 
 {
    "name":"Royal Canin Urinary S/O – Thức Ăn Hạt Cho Mèo Bị Sỏi Thận",
