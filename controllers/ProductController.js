@@ -56,6 +56,7 @@ class ProductsController {
                     });
                     await describe.save();
                     const { warehouses } = req.body;
+                    let run=0;
                     warehouses.forEach(async warehouse => {    
                        
                         warehouse = new WareHouses({
@@ -67,8 +68,12 @@ class ProductsController {
                             amoutImport: warehouse.amoutImport
                         });
                         await warehouse.save();
+                        if(warehouse){
+                            run=1;
+                        }
+                      
                     });
-                    return res.status(200).json({ success: true, message: "Add new product succesfully !",warehouses });
+                    return res.status(200).json({ success: true, message: "Add new product succesfully !",run });
                 }
                 return res.status(401).json({ success: false, message: "Product not found !" });
             } catch (error) {
