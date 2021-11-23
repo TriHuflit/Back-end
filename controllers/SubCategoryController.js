@@ -1,4 +1,5 @@
 const SubCategory=require('../models/SubCategorys');
+const Category =require('../models/Categories');
 class SubCategoryController{
 
     //[GET] api/subcategory
@@ -13,11 +14,13 @@ class SubCategoryController{
     }
     //[GET] api/subcategory/:id
     async getSubbyIdCate(req,res){
-        const subCategory=await SubCategory.find({idCate:req.params.id});
-        if(!subCategory){
-            
-            return res.status(400).json({success:false,message:"ID Category not found !"});
+        const category=await Category.findOne({slug:req.params.slug});
+        if(!category){
+           
+            return res.status(400).json({success:false,message:"Category not found !"});
         }
+        const subCategory =await SubCategory.find({idCate:category._id});
+        console.log(subCategory);
         return res.status(200).json({success:true,subCategory});
         
     }

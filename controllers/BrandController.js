@@ -1,4 +1,5 @@
 const Brand=require('../models/Brands');
+const Subcategory=require('../models/SubCategorys');
 class BrandController{
 
     //[GET] api/brand/
@@ -11,11 +12,14 @@ class BrandController{
     }
      //[GET] api/brand/:id
     async getBrandbyIdSub(req,res){
-        const brand=await Brand.find({idSub:req.params.id});
-        if(!brand){
+        
+        const subcategory=await Subcategory.findOne({slug:req.params.slug});
+        console.log(subcategory);
+        if(!subcategory){
             
             return res.status(400).json({success:false,message:"SubCategory not found !"});
         }
+        const brand =await Brand.find({idSub:subcategory._id});
         return res.status(200).json({success:true,brand});
         
     }

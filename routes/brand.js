@@ -5,7 +5,7 @@ const brand = require("../controllers/BrandController");
 
 
 
-router.get('/:id',brand.getBrandbyIdSub);
+router.get('/:slug',brand.getBrandbyIdSub);
 
 router.get('/',brand.index);
 

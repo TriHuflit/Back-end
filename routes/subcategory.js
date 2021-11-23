@@ -7,7 +7,7 @@ const subcategory =require("../controllers/SubCategoryController");
 
 
 //subcategory
-router.get('/:id',subcategory.getSubbyIdCate);
+router.get('/:slug',subcategory.getSubbyIdCate);
 
 router.get('/',subcategory.index);
 

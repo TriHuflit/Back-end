@@ -73,6 +73,9 @@ GET http://localhost:5000/api/category
 GET http://localhost:5000/api/subcategory
 
 ####
-GET http://localhost:5000/api/subcategory/619c73c018f4ace3aadf8b10
+GET http://localhost:5000/api/subcategory/Cho
 ####
-GET http://localhost:5000/api/category/subcategory/brand
+GET http://localhost:5000/api/brand
+
+####
+GET http://localhost:5000/api/brand/Thuc-an-cho-cho
