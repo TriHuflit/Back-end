@@ -4,6 +4,7 @@ const route = require('./routes/index');
 const app = express();
 const cors = require('cors');
 require("dotenv").config();
+const bodyParser=require('body-parser');
 
 //Connect db
 db.connect();
@@ -13,6 +14,8 @@ app.use(
     }),
 );
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 

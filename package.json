@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "argon2": "^0.28.2",
+    "body-parser": "^1.19.0",
     "cloudinary": "^1.27.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
