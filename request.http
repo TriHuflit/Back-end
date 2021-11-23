@@ -72,6 +72,10 @@ GET  http://localhost:5000/api/products/sortPrice?sort=-1
 ####
 GET http://localhost:5000/api/category
 ####
+GET http://localhost:5000/api/category/cho
+####
+GET http://localhost:5000/api/category/detail/cho
+####
 GET http://localhost:5000/api/subcategory
 
 ####
