@@ -14,7 +14,7 @@ router.get('/:slug', productController.detail);
 
 router.get('/:brand', productController.getProductsByBrand);
 
-router.post('/store',verifyToken, store.single('imageRepresent'), productController.store);
+router.post('/store', store.single('imageRepresent'), productController.store);
 
 router.put('/:slug', verifyToken, productController.update);
 
