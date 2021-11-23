@@ -30,11 +30,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiN
    "warehouses":[
        {
            "color":"#ff0000",
-           "amoutImport":300
+           "amoutImport":300,
+            "priceImport":100000
        },
        {
            "color":"#ffff00",
-           "amoutImport":300
+           "amoutImport":300,
+           "priceImport":30000
        }
    ],
    "titleFeature":"title Feature",
@@ -73,9 +75,9 @@ GET http://localhost:5000/api/category
 GET http://localhost:5000/api/subcategory
 
 ####
-GET http://localhost:5000/api/subcategory/Cho
+GET http://localhost:5000/api/subcategory/cho
 ####
 GET http://localhost:5000/api/brand
 
 ####
-GET http://localhost:5000/api/brand/Thuc-an-cho-cho
+GET http://localhost:5000/api/brand/thuc-an-cho-cho

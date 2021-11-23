@@ -24,7 +24,7 @@ class ProductsController {
     }
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
-       
+        console.log(req.body);
         const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
         if (brand) {
             try {    
@@ -69,7 +69,7 @@ class ProductsController {
                         });
                         await warehouse.save();
                     });
-                    return res.status(200).json({ success: true, message: "Add new product succesfully !" });
+                    return res.status(200).json({ success: true, message: "Add new product succesfully !",warehouses });
                 }
                 return res.status(401).json({ success: false, message: "Product not found !" });
             } catch (error) {
