@@ -42,7 +42,7 @@ class CustomerController {
             })
         } catch (error) {
             console.log(error);
-            res.status(500).json({ success: false, message: error ,data:username})
+            res.status(500).json({ success: false, message: error })
         }
     }
     //POST http://localhost:5000/api/auth/login
@@ -57,13 +57,15 @@ class CustomerController {
                 return res.status(400).json({
                     success: false,
                     message: "Incorrected username or password",
+                    data:req.body
                 });
             //Check Password
             const passwordValid = await argon2.verify(customer.password, password);
             if (!passwordValid)
                 return res.status(400).json({
                     success: false,
-                    message: "Incorrected username or password"
+                    message: "Incorrected username or password",
+                    data:req.body
                 });
             //Correct
             const accessToken = jwt.sign({ CustomerId: customer._id }, process.env.ACCESS_TOKEN_SECRET);
