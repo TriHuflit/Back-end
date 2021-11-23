@@ -1,6 +1,7 @@
 const mongooes = require('mongoose');
 const Schema= mongooes.Schema;
-
+const slug = require('mongoose-slug-generator');
+mongooes.plugin(slug);
 const Brands = new Schema({
    
     idSub:{
@@ -16,7 +17,11 @@ const Brands = new Schema({
         type:String,
         required:true,
     },
-   
+    slug:{
+        type:String,
+        slug:'name',
+        unique:true
+    }
 },{
     timestamps:true,
 })

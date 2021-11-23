@@ -24,7 +24,15 @@ class BrandController{
         
     }
 
-
+    async create(req,res){
+        const {name,subCategory}=req.body;
+        const idSub=await Subcategory.findOne({name:subCategory}).select('_id');
+        if(!idSub){
+            return res.status(400).json({success:false,message:"SubCategory not found !"});
+        }
+        const newBrand = await new Brand({idSub,name});
+        return res.status(200).json({success:true,message:"add Brand successfully"});
+    }
 
 }
 

@@ -19,12 +19,17 @@ const WareHouses = new Schema({
     amoutStock: {
         type: Number,
         required: true,
-        default: 0,
+        default: 1,
     },
+    priceImport:{
+        type:Number,
+        require:true,
+    }
+    ,
     amoutImport: {
         type: Number,
         required: true,
-        default: 0,
+        default: 1,
     }
 }, {
     timestamps: true,

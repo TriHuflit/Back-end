@@ -64,6 +64,7 @@ class ProductsController {
                             idCustomer: req.CustomerId,
                             color: warehouse.color,
                             amoutStock: warehouse.amoutImport,
+                            priceImport:warehouse.priceImport,
                             amoutImport: warehouse.amoutImport
                         });
                         await warehouse.save();
