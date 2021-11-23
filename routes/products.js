@@ -10,6 +10,8 @@ router.get('/sortDate', productController.getProductsBySortTime);
 
 router.get('/sortPrice', productController.getProductsBySortPrice);
 
+router.get('/:slug', productController.detail);
+
 router.get('/:brand', productController.getProductsByBrand);
 
 router.post('/store',verifyToken, store.single('imageRepresent'), productController.store);

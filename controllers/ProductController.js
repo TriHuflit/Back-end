@@ -12,16 +12,15 @@ class ProductsController {
     }
     //[GET] /api/products/:slug
     async detail(req,res,next){
-        const product =await Product.findOne({slug:req.params.slug});
+        const product =await Products.findOne({slug:req.params.slug}).then().catch(next);
         if(!product){
             res.status(400).json({success:false,message:"Product not found !"});
         }
-      
-        const describe= await Describe.find({idProducts});
-        const feature =await Feature.find({idProducts});
-        const warehouses=await WareHouses.find({idProducts});
-
-        return res.status(200).json({success:false,product});
+        
+        const describe= await Describe.find({idProducts:product._id});
+        const feature =await Feature.find({idProducts:product._id});
+        const warehouses=await WareHouses.find({idProducts:product._id});
+        return res.status(200).json({success:false,product,describe,feature,warehouses});
     }
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
@@ -46,11 +45,13 @@ class ProductsController {
               
                 if (product) {
                     const feature = new Feature({
+                        idProducts:product._id,
                         title: titleFeature,
                         content: contentFeature
                     });
                     await feature.save();
                     const describe = new Describe({
+                        idProducts:product._id,
                         title: titleDescribe,
                         content: contentDescribe
                     });

@@ -43,6 +43,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiN
    "contentDescribe":"content Describe"
 }
 #####
+GET http://localhost:5000/api/products/royal-canin-urinary-s-o-thuc-an-hat-cho-meo-bi-s-i-than
+######
 PUT http://localhost:5000/api/products/61968a52c3f081542e91b764
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjcxY2MxZWQwNDM1NTY3NjMxMTRlIiwiaWF0IjoxNjM3MjQ5NDg5fQ.sQi5cZJl6737w9-ECXNWFobZb0H2eY5xcqjyzAC9Nas
