@@ -23,7 +23,7 @@ class CustomerController {
             if (customer)
                 return res.status(400).json({
                     success: false,
-                    message: "Email already taken"
+                    message: "Email already exist"
                 })
             const hashedPassword = await argon2.hash(password);
             const Role = await Permission.findOne({ name: "Customer" });
