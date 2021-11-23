@@ -75,9 +75,11 @@ GET http://localhost:5000/api/category
 GET http://localhost:5000/api/subcategory
 
 ####
-GET http://localhost:5000/api/subcategory/cho
+GET http://localhost:5000/api/subcategory/thuc-an-cho-cho
+####
+GET http://localhost:5000/api/subcategory/detail/thuc-an-cho-cho
 ####
 GET http://localhost:5000/api/brand
 
 ####
-GET http://localhost:5000/api/brand/thuc-an-cho-cho
+GET http://localhost:5000/api/brand/nutrience
