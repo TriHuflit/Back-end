@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiN
        {
            "color":"#ff0000",
            "amoutImport":300,
-            "priceImport":100000
+           "priceImport":100000
        },
        {
            "color":"#ffff00",

@@ -24,7 +24,6 @@ class ProductsController {
     }
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
-        console.log(req.body);
         const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
         if (brand) {
             try {    
