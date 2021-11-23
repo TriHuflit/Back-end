@@ -42,7 +42,7 @@ class CustomerController {
             })
         } catch (error) {
             console.log(error);
-            res.status(500).json({ success: false, message: error ,data:req.body})
+            res.status(500).json({ success: false, message: error ,data:username})
         }
     }
     //POST http://localhost:5000/api/auth/login
