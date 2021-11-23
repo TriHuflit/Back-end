@@ -67,3 +67,12 @@ GET  http://localhost:5000/api/products/search?search=product2
 
 ####
 GET  http://localhost:5000/api/products/sortPrice?sort=-1
+####
+GET http://localhost:5000/api/category
+####
+GET http://localhost:5000/api/subcategory
+
+####
+GET http://localhost:5000/api/subcategory/619c73c018f4ace3aadf8b10
+####
+GET http://localhost:5000/api/category/subcategory/brand

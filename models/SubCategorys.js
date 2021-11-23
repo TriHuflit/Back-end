@@ -4,6 +4,7 @@ const Schema= mongooes.Schema;
 const SubCategories = new Schema({
     idCate:{
         type:Schema.Types.ObjectId,
+        ref:'Categories',
         require:true,
     },
     name:{
@@ -14,4 +15,4 @@ const SubCategories = new Schema({
     timestamps:true,
 })
 
-module.exports=mongooes.type("SubCategories",SubCategories);
+module.exports=mongooes.model("SubCategories",SubCategories);

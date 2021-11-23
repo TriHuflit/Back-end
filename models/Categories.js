@@ -10,4 +10,4 @@ const Categories = new Schema({
     timestamps:true,
 })
 
-module.exports=mongooes.type("Categories",Categories);
+module.exports=mongooes.model("Categories",Categories);
