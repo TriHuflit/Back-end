@@ -84,6 +84,16 @@ GET http://localhost:5000/api/subcategory/thuc-an-cho-cho
 GET http://localhost:5000/api/subcategory/detail/thuc-an-cho-cho
 ####
 GET http://localhost:5000/api/brand
-
 ####
-GET http://localhost:5000/api/brand/nutrience
+GET http://localhost:5000/api/brand/create
+####
+POST http://localhost:5000/api/brand/store
+Content-Type: application/json
+
+{
+    "name":"Gucci",
+    "origin":"Mỹ",
+    "subCategory":"Thức ăn cho chó"
+}
+####
+GET http://localhost:5000/api/brand/detail/nutrience

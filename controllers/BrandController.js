@@ -20,15 +20,32 @@ class BrandController{
         return res.status(200).json({success:true,brand});
         
     }
-
+    //[GET] api/brand/create
     async create(req,res){
-        const {name,subCategory}=req.body;
+        const subCategory  = await Subcategory.find({}).select('name');
+        if(!subCategory){
+            return res.status(400).json({success:false,message:"No any Subcategory!"});
+        }
+        return res.status(200).json({success:true,subCategory});
+    }
+   //[POST] api/brand/store
+    async store(req,res){
+        const {name,origin,subCategory}=req.body;
         const idSub=await Subcategory.findOne({name:subCategory}).select('_id');
         if(!idSub){
             return res.status(400).json({success:false,message:"SubCategory not found !"});
         }
-        const newBrand = await new Brand({idSub,name});
-        return res.status(200).json({success:true,message:"add Brand successfully"});
+        try {
+            const newBrand = await new Brand({idSub,name,origin});
+            if(!newBrand){
+                return res.status(401).json({success:false,message:"Add failed,Check and try later!"});
+            }
+            newBrand.save();
+            return res.status(200).json({success:true,message:"Add Brand successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+       
     }
 
 }

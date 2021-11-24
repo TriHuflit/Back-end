@@ -7,7 +7,6 @@ class SubCategoryController{
     async index(req,res){
         
         const subCategory=await SubCategory.find({});
-        console.log(subCategory);
         if(!subCategory){
             return res.status(400).json({success:false,message:"SubCategory not found !"});
         }
