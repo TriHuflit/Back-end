@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 #########################################
-POST https://blooming-mountain-13837.herokuapp.com/api/auth/login
+POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
@@ -91,9 +91,9 @@ POST http://localhost:5000/api/brand/store
 Content-Type: application/json
 
 {
-    "name":"Gucci",
-    "origin":"Mỹ",
-    "subCategory":"Thức ăn cho chó"
+    "name":"Adidas",
+    "origin":"VN",
+    "subCategory":"Thức ăn cho mèo"
 }
 ####
 GET http://localhost:5000/api/brand/edit/gucci

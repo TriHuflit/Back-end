@@ -50,7 +50,7 @@ class CustomerController {
         const { username, password } = req.body;
 
         try {
-            const customer = await Customer.findOne({ username })
+            let customer = await Customer.findOne({ username });
             //Check Usernam
             if (!customer)
                 return res.status(400).json({
@@ -60,6 +60,7 @@ class CustomerController {
                 });
             //Check Password
             const passwordValid = await argon2.verify(customer.password, password);
+           
             if (!passwordValid)
                 return res.status(400).json({
                     success: false,
@@ -67,11 +68,12 @@ class CustomerController {
                     data:req.body
                 });
             //Correct
+            customer = await Customer.findOne({ username }).select("-password");
             const accessToken = jwt.sign({ CustomerId: customer._id }, process.env.ACCESS_TOKEN_SECRET);
             res.json({
                 success: true,
                 message: "Logged in successfully",
-                name: customer.name,
+                customer,
                 accessToken
             })
         } catch (error) {
