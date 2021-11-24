@@ -98,13 +98,13 @@ Content-Type: application/json
 ####
 GET http://localhost:5000/api/brand/edit/gucci
 ####
-PUT http://localhost:5000/api/brand/update/619dace0e8e66c8e6b1778d1
+PUT http://localhost:5000/api/brand/update/619dc4d90302efb944ab31ab
 Content-Type: application/json
 
 {
-    "name":"Gucci VietNam",
+    "name":"Gucci",
     "origin":"Mỹ",
-    "subCategory":"Thức ăn cho chó"
+    "subCategory":"Thức ăn cho mèo"
 }
 ####
 DELETE  http://localhost:5000/api/brand/delete/619dace0e8e66c8e6b1778d1

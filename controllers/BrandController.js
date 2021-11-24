@@ -65,12 +65,12 @@ class BrandController{
     async update(req,res){
         const {name,origin,subCategory}=req.body;
         const idSub=await Subcategory.findOne({name:subCategory}).select('_id');
+        console.log(idSub);
         if(!idSub){
             return res.status(404).json({success:false,message:"Subcategory not found!"});
         }
         try {
-           const oldBrand=await Brand.updateMany({_id:req.params.id},{name,origin,subCategory});
-    
+           const oldBrand=await Brand.updateMany({_id:req.params.id},{name,origin,idSub});
            if(!oldBrand){
             return res.status(401).json({success:false,message:"Update failed!"});
            }
