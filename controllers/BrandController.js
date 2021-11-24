@@ -81,8 +81,7 @@ class BrandController{
     }
     //[DELETE] api/brand/detele/:id
     async detele(req,res){
-        const BrandDeleteCondition={_id:req.params.id}
-        console.log(req.params.id);
+        const BrandDeleteCondition={_id:req.params.id};
         try {
            const deleteBrand=await Brand.findOneAndDelete(BrandDeleteCondition);
            if(!deleteBrand){

@@ -10,7 +10,7 @@ class CategoryController{
         }
         return res.status(200).json({success:true,category});
     }
-       //[GET] api/category/detail/:id
+       //[GET] api/category/detail/:slug
     async detail(req,res){
         const category =await Category.findOne({slug:req.params.slug});
         if(!category){
@@ -31,7 +31,58 @@ class CategoryController{
         return res.status(200).json({success:true,subcategory});
     }
 
-
+   //[POST] api/category/store
+    async store(req,res){
+        const {name}=req.body;
+        try {
+            const newCategory = await new Category({name});
+            if(!newCategory){
+                return res.status(401).json({success:false,message:"Add failed,Check and try later!"});
+            }
+            newCategory.save();
+            return res.status(200).json({success:true,message:"Add Category successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+       
+    }
+     //[GET] api/category/edit/:slug
+    async edit(req,res){
+        const category=await Category.findOne({slug:req.params.slug});
+        if(!category){
+            return res.status(404).json({success:false,message:"Brand not found !"});
+        }
+        return res.status(200).json({success:true,category});             
+    }
+    //[PUT] api/category/update/:id
+    async update(req,res){
+        const {name}=req.body;
+        try {
+          const idCategory=await Category.findOne({_id:req.params.id});
+          if(!idCategory){
+            return res.status(404).json({success:false,message:"ID Category Not found!"});
+          }
+           const oldCategory=await Category.updateOne({_id:req.params.id},{name});
+           if(!oldCategory){
+            return res.status(401).json({success:false,message:"Update failed!"});
+           }
+            return res.status(200).json({success:true,message:"Update Category successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+    }
+    //[DELETE] api/category/detele/:id
+    async detele(req,res){
+        try {
+           const deleteCategory=await Category.findOneAndDelete({_id:req.params.id});
+           if(!deleteCategory){
+            return res.status(401).json({success:false,message:"Delete failed!"});
+           }
+            return res.status(200).json({success:true,message:"Delete Category successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+    }
 
 }
 

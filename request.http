@@ -76,6 +76,25 @@ GET http://localhost:5000/api/category/cho
 ####
 GET http://localhost:5000/api/category/detail/cho
 ####
+POST http://localhost:5000/api/category/store
+Content-Type: application/json
+
+{
+    "name":"cá"
+}
+####
+GET http://localhost:5000/api/category/edit/ca
+####
+PUT  http://localhost:5000/api/category/update/619ded9067fe4b8f9e74f266
+Content-Type: application/json
+
+{
+    "name":"hưu cao cổ"
+}
+####
+
+DELETE  http://localhost:5000/api/category/delete/619decb59e578d1931810d47
+####
 GET http://localhost:5000/api/subcategory
 
 ####
@@ -91,9 +110,9 @@ POST http://localhost:5000/api/brand/store
 Content-Type: application/json
 
 {
-    "name":"Adidas",
-    "origin":"VN",
-    "subCategory":"Thức ăn cho mèo"
+    "name":"Puma",
+    "origin":"US-UK",
+    "subCategory":"Thức ăn cho chó"
 }
 ####
 GET http://localhost:5000/api/brand/edit/gucci
