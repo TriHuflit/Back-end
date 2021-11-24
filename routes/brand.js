@@ -9,6 +9,10 @@ router.get('/detail/:slug',brand.detail);
 
 router.get('/create',brand.create);
 
+router.put('/update/:id',brand.update);
+
+router.get('/edit/:slug',brand.edit);
+
 router.post('/store',brand.store);
 
 router.get('/',brand.index);

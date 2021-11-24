@@ -1,6 +1,7 @@
 const mongooes = require('mongoose');
 const Schema= mongooes.Schema;
-const slug = require('mongoose-slug-generator');
+var slug = require('mongoose-slug-updater');
+
 mongooes.plugin(slug);
 const Brands = new Schema({
    
@@ -20,7 +21,7 @@ const Brands = new Schema({
     slug:{
         type:String,
         slug:'name',
-        unique:true
+        unique:true,
     }
 },{
     timestamps:true,

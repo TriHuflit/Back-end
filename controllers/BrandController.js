@@ -1,3 +1,4 @@
+
 const Brand=require('../models/Brands');
 const Subcategory=require('../models/SubCategorys');
 class BrandController{
@@ -6,7 +7,7 @@ class BrandController{
     async index(req,res){
         const brand=await Brand.find({});
         if(!brand){
-            return res.status(400).json({success:false,message:"Brand not found !"});
+            return res.status(404).json({success:false,message:"Brand not found !"});
         }
         return res.status(200).json({success:true,brand});
     }
@@ -15,7 +16,7 @@ class BrandController{
         
         const brand =await Brand.findOne({slug:req.params.slug});
         if(!brand){
-            return res.status(400).json({success:false,message:"Brand not found!"});
+            return res.status(404).json({success:false,message:"Brand not found!"});
         }
         return res.status(200).json({success:true,brand});
         
@@ -24,7 +25,7 @@ class BrandController{
     async create(req,res){
         const subCategory  = await Subcategory.find({}).select('name');
         if(!subCategory){
-            return res.status(400).json({success:false,message:"No any Subcategory!"});
+            return res.status(404).json({success:false,message:"No any Subcategory!"});
         }
         return res.status(200).json({success:true,subCategory});
     }
@@ -33,7 +34,7 @@ class BrandController{
         const {name,origin,subCategory}=req.body;
         const idSub=await Subcategory.findOne({name:subCategory}).select('_id');
         if(!idSub){
-            return res.status(400).json({success:false,message:"SubCategory not found !"});
+            return res.status(404).json({success:false,message:"SubCategory not found !"});
         }
         try {
             const newBrand = await new Brand({idSub,name,origin});
@@ -46,6 +47,36 @@ class BrandController{
             return res.status(401).json({success:false,message:"Interval server!"});
         }
        
+    }
+     //[GET] api/brand/edit/:slug
+    async edit(req,res){
+        const subCategory  = await Subcategory.find({}).select('name');
+        const brand=await Brand.findOne({slug:req.params.slug});
+        if(!brand){
+            return res.status(404).json({success:false,message:"Brand not found!"});
+        }
+        if(!subCategory){
+            return res.status(404).json({success:false,message:"No any Subcategory !"});
+        }
+        return res.status(200).json({success:true,brand,subCategory});
+    }
+    //[PUT] api/brand/update
+    async update(req,res){
+        const {name,origin,subCategory}=req.body;
+        const idSub=await Subcategory.findOne({name:subCategory}).select('_id');
+        if(!idSub){
+            return res.status(404).json({success:false,message:"Subcategory not found!"});
+        }
+        try {
+           const oldBrand=await Brand.updateMany({_id:req.params.id},{name,origin,subCategory});
+    
+           if(!oldBrand){
+            return res.status(401).json({success:false,message:"Update failed!"});
+           }
+            return res.status(200).json({success:true,message:"Update Brand successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
     }
 
 }
