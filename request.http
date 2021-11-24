@@ -72,7 +72,7 @@ GET  http://localhost:5000/api/products/sortPrice?sort=-1
 ####
 GET http://localhost:5000/api/category
 ####
-GET http://localhost:5000/api/category/cho
+GET http://localhost:5000/api/category/ca
 ####
 GET http://localhost:5000/api/category/detail/cho
 ####
@@ -80,7 +80,7 @@ POST https://blooming-mountain-13837.herokuapp.com/api/category/store
 Content-Type: application/json
 
 {
-    "name":"cá"
+    "name":"chó"
 }
 ####
 GET https://blooming-mountain-13837.herokuapp.com/api/category/edit/ca
@@ -93,14 +93,14 @@ Content-Type: application/json
 }
 ####
 
-DELETE  http://localhost:5000/api/category/delete/619c73c018f4ace3aadf8b10
+DELETE  http://localhost:5000/api/category/delete/619e61ab7dfe3a2e6e3f2152
 ####
 GET http://localhost:5000/api/subcategory
 
 ####
-GET http://localhost:5000/api/subcategory/thuc-an-cho-cho
+GET http://localhost:5000/api/subcategory/do-trang-tri-be-ca
 ####
-GET http://localhost:5000/api/subcategory/detail/thuc-an-cho-cho
+GET http://localhost:5000/api/subcategory/detail/do-trang-tri-be-ca
 
 ####
 GET http://localhost:5000/api/subcategory/create
@@ -109,13 +109,13 @@ POST http://localhost:5000/api/subcategory/store
 Content-Type: application/json
 
 {
-    "name":"Bình bơm oxy",
-    "category":"cá"
+    "name":"Đồ trang trí bể cá",
+    "category":"Cá"
 }
 ####
-GET http://localhost:5000/api/subcategory/edit/gucci
+GET http://localhost:5000/api/subcategory/edit/chuong-cho
 ####
-PUT http://localhost:5000/api/subcategory/update/619df4e2ba734199a5ca0db9
+PUT http://localhost:5000/api/subcategory/update/619df80c6f8ec98d6c55b2fa
 Content-Type: application/json
 
 {
@@ -123,7 +123,7 @@ Content-Type: application/json
     "category":"Chó"
 }
 ####
-DELETE  http://localhost:5000/api/subcategory/delete/619df4f1ba734199a5ca0dc2
+DELETE  http://localhost:5000/api/subcategory/delete/619dffbe9c608a0a3652675f
 ####
 GET http://localhost:5000/api/brand
 ####

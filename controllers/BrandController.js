@@ -1,6 +1,7 @@
 
 const Brand=require('../models/Brands');
 const Subcategory=require('../models/SubCategorys');
+const Product =require('../models/Products');
 class BrandController{
 
     //[GET] api/brand/
@@ -81,6 +82,10 @@ class BrandController{
     //[DELETE] api/brand/detele/:id
     async detele(req,res){
         const BrandDeleteCondition={_id:req.params.id};
+        const product =await Product.findOne({idBrand:req.params.id});
+        if(product){
+            return res.status(401).json({success:false,message:"Error Constraint!"});
+        }
         try {
            const deleteBrand=await Brand.findOneAndDelete(BrandDeleteCondition);
            if(!deleteBrand){

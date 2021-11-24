@@ -1,6 +1,6 @@
 const SubCategory=require('../models/SubCategorys');
 const Category =require('../models/Categories');
-const Brands = require('../models/Brands');
+const Brand = require('../models/Brands');
 class SubCategoryController{
 
     //[GET] api/subcategory
@@ -29,7 +29,7 @@ class SubCategoryController{
            
             return res.status(400).json({success:false,message:"Subcategory not found !"});
         }
-        const brand=await Brands.find({idSub:subCategory._id})
+        const brand=await Brand.find({idSub:subCategory._id})
         return res.status(200).json({success:true,brand});
     }
 
@@ -97,10 +97,11 @@ class SubCategoryController{
     }
     //[DELETE] api/subcategory/detele/:id
     async detele(req,res){
-        const idSub=SubCategory.findOne({_id:req.params.id});
-        if(!idSub){
-            return res.status(404).json({success:false,message:"SubCategory not found !"});
+        const brand= await Brand.findOne({idSub:req.params.id});
+        if(brand){
+            return res.status(400).json({success:false,message:"Error Constraint !"});
         }
+      
         try {
            const deleteSub=await SubCategory.findOneAndDelete({_id:req.params.id});
            if(!deleteSub){

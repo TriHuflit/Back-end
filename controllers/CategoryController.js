@@ -73,11 +73,16 @@ class CategoryController{
     }
     //[DELETE] api/category/detele/:id
     async detele(req,res){
+        const idSub = await SubCategory.findOne({idCate:req.params.id});
+        if(idSub){
+            return res.status(404).json({success:false,message:" Error Constraint !"});
+        }
+        
         try {
-           const deleteCategory=await Category.findOneAndDelete({_id:req.params.id});
-           if(!deleteCategory){
-            return res.status(401).json({success:false,message:"Delete failed!"});
-           }
+            const deleteCategory=await Category.findOneAndDelete({_id:req.params.id});
+            if(!deleteCategory){
+                return res.status(401).json({success:false,message:"Delete failed!"});
+               }
             return res.status(200).json({success:true,message:"Delete Category successfully"});
         } catch (error) {
             return res.status(401).json({success:false,message:"Interval server!"});
