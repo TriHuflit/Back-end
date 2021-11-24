@@ -20,15 +20,15 @@ class CategoryController{
         return res.status(200).json({success:true,category});
         
     }
-    //[GET] api/category/:id
+    //[GET] api/category/:slug
     async getSubByIdCate(req,res){
         const category =await Category.findOne({slug:req.params.slug});
         if(!category){
            
             return res.status(400).json({success:false,message:"Category not found !"});
         }
-        const subcategory=await SubCategory.find({idCate:category._id})
-        return res.status(200).json({success:true,subcategory});
+        const subCategory=await SubCategory.find({idCate:category._id})
+        return res.status(200).json({success:true,subCategory});
     }
 
    //[POST] api/category/store

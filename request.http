@@ -76,16 +76,16 @@ GET http://localhost:5000/api/category/cho
 ####
 GET http://localhost:5000/api/category/detail/cho
 ####
-POST http://localhost:5000/api/category/store
+POST https://blooming-mountain-13837.herokuapp.com/api/category/store
 Content-Type: application/json
 
 {
     "name":"cá"
 }
 ####
-GET http://localhost:5000/api/category/edit/ca
+GET https://blooming-mountain-13837.herokuapp.com/api/category/edit/ca
 ####
-PUT  http://localhost:5000/api/category/update/619ded9067fe4b8f9e74f266
+PUT https://blooming-mountain-13837.herokuapp.com/api/category/update/619ded9067fe4b8f9e74f266
 Content-Type: application/json
 
 {
@@ -93,7 +93,7 @@ Content-Type: application/json
 }
 ####
 
-DELETE  http://localhost:5000/api/category/delete/619decb59e578d1931810d47
+DELETE  http://localhost:5000/api/category/delete/619c73c018f4ace3aadf8b10
 ####
 GET http://localhost:5000/api/subcategory
 
