@@ -58,7 +58,8 @@ class BrandController{
         if(!subCategory){
             return res.status(404).json({success:false,message:"No any Subcategory !"});
         }
-        return res.status(200).json({success:true,brand,subCategory});
+        const detailBrand={brand,subCategory};
+        return res.status(200).json({success:true,detailBrand});
     }
     //[PUT] api/brand/update
     async update(req,res){
@@ -78,7 +79,20 @@ class BrandController{
             return res.status(401).json({success:false,message:"Interval server!"});
         }
     }
-
+    //[DELETE] api/brand/detele/:id
+    async detele(req,res){
+        const BrandDeleteCondition={_id:req.params.id}
+        console.log(req.params.id);
+        try {
+           const deleteBrand=await Brand.findOneAndDelete(BrandDeleteCondition);
+           if(!deleteBrand){
+            return res.status(401).json({success:false,message:"Delete failed!"});
+           }
+            return res.status(200).json({success:true,message:"Delete Brand successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+    }
 }
 
 module.exports=new BrandController();

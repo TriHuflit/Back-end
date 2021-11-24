@@ -11,6 +11,8 @@ router.get('/create',brand.create);
 
 router.put('/update/:id',brand.update);
 
+router.delete('/delete/:id',brand.detele);
+
 router.get('/edit/:slug',brand.edit);
 
 router.post('/store',brand.store);

@@ -107,4 +107,6 @@ Content-Type: application/json
     "subCategory":"Thức ăn cho chó"
 }
 ####
+DELETE  http://localhost:5000/api/brand/delete/619dace0e8e66c8e6b1778d1
+####
 GET http://localhost:5000/api/brand/detail/nutrience
