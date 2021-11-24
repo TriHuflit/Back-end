@@ -50,16 +50,16 @@ class BrandController{
     }
      //[GET] api/brand/edit/:slug
     async edit(req,res){
-        const subCategory  = await Subcategory.find({}).select('name');
         const brand=await Brand.findOne({slug:req.params.slug});
+        const subCategory  = await Subcategory.findOne({_id:brand.idSub})
         if(!brand){
-            return res.status(404).json({success:false,message:"Brand not found!"});
+            return res.status(404).json({success:false,message:"Brand not found !"});
         }
         if(!subCategory){
-            return res.status(404).json({success:false,message:"No any Subcategory !"});
+            return res.status(404).json({success:false,message:"SubCategory not found !"});
         }
-        const detailBrand={brand,subCategory};
-        return res.status(200).json({success:true,detailBrand});
+        brand.set('subCategory', subCategory.name, {strict: false})
+        return res.status(200).json({success:true,brand});             
     }
     //[PUT] api/brand/update
     async update(req,res){

@@ -96,7 +96,7 @@ Content-Type: application/json
     "subCategory":"Thức ăn cho chó"
 }
 ####
-GET http://localhost:5000/api/brand/edit/new-brand
+GET http://localhost:5000/api/brand/edit/gucci
 ####
 PUT http://localhost:5000/api/brand/update/619dace0e8e66c8e6b1778d1
 Content-Type: application/json
