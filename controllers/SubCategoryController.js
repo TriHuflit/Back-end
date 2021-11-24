@@ -37,30 +37,80 @@ class SubCategoryController{
      async create(req,res){
         const category  = await Category.find({}).select('name');
         if(!category){
-            return res.status(400).json({success:false,message:"No any Category!"});
+            return res.status(404).json({success:false,message:"No any Category!"});
         }
         return res.status(200).json({success:true,category});
     }
    //[POST] api/subcategory/store
     async store(req,res){
-        const {name,origin,category}=req.body;
+        const {name,category}=req.body;
         const idCate=await Category.findOne({name:category}).select('_id');
-        if(!idSub){
-            return res.status(400).json({success:false,message:"Category not found !"});
+        if(!idCate){
+            return res.status(404).json({success:false,message:"Category not found !"});
         }
         try {
-            const newSub = await new SubCategory({idCate,name,origin});
+            const newSub = await new SubCategory({idCate,name});
             if(!newSub){
                 return res.status(401).json({success:false,message:"Add failed,Check and try later!"});
             }
-            newBrand.save();
-            return res.status(200).json({success:true,message:"Add Brand successfully"});
+            newSub.save();
+            return res.status(200).json({success:true,message:"Add SubCategory successfully"});
         } catch (error) {
             return res.status(401).json({success:false,message:"Interval server!"});
         }
        
     }
+     //[GET] api/subcategory/edit/:slug
+    async edit(req,res){
+        const subCategory=await SubCategory.findOne({slug:req.params.slug});
+        if(!subCategory){
+            return res.status(404).json({success:false,message:"SubCategory not found !"});
+        }
+        const category  = await Category.findOne({_id:subCategory.idCate})
 
+        if(!category){
+            return res.status(404).json({success:false,message:"Category not found !"});
+        }
+        subCategory.set('category', category.name, {strict: false})
+        return res.status(200).json({success:true,subCategory});             
+    }
+    //[PUT] api/subcategory/update/:id
+    async update(req,res){
+        const {name,category}=req.body;
+        const idCate=await Category.findOne({name:category}).select('_id');
+        const idSub=await SubCategory.findOne({_id:req.params.id});
+        if(!idCate){
+            return res.status(404).json({success:false,message:"Category not found!"});
+        }
+        if(!idSub){
+            return res.status(404).json({success:false,message:"SubCategory not found!"});
+        }
+        try {
+           const oldSub=await SubCategory.updateMany({_id:req.params.id},{name,idCate});
+           if(!oldSub){
+            return res.status(401).json({success:false,message:"Update failed!"});
+           }
+            return res.status(200).json({success:true,message:"Update SubCategory successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+    }
+    //[DELETE] api/subcategory/detele/:id
+    async detele(req,res){
+        const idSub=SubCategory.findOne({_id:req.params.id});
+        if(!idSub){
+            return res.status(404).json({success:false,message:"SubCategory not found !"});
+        }
+        try {
+           const deleteSub=await SubCategory.findOneAndDelete({_id:req.params.id});
+           if(!deleteSub){
+            return res.status(401).json({success:false,message:"Delete failed!"});
+           }
+            return res.status(200).json({success:true,message:"Delete SubCategory successfully"});
+        } catch (error) {
+            return res.status(401).json({success:false,message:"Interval server!"});
+        }
+    }
 }
 
 module.exports=new SubCategoryController();

@@ -65,7 +65,6 @@ class BrandController{
     async update(req,res){
         const {name,origin,subCategory}=req.body;
         const idSub=await Subcategory.findOne({name:subCategory}).select('_id');
-        console.log(idSub);
         if(!idSub){
             return res.status(404).json({success:false,message:"Subcategory not found!"});
         }

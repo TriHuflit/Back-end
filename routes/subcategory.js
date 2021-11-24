@@ -3,11 +3,21 @@ const router = express.Router();
 
 const subcategory =require("../controllers/SubCategoryController");
 
+router.get('/create',subcategory.create);
 
+router.post('/store',subcategory.store);
+
+router.put('/update/:id',subcategory.update);
+
+router.delete('/delete/:id',subcategory.detele);
+
+router.get('/edit/:slug',subcategory.edit);
+
+
+router.get('/detail/:slug',subcategory.detail);
 
 router.get('/:slug',subcategory.getBrandByIdSub);
 //subcategory
-router.get('/detail/:slug',subcategory.detail);
 
 router.get('/',subcategory.index);
 

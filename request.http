@@ -101,9 +101,33 @@ GET http://localhost:5000/api/subcategory
 GET http://localhost:5000/api/subcategory/thuc-an-cho-cho
 ####
 GET http://localhost:5000/api/subcategory/detail/thuc-an-cho-cho
+
+####
+GET http://localhost:5000/api/subcategory/create
+####
+POST http://localhost:5000/api/subcategory/store
+Content-Type: application/json
+
+{
+    "name":"Bình bơm oxy",
+    "category":"cá"
+}
+####
+GET http://localhost:5000/api/subcategory/edit/gucci
+####
+PUT http://localhost:5000/api/subcategory/update/619df4e2ba734199a5ca0db9
+Content-Type: application/json
+
+{
+    "name":"Chuồng chó",
+    "category":"Chó"
+}
+####
+DELETE  http://localhost:5000/api/subcategory/delete/619df4f1ba734199a5ca0dc2
 ####
 GET http://localhost:5000/api/brand
 ####
+
 GET http://localhost:5000/api/brand/create
 ####
 POST http://localhost:5000/api/brand/store
