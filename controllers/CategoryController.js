@@ -33,7 +33,10 @@ class CategoryController{
 
    //[POST] api/category/store
     async store(req,res){
-        const name=req.body;
+        const {name}=req.body;
+        if(!name){
+            return res.status(402).json({success:false,message:"Add failed,name is undefined!"});
+        }
         try {
             const newCategory = await new Category({name});
             if(!newCategory){
