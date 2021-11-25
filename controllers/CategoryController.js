@@ -33,7 +33,7 @@ class CategoryController{
 
    //[POST] api/category/store
     async store(req,res){
-        const {name}=req.body;
+        const name=req.body;
         try {
             const newCategory = await new Category({name});
             if(!newCategory){
