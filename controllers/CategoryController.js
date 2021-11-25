@@ -40,7 +40,7 @@ class CategoryController{
                 return res.status(401).json({success:false,message:"Add failed,Check and try later!"});
             }
             newCategory.save();
-            return res.status(200).json({success:true,message:"Add Category successfully"});
+            return res.status(200).json({success:true,message:"Add Category successfully",newCategory});
         } catch (error) {
             return res.status(401).json({success:false,message:"Interval server!"});
         }
