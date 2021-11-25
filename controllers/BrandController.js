@@ -5,12 +5,33 @@ const Product =require('../models/Products');
 class BrandController{
 
     //[GET] api/brand/
-    async index(req,res){
-        const brand=await Brand.find({});
-        if(!brand){
-            return res.status(404).json({success:false,message:"Brand not found !"});
-        }
-        return res.status(200).json({success:true,brand});
+    async index(req,res,next){
+        Brand.find({}, function(err, brands){
+            if (err)
+                console.log(err);
+            else {
+                var len = brands.length;
+                var curIdx = 0;
+                var newBrands=[];
+                brands.forEach(function(brand) {
+                    Subcategory.findOne({_id: brand.idSub}, function(err, ret) {
+                        if (err)
+                            console.log(err);
+                        else{
+                            // combine those two objects here...
+                            brand.set('subCategory', ret.name, {strict: false})
+                            newBrands.push(brand);
+                            ++curIdx;
+                            if (curIdx == len) {
+                                //console.log(newUsers);
+                                res.json(newBrands);
+                            }
+                        }
+                    });
+                });
+        
+            }
+        })
     }
      //[GET] api/brand/:id
     async detail(req,res){
