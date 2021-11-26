@@ -22,9 +22,19 @@ class SubCategoryController{
         return res.status(200).json({success:true,subCategory});
         
     }
-    //[GET] api/subcategory/:id
-    async getBrandByIdSub(req,res){
+    //[GET] api/subcategory/:slug
+    async getBrandBySlugSub(req,res){
         const subCategory =await SubCategory.findOne({slug:req.params.slug});
+        if(!subCategory){
+           
+            return res.status(400).json({success:false,message:"Subcategory not found !"});
+        }
+        const brand=await Brand.find({idSub:subCategory._id})
+        return res.status(200).json({success:true,brand});
+    }
+     //[GET] api/subcategory/brand/:id
+    async getBrandByIDSub(req,res){
+        const subCategory =await SubCategory.findOne({_id:req.params.id});
         if(!subCategory){
            
             return res.status(400).json({success:false,message:"Subcategory not found !"});

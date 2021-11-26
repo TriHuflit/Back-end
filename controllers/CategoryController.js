@@ -21,7 +21,7 @@ class CategoryController{
         
     }
     //[GET] api/category/:slug
-    async getSubByIdCate(req,res){
+    async getSubBySlugCate(req,res){
         const category =await Category.findOne({slug:req.params.slug});
         if(!category){
            
@@ -30,6 +30,17 @@ class CategoryController{
         const subCategory=await SubCategory.find({idCate:category._id})
         return res.status(200).json({success:true,subCategory});
     }
+    //[GET] api/category/subcategory/:id
+    async getSubByIDCate(req,res){
+        const category =await Category.findOne({_id:req.params.id});
+        if(!category){
+           
+            return res.status(400).json({success:false,message:"Category not found !"});
+        }
+        const subCategory=await SubCategory.find({idCate:category._id})
+        return res.status(200).json({success:true,subCategory});
+    }
+    
 
    //[POST] api/category/store
     async store(req,res){

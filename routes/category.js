@@ -4,7 +4,8 @@ const category=require("../controllers/CategoryController");
 
 
 //category
-router.get('/:slug',category.getSubByIdCate);
+router.get('/subcategory/:id',category.getSubByIDCate);
+
 
 router.get('/detail/:slug',category.detail);
 
@@ -15,6 +16,8 @@ router.get('/edit/:slug',category.edit);
 router.put('/update/:id',category.update);
 
 router.delete('/delete/:id',category.detele);
+
+router.get('/:slug',category.getSubBySlugCate);
 
 router.get('/',category.index);
 

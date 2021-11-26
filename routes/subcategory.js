@@ -13,10 +13,11 @@ router.delete('/delete/:id',subcategory.detele);
 
 router.get('/edit/:slug',subcategory.edit);
 
+router.get('/brand/:id',subcategory.getBrandByIDSub);
 
 router.get('/detail/:slug',subcategory.detail);
 
-router.get('/:slug',subcategory.getBrandByIdSub);
+router.get('/:slug',subcategory.getBrandBySlugSub);
 //subcategory
 
 router.get('/',subcategory.index);
