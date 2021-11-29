@@ -16,9 +16,16 @@ const Products = new Schema({
         type: Number,
         required: true,
     },
-    imageRepresent: {
-        type:String
-    },
+    imageRepresent:[
+        {
+            url:{
+                type:String,
+            },
+            cloud_id:{
+                type:String,
+            }
+        }
+    ],
     slug:{
         type:String,
         slug:'name',

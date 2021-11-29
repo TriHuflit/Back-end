@@ -10,7 +10,7 @@ const WareHouses = new Schema({
     idCustomer: {
         type: Schema.Types.ObjectId,
         ref: 'Customers',
-        required: true,
+       
     },
     color: {
         type: String,

@@ -10,10 +10,16 @@ const DescribeProducts = new Schema({
     title: {
         type: String,
     },
-    image: {
-        data: Buffer,
-        contentType: String,
-    },
+    image:[
+        {
+            url:{
+                type:String
+            },
+            cloud_id:{
+                type:String
+            },
+        }
+    ],
     content: {
         type: String,
     },

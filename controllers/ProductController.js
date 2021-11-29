@@ -3,8 +3,8 @@ const Brand = require('../models/Brands');
 const WareHouses = require('../models/WareHouses');
 const Feature = require('../models/FeatureProducts');
 const Describe = require('../models/DescribeProducts');
-const { multipleMongoosetoObject } = require('../ulti/mongoose');
-const fs=require('fs');
+const { multipleMongoosetoObject } = require('../ultis/mongoose');
+const cloudinary = require("../ultis/cloudinary");
 class ProductsController {
     //[GET] /api/products/
     async index(req, res, next) {
@@ -24,43 +24,47 @@ class ProductsController {
     }
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
-        const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
+        const brand = await Brand.findOne({ _id:req.body.idBrand });
+        const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent[0].path,{folder:'Product_Image/'+req.body.name});
         if (brand) {
             try {    
-                const { name,
-                    price,
-                    titleFeature, contentFeature,
-                    titleDescribe, contentDescribe
-                } = req.body;
-                const imageRepresent=req.file.path;
-              
+                const { name,price} = req.body;
                 const product = new Products({
                     name,
-                    idBrand: brand,
+                    idBrand: req.body.idBrand,
                     price,
-                    imageRepresent
+                    imageRepresent:[{
+                        url:imageUpload.secure_url,
+                        cloud_id:imageUpload.public_id
+                    }]
                 });
                 await product.save();
               
                 if (product) {
-                    const feature = new Feature({
-                        idProducts:product._id,
-                        title: titleFeature,
-                        content: contentFeature
-                    });
-                    await feature.save();
-                    const describe = new Describe({
-                        idProducts:product._id,
-                        title: titleDescribe,
-                        content: contentDescribe
-                    });
-                    await describe.save();
+                    const files=req.files.listImage;
+                    files.map(async (file)=>{
+                        const img=await cloudinary.uploader.upload(file.path,{folder:'Product_Image/'+'Detail'});
+                        const describe = new Describe({
+                            idProducts:product._id,
+                            image:[{
+                                url:img.secure_url,
+                                cloud_id:img.public_id
+                            }]
+                        });
+                        await describe.save();
+                    })
+                    // const feature = new Feature({
+                    //     idProducts:product._id,
+                    //     title: titleFeature,
+                    //     content: contentFeature
+                    // });
+                    // await feature.save();
+                   
                     const { warehouses } = req.body;
                     warehouses.forEach(async warehouse => {    
                        
                         warehouse = new WareHouses({
                             idProducts: product._id,
-                            idCustomer: req.CustomerId,
                             color: warehouse.color,
                             amoutStock: warehouse.amoutImport,
                             priceImport:warehouse.priceImport,
@@ -68,11 +72,11 @@ class ProductsController {
                         });
                         await warehouse.save();
                     });
-                    return res.status(200).json({ success: true, message: "Add new product succesfully !",warehouse });
+                    return res.status(200).json({ success: true, message: "Add new product succesfully !"});
                 }
                 return res.status(401).json({ success: false, message: "Product not found !" });
             } catch (error) {
-                res.status(400).json({ success: false, message: error })
+                res.status(400).json({ success: false, message: "lỗi"})
             }
         }
         else res.status(401).json({ success: false, message: "Brand incorrect !" })
@@ -80,26 +84,44 @@ class ProductsController {
     }
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
+        const product =await Products.findOne({slug:req.params.slug});
+        await cloudinary.uploader.destroy(product.cloud_id);
         const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
-        const { name, price,
-            imageRepresent, titleFeature,
-            contentFeature, titleDescribe,
-            contentDescribe } = req.body;
+        const { name, price } = req.body;
+        const imageUpload=await cloudinary.uploader.upload(req.file.path);
         try {
 
             let product = {
                 name,
                 idBrand: brand,
                 price,
-                imageRepresent
+                imageRepresent:[{
+                    url:imageUpload.secure_url,
+                    cloud_id:imageUpload.public_id
+                }]
             };
             const productUpdateCondition = { slug: req.params.slug };
 
             const updateProduct = await Products.findOneAndUpdate(productUpdateCondition, product, { new: true });
-
+            const describes=await Describe.findOne({idProducts:updateProduct._id});
+            describes.map(async (des)=>{
+                des.delete();
+            })
+            const files=req.files;
+            files.map(async (file)=>{
+                const img=await cloudinary.uploader.upload(file.path);
+                const describe = new Describe({
+                idProducts:product._id,
+                image:[{
+                        url:img.secure_url,
+                        cloud_id:img.public_id
+                     }]
+                });
+                await describe.save();
+            })
             if (!updateProduct) {
 
-                return res.status(400).json({ success: false, message: "Product not Found !" })
+                return res.status(404).json({ success: false, message: "Product not Found !" })
             }
             res.status(200).json({ success: true, message: "Product updated successfully !!!" })
         } catch (error) {
@@ -108,7 +130,7 @@ class ProductsController {
     }
     //[DELETE] api/product/:id  --- update product-----
     async delete(req, res, next) {
-
+        const product= await Products.findOneAndDelete({_id})
     }
     //[POST] api/product/store  --- create new product-----
     //Search Products

@@ -24,9 +24,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiN
 
 {
    "name":"Royal Canin Urinary S/O – Thức Ăn Hạt Cho Mèo Bị Sỏi Thận",
-   "brand":"NUTRIENCE",
+   "idBrand":"619f03c1e5d60328d18f4e62",
    "price":300000,
-   "imageRepresent":"https://scontent.fsgn2-2.fna.fbcdn.net/v/t39.30808-6/p843x403/257544041_1976106609229359_1434567248597624283_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=825194&_nc_ohc=HwZDgZ99_l0AX_5t8us&_nc_ht=scontent.fsgn2-2.fna&oh=c96b976c0eff50f86cebf71560681717&oe=619829E9",
+   "imageRepresent":[
+        {
+            "fieldname": "imageRepresent",
+            "originalname": "02190f4d6ad0a28efbc1.jpg",
+            "encoding": "7bit",
+            "mimetype": "image/jpeg",
+            "destination": "C:\\Users\\TRINGU~1\\AppData\\Local\\Temp",
+            "filename": "43688e5d362e34ce312a8532f9cb0d0b",
+            "path": "C:\\Users\\TRINGU~1\\AppData\\Local\\Temp\\43688e5d362e34ce312a8532f9cb0d0b",
+            "size": 1385107
+        }
+    ],
+    "listImage":[{
+             "fieldname": "listImage",
+            "originalname": "02190f4d6ad0a28efbc1.jpg",
+            "encoding": "7bit",
+            "mimetype": "image/jpeg",
+            "destination": "C:\\Users\\TRINGU~1\\AppData\\Local\\Temp",
+            "filename": "43688e5d362e34ce312a8532f9cb0d0b",
+            "path": "C:\\Users\\TRINGU~1\\AppData\\Local\\Temp\\43688e5d362e34ce312a8532f9cb0d0b",
+            "size": 1385107
+    }],
    "warehouses":[
        {
            "color":"#ff0000",
@@ -93,13 +114,13 @@ Content-Type: application/json
 }
 ####
 
-DELETE  http://localhost:5000/api/category/delete/619e61ab7dfe3a2e6e3f2152
+DELETE  http://localhost:5000/api/category/delete/619e62b87dfe3a2e6e3f2157
 ####
 GET http://localhost:5000/api/subcategory
 
 ####
-GET http://localhost:5000/api/subcategory/do-trang-tri-be-ca
-####
+GET http://localhost:5000/api/subcategory/do-trang-tri-cho-cho
+###
 GET http://localhost:5000/api/subcategory/detail/do-trang-tri-be-ca
 
 ####
@@ -109,8 +130,8 @@ POST http://localhost:5000/api/subcategory/store
 Content-Type: application/json
 
 {
-    "name":"Đồ trang trí bể cá",
-    "category":"Cá"
+    "name":"Đồ trang trí cho chó",
+    "category":"chó"
 }
 ####
 GET http://localhost:5000/api/subcategory/edit/chuong-cho
@@ -123,7 +144,7 @@ Content-Type: application/json
     "category":"Chó"
 }
 ####
-DELETE  http://localhost:5000/api/subcategory/delete/619dffbe9c608a0a3652675f
+DELETE  http://localhost:5000/api/subcategory/delete/619e62d95d70a54003076176
 ####
 GET http://localhost:5000/api/brand
 ####
@@ -136,7 +157,7 @@ Content-Type: application/json
 {
     "name":"Puma",
     "origin":"US-UK",
-    "subCategory":"Thức ăn cho chó"
+    "subCategory":"Đồ trang trí cho chó"
 }
 ####
 GET http://localhost:5000/api/brand/edit/gucci
@@ -150,6 +171,6 @@ Content-Type: application/json
     "subCategory":"Thức ăn cho mèo"
 }
 ####
-DELETE  http://localhost:5000/api/brand/delete/619dace0e8e66c8e6b1778d1
+DELETE  http://localhost:5000/api/brand/delete/619f03b9e5d60328d18f4e5d
 ####
 GET http://localhost:5000/api/brand/detail/nutrience
