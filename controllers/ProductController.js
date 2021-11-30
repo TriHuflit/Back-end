@@ -26,6 +26,7 @@ class ProductsController {
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
         const brand = await Brand.findOne({ _id:req.body.idBrand });
+        console.log(req.body);
         const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
         if (brand) {
             try {    
@@ -63,7 +64,7 @@ class ProductsController {
                     // });
                     // await feature.save();
                     const {real_price,amoutImport}=req.body;
-                    warehouse = new WareHouses({
+                    warehouse =await new WareHouses({
                         idProducts: product._id,
                         amoutStock:amoutImport,
                         real_price,
