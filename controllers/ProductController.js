@@ -5,6 +5,7 @@ const Feature = require('../models/FeatureProducts');
 const Describe = require('../models/DescribeProducts');
 const { multipleMongoosetoObject } = require('../ultis/mongoose');
 const cloudinary = require("../ultis/cloudinary");
+const OrderDetails = require('../models/OrderDetails');
 class ProductsController {
     //[GET] /api/products/
     async index(req, res, next) {
@@ -25,7 +26,7 @@ class ProductsController {
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
         const brand = await Brand.findOne({ _id:req.body.idBrand });
-        const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent[0].path,{folder:'Product_Image/'+req.body.name + "imageRepresent"});
+        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
         if (brand) {
             try {    
                 const { name,price,short_description,long_description} = req.body;
@@ -89,8 +90,8 @@ class ProductsController {
         const product =await Products.findOne({slug:req.params.slug});
         await cloudinary.uploader.destroy(product.cloud_id);
         const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
-        const { name, price } = req.body;
-        const imageUpload=await cloudinary.uploader.upload(req.file.path);
+        const { name, price,short_description,long_description } = req.body;
+        const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent[0].path,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
         try {
 
             let product = {
@@ -100,18 +101,26 @@ class ProductsController {
                 imageRepresent:[{
                     url:imageUpload.secure_url,
                     cloud_id:imageUpload.public_id
-                }]
+                }],
+                short_description,
+                long_description
             };
             const productUpdateCondition = { slug: req.params.slug };
 
             const updateProduct = await Products.findOneAndUpdate(productUpdateCondition, product, { new: true });
-            const describes=await Describe.findOne({idProducts:updateProduct._id});
+            if (!updateProduct) {
+
+                return res.status(404).json({ success: false, message: "Product not Found !" })
+            }
+            
+            const describes=await Describe.find({idProducts:updateProduct._id});
             describes.map(async (des)=>{
+                await cloudinary.uploader.destroy(des.cloud_id);
                 des.delete();
             })
             const files=req.files;
             files.map(async (file)=>{
-                const img=await cloudinary.uploader.upload(file.path);
+                const img=await cloudinary.uploader.upload(file.path,{folder:'Product_Image/'+req.body.name+'Detail'});
                 const describe = new Describe({
                 idProducts:product._id,
                 image:[{
@@ -121,10 +130,7 @@ class ProductsController {
                 });
                 await describe.save();
             })
-            if (!updateProduct) {
-
-                return res.status(404).json({ success: false, message: "Product not Found !" })
-            }
+           
             res.status(200).json({ success: true, message: "Product updated successfully !!!" })
         } catch (error) {
 
@@ -132,7 +138,18 @@ class ProductsController {
     }
     //[DELETE] api/product/:id  --- update product-----
     async delete(req, res, next) {
-        const product= await Products.findOneAndDelete({_id})
+        const product= await Products.findOne({_id:req.params.id});
+        if(!product){
+            res.status(404).json({ success: false, message: "Product Not Found"})
+        }
+        const oderdetails=await OrderDetails.find({idProducts:product._id});
+        await cloudinary.uploader.destroy(product.cloud_id);
+        const describes=await Describe.find({idProduct:product._id});
+        describes.map(async (des)=>{
+            await cloudinary.uploader.destroy(des.cloud_id);
+            des.delete();
+        })
+        
     }
     //[POST] api/product/store  --- create new product-----
     //Search Products
