@@ -64,7 +64,7 @@ class ProductsController {
                     // });
                     // await feature.save();
                     const {real_price,amountImport}=req.body;
-                    warehouse =await new WareHouses({
+                    const warehouse =await new WareHouses({
                         idProducts: product._id,
                         amountStock:amountImport,
                         real_price,
