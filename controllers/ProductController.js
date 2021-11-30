@@ -112,7 +112,7 @@ class ProductsController {
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
         const { name, price,short_description,long_description } = req.body;
-        const idProduct=Products.findOne({slug:req.params.slug}).select('_id');
+        const idProduct=Products.findOne({slug:req.params.slug});
         console.log(req.body.listImage.length);
         console.log(idProduct);
         try {
@@ -130,7 +130,7 @@ class ProductsController {
                     short_description,
                     long_description
                 };
-                const updateProduct = await Products.findOneAndUpdate(idProduct, pro, { new: true });
+                const updateProduct = await Products.findOneAndUpdate(idProduct._id, pro, { new: true });
                 if (!updateProduct) {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
@@ -143,7 +143,7 @@ class ProductsController {
                     short_description,
                     long_description
                 };
-                const updateProduct = await Products.findOneAndUpdate(idProduct, pro, { new: true });
+                const updateProduct = await Products.findOneAndUpdate(idProduct._id, pro, { new: true });
                 if (!updateProduct) {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
@@ -151,7 +151,7 @@ class ProductsController {
             }
 
             if(req.body.listImage.length>0){
-                const describes=await Describe.find({idProducts:idProduct});
+                const describes=await Describe.find({idProducts:idProduct._id});
                 describes.map(async (des)=>{
                     await cloudinary.uploader.destroy(des.image[0].cloud_id);
                     await Describe.findOneAndDelete({_id:des._id});
@@ -160,7 +160,7 @@ class ProductsController {
                 files.map(async (file)=>{
                     const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+' Detail'});
                     const describe = new Describe({
-                    idProducts:product._id,
+                    idProducts:idProduct._id,
                     image:[{
                             url:img.secure_url,
                             cloud_id:img.public_id
