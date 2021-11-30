@@ -69,7 +69,7 @@ class ProductsController {
                             idProducts: product._id,
                             color: warehouse.color,
                             amoutStock: warehouse.amoutImport,
-                            priceImport:warehouse.priceImport,
+                            real_price:warehouse.real_price,
                             amoutImport: warehouse.amoutImport
                         });
                         await warehouse.save();
