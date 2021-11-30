@@ -111,49 +111,63 @@ class ProductsController {
     
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
-        const product =await Products.findOne({slug:req.params.slug});
-        await cloudinary.uploader.destroy(product.cloud_id);
+        
+
         const { name, price,short_description,long_description } = req.body;
-        const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent[0].path,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
+        const productUpdateCondition = { slug: req.params.slug };
         try {
-
-            let product = {
-                name,
-                price,
-                imageRepresent:[{
-                    url:imageUpload.secure_url,
-                    cloud_id:imageUpload.public_id
-                }],
-                short_description,
-                long_description
-            };
-            const productUpdateCondition = { slug: req.params.slug };
-
-            const updateProduct = await Products.findOneAndUpdate(productUpdateCondition, product, { new: true });
-            if (!updateProduct) {
-
-                return res.status(404).json({ success: false, message: "Product not Found !" })
+            if(req.body.imageRepresent){
+                const product =await Products.findOne({slug:req.params.slug});
+                await cloudinary.uploader.destroy(product.cloud_id);
+                const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
+                let pro = {
+                    name,
+                    price,
+                    imageRepresent:[{
+                        url:imageUpload.secure_url,
+                        cloud_id:imageUpload.public_id
+                    }],
+                    short_description,
+                    long_description
+                };
+                const updateProduct = await Products.findOneAndUpdate(productUpdateCondition, pro, { new: true });
+                if (!updateProduct) {
+    
+                    return res.status(404).json({ success: false, message: "Product not Found !" });
+                }      
+                const describes=await Describe.find({idProducts:updateProduct._id});
+                describes.map(async (des)=>{
+                    await cloudinary.uploader.destroy(des.cloud_id);
+                    des.delete();
+                })
+                const files=req.body.listImage;
+                files.map(async (file)=>{
+                    const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+' Detail'});
+                    const describe = new Describe({
+                    idProducts:product._id,
+                    image:[{
+                            url:img.secure_url,
+                            cloud_id:img.public_id
+                         }]
+                    });
+                    await describe.save();
+                })
+                res.status(200).json({ success: true, message: "Product updated successfully !!!" });
             }
-            
-            const describes=await Describe.find({idProducts:updateProduct._id});
-            describes.map(async (des)=>{
-                await cloudinary.uploader.destroy(des.cloud_id);
-                des.delete();
-            })
-            const files=req.files;
-            files.map(async (file)=>{
-                const img=await cloudinary.uploader.upload(file.path,{folder:'Product_Image/'+req.body.name+' Detail'});
-                const describe = new Describe({
-                idProducts:product._id,
-                image:[{
-                        url:img.secure_url,
-                        cloud_id:img.public_id
-                     }]
-                });
-                await describe.save();
-            })
-           
-            res.status(200).json({ success: true, message: "Product updated successfully !!!" })
+            else{
+                let pro = {
+                    name,
+                    price,
+                    short_description,
+                    long_description
+                };
+                const updateProduct = await Products.findOneAndUpdate(productUpdateCondition, pro, { new: true });
+                if (!updateProduct) {
+    
+                    return res.status(404).json({ success: false, message: "Product not Found !" });
+                }
+                res.status(200).json({ success: true, message: "Product updated successfully !!!" });
+            }
         } catch (error) {
 
         }
