@@ -44,9 +44,9 @@ class ProductsController {
                 await product.save();
               
                 if (product) {
-                    const files=req.files.listImage;
+                    const files=req.body.listImage;
                     files.map(async (file)=>{
-                        const img=await cloudinary.uploader.upload(file.path,{folder:'Product_Image/'+req.body.name+'Detail'});
+                        const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+'Detail'});
                         const describe = new Describe({
                             idProducts:product._id,
                             image:[{
