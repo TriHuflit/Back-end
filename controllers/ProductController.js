@@ -53,7 +53,7 @@ class ProductsController {
     async store(req, res, next) {
         const brand = await Brand.findOne({ _id:req.body.idBrand });
         console.log(req.body);
-        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
+        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/imageRepresent"});
         if (brand) {
             try {    
                 const { name,price,short_description,long_description} = req.body;
@@ -73,7 +73,7 @@ class ProductsController {
                 if (product) {
                     const files=req.body.listImage;
                     files.map(async (file)=>{
-                        const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+'Detail'});
+                        const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+'/Detail'});
                         const describe = new Describe({
                             idProducts:product._id,
                             image:[{
@@ -119,7 +119,7 @@ class ProductsController {
             if(req.body.imageRepresent!=null){
                 const product =await Products.findOne({slug:req.params.slug});
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
-                const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
+                const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/imageRepresent"});
                 let pro = {
                     name,
                     price,
@@ -158,7 +158,7 @@ class ProductsController {
                 })
                 const files=req.body.listImage;
                 files.map(async (file)=>{
-                    const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+' Detail'});
+                    const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+'/Detail'});
                     const describe = new Describe({
                     idProducts:idProduct._id,
                     image:[{
@@ -171,22 +171,30 @@ class ProductsController {
             }       
             res.status(200).json({ success: true, message: "Product updated successfully !!!" });
         } catch (error) {
-
+            res.status(400).json({ success: false, message: error})
         }
     }
     //[DELETE] api/product/:id  --- update product-----
     async delete(req, res, next) {
-        const product= await Products.findOne({_id:req.params.id});
-        if(!product){
-            res.status(404).json({ success: false, message: "Product Not Found"})
+        const orderdetails=await OrderDetails.find({idProducts:req.params._id});
+        if(orderdetails){
+            return res.status(401).json({success:false,message:"Error Constraint!"});
         }
-        const oderdetails=await OrderDetails.find({idProducts:product._id});
-        await cloudinary.uploader.destroy(product.cloud_id);
-        const describes=await Describe.find({idProduct:product._id});
-        describes.map(async (des)=>{
-            await cloudinary.uploader.destroy(des.cloud_id);
-            des.delete();
-        })
+        try {
+            const product=await Products.findOne({_id:req.params._id});
+            await cloudinary.uploader.destroy(product.cloud_id);
+            const describes=await Describe.find({idProduct:product._id});
+            describes.map(async (des)=>{
+                await cloudinary.uploader.destroy(des.cloud_id);
+                await des.findOneAndDelete({idProduct:product._id});
+            });
+            await WareHouses.findOneAndDelete({idProduct:product._id});
+            await Products.findOneAndDelete({_id:req.params._id});
+            res.status(200).json({ success: true, message: "Product Deleted successfully !!!" });
+        } catch (error) {
+            res.status(400).json({ success: false, message: error})
+        }
+        
         
     }
     //[POST] api/product/store  --- create new product-----
