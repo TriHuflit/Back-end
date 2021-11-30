@@ -26,6 +26,13 @@ const Products = new Schema({
             }
         }
     ],
+    short_description:{
+        type:String,
+    },
+    long_description:{
+        type:String,
+    }
+    ,
     slug:{
         type:String,
         slug:'name',

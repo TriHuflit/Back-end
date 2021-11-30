@@ -28,7 +28,7 @@ class ProductsController {
         const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent[0].path,{folder:'Product_Image/'+req.body.name + "imageRepresent"});
         if (brand) {
             try {    
-                const { name,price} = req.body;
+                const { name,price,short_description,long_description} = req.body;
                 const product = new Products({
                     name,
                     idBrand: req.body.idBrand,
@@ -36,7 +36,9 @@ class ProductsController {
                     imageRepresent:[{
                         url:imageUpload.secure_url,
                         cloud_id:imageUpload.public_id
-                    }]
+                    }],
+                    short_description,
+                    long_description
                 });
                 await product.save();
               

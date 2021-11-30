@@ -21,7 +21,7 @@ const WareHouses = new Schema({
         required: true,
         default: 1,
     },
-    priceImport:{
+    real_price:{
         type:Number,
         require:true,
     }
