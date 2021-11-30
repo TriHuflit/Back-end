@@ -18,7 +18,7 @@ router.get('/:slug', productController.detail);
 
 router.get('/:brand', productController.getProductsByBrand);
 
-router.put('/:slug', productController.update);
+router.put('/update/:slug', productController.update);
 
 router.get('/', productController.index);
 
