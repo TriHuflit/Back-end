@@ -14,7 +14,6 @@ app.use(
     }),
 );
 app.use(express.json());
-app.use(express.bodyParser({limit: '50mb'}));
 app.use(cors());
 
 
