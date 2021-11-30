@@ -26,7 +26,7 @@ class ProductsController {
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
         const brand = await Brand.findOne({ _id:req.body.idBrand });
-        console.log(req.files);
+        console.log(req.body);
         const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent.path,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
         if (brand) {
             try {    
