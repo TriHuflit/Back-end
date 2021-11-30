@@ -111,8 +111,6 @@ class ProductsController {
     
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
-        
-
         const { name, price,short_description,long_description } = req.body;
         const productUpdateCondition = { slug: req.params.slug };
         try {
