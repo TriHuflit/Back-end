@@ -116,7 +116,7 @@ class ProductsController {
         console.log(req.body.listImage.length);
         console.log(idProduct);
         try {
-            if(req.body.imageRepresent){
+            if(req.body.imageRepresent!=null){
                 const product =await Products.findOne({slug:req.params.slug});
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
                 const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
@@ -149,7 +149,7 @@ class ProductsController {
                     return res.status(404).json({ success: false, message: "Product not Found !" });
                 }
             }
-
+            console.log(idProduct);
             if(req.body.listImage.length>0){
                 const describes=await Describe.find({idProducts:idProduct._id});
                 describes.map(async (des)=>{
