@@ -42,7 +42,6 @@ class ProductsController {
         if(!product){
             res.status(400).json({success:false,message:"Product not found !"});
         }
-      
         const listImage= await Describe.find({idProducts:product._id}).select('image');
         product.set('listImage', listImage, {strict: false})
 
@@ -112,14 +111,12 @@ class ProductsController {
     async update(req, res, next) {
         const product =await Products.findOne({slug:req.params.slug});
         await cloudinary.uploader.destroy(product.cloud_id);
-        const brand = await Brand.findOne({ name: req.body.brand }).select("idBrand");
         const { name, price,short_description,long_description } = req.body;
         const imageUpload=await cloudinary.uploader.upload(req.files.imageRepresent[0].path,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
         try {
 
             let product = {
                 name,
-                idBrand: brand,
                 price,
                 imageRepresent:[{
                     url:imageUpload.secure_url,
