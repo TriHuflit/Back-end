@@ -63,12 +63,12 @@ class ProductsController {
                     //     content: contentFeature
                     // });
                     // await feature.save();
-                    const {real_price,amoutImport}=req.body;
+                    const {real_price,amountImport}=req.body;
                     warehouse =await new WareHouses({
                         idProducts: product._id,
-                        amoutStock:amoutImport,
+                        amountStock:amountImport,
                         real_price,
-                        amoutImport
+                        amountImport
                     });
                     await warehouse.save();
                     

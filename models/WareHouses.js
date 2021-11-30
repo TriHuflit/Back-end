@@ -16,7 +16,7 @@ const WareHouses = new Schema({
         type: String,
         minlength: 7,
     },
-    amoutStock: {
+    amountStock: {
         type: Number,
         required: true,
         default: 1,
@@ -26,7 +26,7 @@ const WareHouses = new Schema({
         require:true,
     }
     ,
-    amoutImport: {
+    amountImport: {
         type: Number,
         required: true,
         default: 1,
