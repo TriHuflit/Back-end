@@ -14,11 +14,13 @@ const uploadImage=store.fields([{name:'imageRepresent',maxCount:1},{name:'listIm
 
 router.post('/store', uploadImage, productController.store);
 
+router.put('/update/:slug', productController.update);
+
 router.get('/:slug', productController.detail);
 
 router.get('/:brand', productController.getProductsByBrand);
 
-router.put('/update/:slug', productController.update);
+
 
 router.get('/', productController.index);
 
