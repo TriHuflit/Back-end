@@ -9,7 +9,32 @@ const OrderDetails = require('../models/OrderDetails');
 class ProductsController {
     //[GET] /api/products/
     async index(req, res, next) {
-        Products.find({}).then(products => res.json({ products: multipleMongoosetoObject(products) })).catch(next);
+        Products.find({}, function(err, pros){
+            if (err)
+                console.log(err);
+            else {
+                var len = pros.length;
+                var curIdx = 0;
+                var newPros=[];
+                pros.forEach(function(pro) {
+                    Brand.findOne({_id:pro.idBrand}, function(err, ret) {
+                        if (err)
+                            console.log(err);
+                        else{
+                            // combine those two objects here...
+                            pro.set('brand', ret.name, {strict: false})
+                            newPros.push(pro);
+                            ++curIdx;
+                            if (curIdx == len) {
+                                //console.log(newUsers);
+                                res.json(newPros);
+                            }
+                        }
+                    });
+                });
+        
+            }
+        })
     }
     //[GET] /api/products/:slug
     async detail(req,res,next){
@@ -17,8 +42,7 @@ class ProductsController {
         if(!product){
             res.status(400).json({success:false,message:"Product not found !"});
         }
-        const brand=await Brand.findOne({_id:product.idBrand}).select('name');
-        product.set('brand', brand, {strict: false})
+      
         const listImage= await Describe.find({idProducts:product._id}).select('image');
         product.set('listImage', listImage, {strict: false})
 

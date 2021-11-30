@@ -10,6 +10,9 @@ const Customers = new Schema({
         type: String,
         required: true
     },
+    gender:{
+        type: String,
+    },
     email: {
         type: String,
         required: true
