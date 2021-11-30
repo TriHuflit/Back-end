@@ -62,19 +62,15 @@ class ProductsController {
                     //     content: contentFeature
                     // });
                     // await feature.save();
-                   
-                    const { warehouses } = req.body;
-                    warehouses.forEach(async warehouse => {    
-                       
-                        warehouse = new WareHouses({
-                            idProducts: product._id,
-                            color: warehouse.color,
-                            amoutStock: warehouse.amoutImport,
-                            real_price:warehouse.real_price,
-                            amoutImport: warehouse.amoutImport
-                        });
-                        await warehouse.save();
+                    const {real_price,amoutImport}=req.body;
+                    warehouse = new WareHouses({
+                        idProducts: product._id,
+                        amoutStock:amoutImport,
+                        real_price,
+                        amoutImport
                     });
+                    await warehouse.save();
+                    
                     return res.status(200).json({ success: true, message: "Add new product succesfully !"});
                 }
                 return res.status(401).json({ success: false, message: "Product not found !" });
