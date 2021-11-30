@@ -115,7 +115,7 @@ class ProductsController {
         const idProduct=Products.findOne({slug:req.params.slug}).select('_id');
         console.log(req.body);
         try {
-            if(req.body.imageRepresent.length>0){
+            if(req.body.imageRepresent){
                 const product =await Products.findOne({slug:req.params.slug});
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
                 const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
@@ -167,6 +167,7 @@ class ProductsController {
                     });
                     await describe.save();
                 })
+                res.status(200).json({ success: true, message: "Product updated successfully !!!" });
             }       
         } catch (error) {
 
