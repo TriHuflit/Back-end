@@ -12,7 +12,7 @@ const OrderDetails = new Schema({
         ref:"Products",
     },   
     Price:{
-        type:Float32Array,
+        type:Number,
         required:true,
     },
     amount:{
