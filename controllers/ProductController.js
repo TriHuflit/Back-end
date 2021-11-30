@@ -114,6 +114,8 @@ class ProductsController {
         const { name, price,short_description,long_description } = req.body;
         const idProduct=Products.findOne({slug:req.params.slug}).select('_id');
         console.log(req.body);
+        console.log(req.body.listImage.length);
+        console.log(req.body.imageRepresent);
         try {
             if(req.body.imageRepresent){
                 const product =await Products.findOne({slug:req.params.slug});
@@ -133,7 +135,7 @@ class ProductsController {
                 if (!updateProduct) {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
-                }            
+                }    
             }
             else{
                 let pro = {
@@ -147,7 +149,6 @@ class ProductsController {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
                 }
-                res.status(200).json({ success: true, message: "Product updated successfully !!!" });
             }
             if(req.body.listImage.length>0){
                 const describes=await Describe.find({idProducts:idProduct});
@@ -166,9 +167,9 @@ class ProductsController {
                          }]
                     });
                     await describe.save();
-                })
-                res.status(200).json({ success: true, message: "Product updated successfully !!!" });
+                })     
             }       
+            res.status(200).json({ success: true, message: "Product updated successfully !!!" });
         } catch (error) {
 
         }
