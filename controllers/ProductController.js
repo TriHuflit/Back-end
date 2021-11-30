@@ -113,6 +113,7 @@ class ProductsController {
     async update(req, res, next) {
         const { name, price,short_description,long_description } = req.body;
         const idProduct=Products.findOne({slug:req.params.slug}).select('_id');
+        console.log(req.body);
         try {
             if(req.body.imageRepresent){
                 const product =await Products.findOne({slug:req.params.slug});
