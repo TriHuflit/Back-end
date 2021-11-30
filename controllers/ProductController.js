@@ -13,15 +13,14 @@ class ProductsController {
     }
     //[GET] /api/products/:slug
     async detail(req,res,next){
-        const product =await Products.findOne({slug:req.params.slug}).then().catch(next);
+        const product =await Products.findOne({slug:req.params.slug});
         if(!product){
             res.status(400).json({success:false,message:"Product not found !"});
         }
-        
-        const describe= await Describe.find({idProducts:product._id});
-        const feature =await Feature.find({idProducts:product._id});
-        const warehouses=await WareHouses.find({idProducts:product._id});
-        return res.status(200).json({success:false,product,describe,feature,warehouses});
+        const listImage= await Describe.find({idProducts:product._id}).select('image');
+        product.set('listImage', listImage, {strict: false})
+
+        return res.status(200).json({success:true,product});
     }
     //[POST] api/product/store  --- create new product-----
     async store(req, res, next) {
@@ -82,6 +81,7 @@ class ProductsController {
         else res.status(401).json({ success: false, message: "Brand incorrect !" })
 
     }
+    
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
         const product =await Products.findOne({slug:req.params.slug});
@@ -117,7 +117,7 @@ class ProductsController {
             })
             const files=req.files;
             files.map(async (file)=>{
-                const img=await cloudinary.uploader.upload(file.path,{folder:'Product_Image/'+req.body.name+'Detail'});
+                const img=await cloudinary.uploader.upload(file.path,{folder:'Product_Image/'+req.body.name+' Detail'});
                 const describe = new Describe({
                 idProducts:product._id,
                 image:[{
