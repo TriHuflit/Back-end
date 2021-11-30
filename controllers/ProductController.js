@@ -115,7 +115,7 @@ class ProductsController {
         const idProduct=Products.findOne({slug:req.params.slug}).select('_id');
         console.log(req.body);
         try {
-            if(req.body.imageRepresent){
+            if(req.body.imageRepresent.length>0){
                 const product =await Products.findOne({slug:req.params.slug});
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
                 const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/ imageRepresent"});
@@ -149,7 +149,7 @@ class ProductsController {
                 }
                 res.status(200).json({ success: true, message: "Product updated successfully !!!" });
             }
-            if(req.body.listImage){
+            if(req.body.listImage.length>0){
                 const describes=await Describe.find({idProducts:idProduct});
                 describes.map(async (des)=>{
                     await cloudinary.uploader.destroy(des.image.cloud_id);
