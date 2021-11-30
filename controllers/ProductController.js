@@ -27,7 +27,7 @@ class ProductsController {
                             ++curIdx;
                             if (curIdx == len) {
                                 //console.log(newUsers);
-                                res.json(newPros);
+                                return res.status(200).json({success:true,product:newPros});
                             }
                         }
                     });
