@@ -179,12 +179,16 @@ class ProductsController {
         }
         try {
             const product=await Products.findOne({_id:req.params.id});
-            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/imageRepresent');
+            await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
             const describes=await Describe.find({idProducts:product._id});
-            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/Detail');
+           
             describes.map(async (des)=>{    
+                await cloudinary.uploader.destroy(des.image[0].cloud_id);
                 await Describe.findOneAndDelete({_id:des._id});
             });
+            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/imageRepresent');
+            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/Detail');
+            await cloudinary.api.delete_folder('Product_Image/'+product.name);
             await WareHouses.findOneAndDelete({idProduct:product._id});
             await Products.findOneAndDelete({_id:req.params.id});
             res.status(200).json({ success: true, message: "Product Deleted successfully !!!" });

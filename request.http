@@ -182,7 +182,7 @@ GET http://localhost:5000/api/brand/search/NUTRIENCE
 ####
 GET http://localhost:5000/api/category/search/Thức ăn cho chó
 ####
-DELETE http://localhost:5000/api/products/delete/61a6f207c55917f480cd8c5c
+DELETE http://localhost:5000/api/products/delete/61a716228cc81d4ac311df31
 ####
 
 GET http://localhost:5000/api/account/staff
