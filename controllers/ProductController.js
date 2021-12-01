@@ -1,11 +1,13 @@
 const Products = require('../models/Products');
 const Brand = require('../models/Brands');
 const WareHouses = require('../models/WareHouses');
-const Feature = require('../models/FeatureProducts');
+const SubCategory=require('../models/SubCategorys');
+const Category=require('../models/Categories');
 const Describe = require('../models/DescribeProducts');
 const { multipleMongoosetoObject } = require('../ultis/mongoose');
 const cloudinary = require("../ultis/cloudinary");
 const OrderDetails = require('../models/OrderDetails');
+const { find } = require('../models/Products');
 class ProductsController {
     //[GET] /api/products/
     async index(req, res, next) {
@@ -83,12 +85,6 @@ class ProductsController {
                         });
                         await describe.save();
                     })
-                    // const feature = new Feature({
-                    //     idProducts:product._id,
-                    //     title: titleFeature,
-                    //     content: contentFeature
-                    // });
-                    // await feature.save();
                     const {real_price,amountImport}=req.body;
                     const warehouse =await new WareHouses({
                         idProducts: product._id,
@@ -174,7 +170,7 @@ class ProductsController {
             res.status(400).json({ success: false, message: error})
         }
     }
-    //[DELETE] api/product/:id  --- update product-----
+    //[DELETE] api/product/delete/:id  --- update product-----
     async delete(req, res, next) {
         const orderdetails=await OrderDetails.find({idProducts:req.params._id});
         if(orderdetails){
@@ -201,32 +197,27 @@ class ProductsController {
     //Search Products
     //[GET] search by Keys
 
-    getProductsByKey(req, res, next) {
+    async getProductsByKey(req, res, next) {
         if (req.query.search) {
             const regex = new RegExp(req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), "gi");
-            Products.find({ name: regex }).then(products => res.json({ products: multipleMongoosetoObject(products) })).catch(next);
+            await Products.find({ name: regex }).then(products => res.json({ products: multipleMongoosetoObject(products) })).catch(next);
         }
     }
-    //[GET] search by Brand
-    getProductsByBrand(req, res) {
-        if (req.params.brand) {
-            console.log(req.params.brand);
-            Brand.findOne({ name: req.params.brand }, (err, brands, next) => {
-                if (!err) {
-                    console.log(brands._id);
-                    Products.find({ idBrand: brands._id }).then(products => res.json(products)).catch(next);
-                }
-                else next(err);
-            })
-        }
+  
+    async getProductsByCate(req, res) {
+       const category= await Category.findOne({ name: req.params.cate });
+       const subcategories=await SubCategory.find({idCate:category._id});
+       subcategories.map(async (subcate)=>{
+          
+       })
     }
     //[GET] Sort Price
-    getProductsBySortPrice(req, res, next) {
-        Products.find({}).sort({ price: req.query.sort }).then(products => res.send(products)).catch(next);
+    async getProductsBySortPrice(req, res, next) {
+        await Products.find({}).sort({ price: req.query.sort }).then(products => res.send(products)).catch(next);
     }
     //[GET] Sort Time
-    getProductsBySortTime(req, res, next) {
-        Products.find({}).sort({ createdAt: req.query.sort }).then(products => res.send(products)).catch(next);
+    async getProductsBySortTime(req, res, next) {
+        await Products.find({}).sort({ createdAt: req.query.sort }).then(products => res.send(products)).catch(next);
     }
 }
 module.exports = new ProductsController();

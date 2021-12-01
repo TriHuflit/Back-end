@@ -6,6 +6,8 @@ const store =require('../middleware/multer');
 
 router.get('/search', productController.getProductsByKey);
 
+router.delete('/delete/:id',productController.delete);
+
 router.get('/sortDate', productController.getProductsBySortTime);
 
 router.get('/sortPrice', productController.getProductsBySortPrice);
@@ -18,7 +20,7 @@ router.put('/update/:slug', productController.update);
 
 router.get('/:slug', productController.detail);
 
-router.get('/:brand', productController.getProductsByBrand);
+
 
 
 

@@ -7,6 +7,8 @@ const brand = require("../controllers/BrandController");
 
 router.get('/detail/:slug',brand.detail);
 
+router.get('/search/:brand', brand.getProductsByBrand);
+
 router.get('/create',brand.create);
 
 router.put('/update/:id',brand.update);

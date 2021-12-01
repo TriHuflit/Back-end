@@ -1,6 +1,7 @@
 const SubCategory=require('../models/SubCategorys');
 const Category =require('../models/Categories');
 const Brand = require('../models/Brands');
+const Product=require('../models/Products')
 class SubCategoryController{
 
     //[GET] api/subcategory
@@ -121,6 +122,20 @@ class SubCategoryController{
         } catch (error) {
             return res.status(401).json({success:false,message:"Interval server!"});
         }
+    }
+    
+    async getProductsBySub(req, res) {
+        console.log(req.params.slug);
+        const Sub=await SubCategory.findOne({ name: req.params.subcate });
+        const brands= await Brand.find({idSub:Sub._id});
+        let pros=[];
+        brands.map(async (brand)=>{
+            const products=await Product.find({idBrand:brand._id});
+            products.map(async (pro)=>{
+                pros.push(pro);
+            })
+        })
+        res.status(200).json({ success: true, pros });
     }
 }
 

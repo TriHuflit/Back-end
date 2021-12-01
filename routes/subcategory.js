@@ -7,6 +7,8 @@ router.get('/create',subcategory.create);
 
 router.post('/store',subcategory.store);
 
+router.get('/search/:subcate', subcategory.getProductsBySub);
+
 router.put('/update/:id',subcategory.update);
 
 router.delete('/delete/:id',subcategory.detele);
