@@ -55,7 +55,7 @@ class ProductsController {
     async store(req, res, next) {
         const brand = await Brand.findOne({ _id:req.body.idBrand });
         console.log(req.body);
-        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/imageRepresent"});
+        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+product.slug + "/imageRepresent"});
         if (brand) {
             try {    
                 const { name,price,short_description,long_description} = req.body;
@@ -75,7 +75,7 @@ class ProductsController {
                 if (product) {
                     const files=req.body.listImage;
                     files.map(async (file)=>{
-                        const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+'/Detail'});
+                        const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+product.slug+'/Detail'});
                         const describe = new Describe({
                             idProducts:product._id,
                             image:[{
@@ -186,9 +186,9 @@ class ProductsController {
                 await cloudinary.uploader.destroy(des.image[0].cloud_id);
                 await Describe.findOneAndDelete({_id:des._id});
             });
-            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/imageRepresent');
-            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/Detail');
-            await cloudinary.api.delete_folder('Product_Image/'+product.name);
+            await cloudinary.api.delete_folder('Product_Image/'+product.slug+'/imageRepresent');
+            await cloudinary.api.delete_folder('Product_Image/'+product.slug+'/Detail');
+            await cloudinary.api.delete_folder('Product_Image/'+product.slug);
             await WareHouses.findOneAndDelete({idProduct:product._id});
             await Products.findOneAndDelete({_id:req.params.id});
             res.status(200).json({ success: true, message: "Product Deleted successfully !!!" });
@@ -207,13 +207,7 @@ class ProductsController {
         }
     }
   
-    async getProductsByCate(req, res) {
-       const category= await Category.findOne({ name: req.params.cate });
-       const subcategories=await SubCategory.find({idCate:category._id});
-       subcategories.map(async (subcate)=>{
-          
-       })
-    }
+   
     //[GET] Sort Price
     async getProductsBySortPrice(req, res, next) {
         await Products.find({}).sort({ price: req.query.sort }).then(products => res.send(products)).catch(next);

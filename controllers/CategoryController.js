@@ -1,4 +1,6 @@
+const Brands = require('../models/Brands');
 const Category=require('../models/Categories');
+const Products = require('../models/Products');
 const SubCategory = require('../models/SubCategorys');
 class CategoryController{
 
@@ -102,7 +104,25 @@ class CategoryController{
             return res.status(401).json({success:false,message:"Interval server!"});
         }
     }
-
+    async getProductsByCate(req, res) {
+        
+        const Cate=await Category.findOne({ name: req.params.cate });
+        var pros=[];
+        const Subs =await SubCategory.find({idCate:Cate._id});
+        for (let i = 0; i  < Subs.length; i ++) {
+            const brands=await Brands.find({idSub:Subs[i]._id});
+           
+            for (let j = 0; j < brands.length; j++) {
+                const products =await Products.find({idBrand:brands[j]._id});
+                products.forEach(async (pro)=>{
+                    pros.push(pro);       
+                });
+               
+                if(i == Subs.length && j == brands.length)
+                    return res.status(200).json({ success: true, product:pros });
+            }        
+        }
+    }
 }
 
 module.exports=new CategoryController();

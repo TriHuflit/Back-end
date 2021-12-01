@@ -6,6 +6,7 @@ const category=require("../controllers/CategoryController");
 //category
 router.get('/subcategory/:id',category.getSubByIDCate);
 
+router.get('/search/:cate',category.getProductsByCate);
 
 router.get('/detail/:slug',category.detail);
 

@@ -176,13 +176,13 @@ DELETE  http://localhost:5000/api/brand/delete/619f03b9e5d60328d18f4e5d
 GET http://localhost:5000/api/brand/detail/nutrience
 
 ####
-GET http://localhost:5000/api/subcategory/search/Thức ăn cho chó
+GET http://localhost:5000/api/subcategory/search/Thức ăn cho mèo
 ####
 GET http://localhost:5000/api/brand/search/NUTRIENCE
 ####
-GET http://localhost:5000/api/category/search/Thức ăn cho chó
+GET http://localhost:5000/api/category/search/Mèo
 ####
-DELETE http://localhost:5000/api/products/delete/61a716228cc81d4ac311df31
+DELETE http://localhost:5000/api/products/delete/61a7162f8cc81d4ac311df41
 ####
 
 GET http://localhost:5000/api/account/staff
