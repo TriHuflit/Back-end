@@ -127,7 +127,7 @@ class SubCategoryController{
     async getProductsBySub(req, res) {
         const Sub=await SubCategory.findOne({ name: req.params.subcate });
         const brands= await Brand.find({idSub:Sub._id});
-        let pros=[];
+        var pros=[];
         brands.forEach(async (brand) => {
             const products=await Product.find({idBrand:brand._id});
             products.forEach(async (pro)=>{
@@ -135,15 +135,6 @@ class SubCategoryController{
             });
             console.log(pros);  
         });
-
-        brands.map(async (brand)=>{
-            const products=await Product.find({idBrand:brand._id});
-            products.map(async (pro)=>{
-                pros.push(pro);       
-            })
-                           
-        })
-       
         res.status(200).json({ success: true, pros });
     }
 }

@@ -119,13 +119,9 @@ class BrandController{
     }
       //[GET] search by Brand
       async getProductsByBrand(req, res) {
-        await Brand.findOne({ name: req.params.brand }, (err, brands, next) => {
-            if (!err) {
-                const products =  Products.find({ idBrand: brands._id});
-                res.status(200).json({ success: true, products });
-            }
-            else next(err);
-        })     
+        const brands =await Brand.findOne({ name: req.params.brand });
+        const products =  await Product.find({ idBrand: brands._id});
+        res.status(200).json({ success: true, products });
     }
 }
 

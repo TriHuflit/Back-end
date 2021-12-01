@@ -3,6 +3,7 @@ const authRouter = require('./auth');
 const cateRouter =require('./category');
 const subCateRouter = require ('./subcategory');
 const brandRouter =require('./brand');
+const accountRouter=require('./account');
 function route(app){
 
     app.use('/api/products',productRouter);
@@ -12,6 +13,8 @@ function route(app){
     app.use('/api/subcategory',subCateRouter);
 
     app.use('/api/brand',brandRouter);
+
+    app.use('/api/account',accountRouter);
 
     app.use('/api/auth',authRouter);
 

@@ -7,7 +7,7 @@ class CustomerController {
 
 
     //[POST] http://localhost:5000/api/auth/register
-
+    //User
     async register(req, res) {
         const { username, password, email, phone } = req.body;
         try {
@@ -26,7 +26,7 @@ class CustomerController {
                     message: "Email already exist"
                 })
             const hashedPassword = await argon2.hash(password);
-            const Role = await Permission.findOne({ name: "Customer" });
+            const Role = await Permission.findOne({ name: "User" });
             const newCustomer = new Customer({ name: username, username, password: hashedPassword, phone, email, idPermission: Role._id });
             await newCustomer.save();
 
@@ -35,7 +35,7 @@ class CustomerController {
                 CustomerId: newCustomer._id
             },
                 process.env.ACCESS_TOKEN_SECRET);
-            res.json({
+            res.status(200).json({
                 success: true,
                 message: "User created successfully",
                 accessToken
@@ -68,7 +68,9 @@ class CustomerController {
                     data:req.body
                 });
             //Correct
-            customer = await Customer.findOne({ username }).select("-password");
+            customer = await Customer.findOne({ username });
+            const permission=await Permission.findOne({_id:customer.idPermission});
+            customer.set('permission',permission.name,{strict: false});
             const accessToken = jwt.sign({ CustomerId: customer._id }, process.env.ACCESS_TOKEN_SECRET);
             res.json({
                 success: true,
@@ -81,7 +83,69 @@ class CustomerController {
             res.status(500).json({ success: false, message: error })
         }
     }
+    //Manage Account Admin
+    //[GET] get all account user
+    // api/account/user
 
+    async indexUser(req,res){
+        const permission=await Permission.findOne({name:'User'});
+        const customers=await Customer.find({idPermission:permission._id});
+        res.status(200).json({success: true,customers})
+    }
+    //Manage Account Admin
+    //[GET] get all account staff
+    // api/account/staff
+
+    async indexStaff(req,res){
+        const permission=await Permission.findOne({name:'User'});
+        const Customers=await Customer.find({});
+        let customers=[];
+        Customers.map((cus)=>{
+            if (cus.idPermission != permission._id) {
+                customers.push(cus);
+            }
+       
+        })
+        console.log(customers); 
+        
+        res.status(200).json({success: true,customers});
+        
+    }
+     //Manage Account Admin
+    //[GET] get detail account
+    // api/account/:id
+
+    async detail(req,res){
+
+    }
+    //Manage Account Admin
+    //[POST] create account for staff
+    // api/account/create
+
+    async create(req,res){
+        
+    }
+     //Manage Account Admin
+    //[POST] store account for staff
+    // api/account/store
+
+    async add(req,res){
+        
+    }
+    //Manage Account Admin
+    //[PUT] update account
+    // api/account/update/:id
+
+    async update(req,res){
+        
+    }
+    //Manage Account Admin
+    //[GET] get all account
+    // api/account/delete/:id
+
+    async delete(req,res){
+        
+    }
 }
 
 module.exports = new CustomerController;
