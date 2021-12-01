@@ -172,12 +172,12 @@ class ProductsController {
     }
     //[DELETE] api/product/delete/:id  --- update product-----
     async delete(req, res, next) {
-        const orderdetails=await OrderDetails.find({idProducts:req.params._id});
+        const orderdetails=await OrderDetails.find({idProducts:req.params.id});
         if(orderdetails.length>0){
             return res.status(401).json({success:false,message:"Error Constraint!"});
         }
         try {
-            const product=await Products.findOne({_id:req.params._id});
+            const product=await Products.findOne({_id:req.params.id});
             await cloudinary.uploader.destroy(product.cloud_id);
             const describes=await Describe.find({idProduct:product._id});
             describes.map(async (des)=>{
@@ -185,7 +185,7 @@ class ProductsController {
                 await des.findOneAndDelete({idProduct:product._id});
             });
             await WareHouses.findOneAndDelete({idProduct:product._id});
-            await Products.findOneAndDelete({_id:req.params._id});
+            await Products.findOneAndDelete({_id:req.params.id});
             res.status(200).json({ success: true, message: "Product Deleted successfully !!!" });
         } catch (error) {
             res.status(400).json({ success: false, message: error})
