@@ -144,7 +144,7 @@ Content-Type: application/json
     "category":"Chó"
 }
 ####
-DELETE  http://localhost:5000/api/subcategory/delete/619e62d95d70a54003076176
+DELETE  http://localhost:5000/api/subcategory/delete/619f4e787b1dd36bcb6a36be
 ####
 GET http://localhost:5000/api/brand
 ####
@@ -174,3 +174,6 @@ Content-Type: application/json
 DELETE  http://localhost:5000/api/brand/delete/619f03b9e5d60328d18f4e5d
 ####
 GET http://localhost:5000/api/brand/detail/nutrience
+
+####
+GET http://localhost:5000/api/subcategory/search/Thức ăn cho chó

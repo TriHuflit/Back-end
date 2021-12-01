@@ -173,7 +173,7 @@ class ProductsController {
     //[DELETE] api/product/delete/:id  --- update product-----
     async delete(req, res, next) {
         const orderdetails=await OrderDetails.find({idProducts:req.params._id});
-        if(orderdetails){
+        if(orderdetails.length>0){
             return res.status(401).json({success:false,message:"Error Constraint!"});
         }
         try {
