@@ -111,14 +111,14 @@ class CategoryController{
         const Subs =await SubCategory.find({idCate:Cate._id});
         for (let i = 0; i  < Subs.length; i ++) {
             const brands=await Brands.find({idSub:Subs[i]._id});
-           
+            console.log(i);
             for (let j = 0; j < brands.length; j++) {
                 const products =await Products.find({idBrand:brands[j]._id});
                 products.forEach(async (pro)=>{
                     pros.push(pro);       
                 });
                
-                if(i == Subs.length && j == brands.length)
+                if(i == Subs.length-1 && j == brands.length-1)
                     return res.status(200).json({ success: true, product:pros });
             }        
         }
