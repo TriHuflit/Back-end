@@ -109,10 +109,10 @@ class ProductsController {
     async update(req, res, next) {
         const { name, price,short_description,long_description } = req.body;
         const idProduct=await Products.findOne({slug:req.params.slug});
-        console.log(req.body.listImage.length);
-        console.log(idProduct);
+        console.log(req.body.imageRepresent);
         try {
             if(req.body.imageRepresent!=null){
+               
                 const product =await Products.findOne({slug:req.params.slug});
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
                 const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent);
