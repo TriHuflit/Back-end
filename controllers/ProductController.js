@@ -108,7 +108,7 @@ class ProductsController {
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
         const { name, price,short_description,long_description } = req.body;
-        const idProduct=Products.findOne({slug:req.params.slug});
+        const idProduct=await Products.findOne({slug:req.params.slug});
         console.log(req.body.listImage.length);
         console.log(idProduct);
         try {
