@@ -144,7 +144,7 @@ class ProductsController {
                     return res.status(404).json({ success: false, message: "Product not Found !" });
                 }
             }
-            if(req.body.listImage!= null || req.body.listImage.length>0){
+            if(req.body.listImage.length>0){
                 console.log(product);
                 console.log(req.body);
                 const describes=await Describe.find({idProducts:product._id});
