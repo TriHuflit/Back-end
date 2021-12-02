@@ -108,12 +108,10 @@ class ProductsController {
     //[PUT] api/product/:slug  --- update product-----
     async update(req, res, next) {
         const { name, price,short_description,long_description } = req.body;
-        const idProduct=await Products.findOne({slug:req.params.slug});
-        console.log(req.body.imageRepresent);
+        const product =await Products.findOne({slug:req.params.slug});
         try {
-            if(req.body.imageRepresent!=null){
-               
-                const product =await Products.findOne({slug:req.params.slug});
+            if(req.body.imageRepresent!=null){           
+              
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
                 const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent);
                 let pro = {
@@ -126,7 +124,7 @@ class ProductsController {
                     short_description,
                     long_description
                 };
-                const updateProduct = await Products.findOneAndUpdate({_id:idProduct._id}, pro, { new: true });
+                const updateProduct = await Products.findOneAndUpdate({_id:product._id}, pro, { new: true });
                 if (!updateProduct) {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
@@ -139,15 +137,14 @@ class ProductsController {
                     short_description,
                     long_description
                 };
-                const updateProduct = await Products.findOneAndUpdate(idProduct._id, pro, { new: true });
+                const updateProduct = await Products.findOneAndUpdate({_id:product._id}, pro, { new: true });
                 if (!updateProduct) {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
                 }
             }
-            console.log(idProduct);
             if(req.body.listImage.length>0){
-                const describes=await Describe.find({idProducts:idProduct._id});
+                const describes=await Describe.find({_id:product._id});
                 describes.map(async (des)=>{
                     await cloudinary.uploader.destroy(des.image[0].cloud_id);
                     await Describe.findOneAndDelete({_id:des._id});
@@ -156,7 +153,7 @@ class ProductsController {
                 files.map(async (file)=>{
                     const img=await cloudinary.uploader.upload(file);
                     const describe = new Describe({
-                    idProducts:idProduct._id,
+                    idProducts:product._id,
                     image:[{
                             url:img.secure_url,
                             cloud_id:img.public_id
