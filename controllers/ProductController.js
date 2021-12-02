@@ -144,6 +144,7 @@ class ProductsController {
                 }
             }
             if(req.body.listImage.length>0){
+                console.log(req.body.listImage);
                 const describes=await Describe.find({_id:product._id});
                 describes.map(async (des)=>{
                     await cloudinary.uploader.destroy(des.image[0].cloud_id);
