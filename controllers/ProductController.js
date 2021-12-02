@@ -126,7 +126,7 @@ class ProductsController {
                     short_description,
                     long_description
                 };
-                const updateProduct = await Products.findOneAndUpdate(idProduct._id, pro, { new: true });
+                const updateProduct = await Products.findOneAndUpdate({_id:idProduct._id}, pro, { new: true });
                 if (!updateProduct) {
     
                     return res.status(404).json({ success: false, message: "Product not Found !" });
