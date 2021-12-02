@@ -109,8 +109,7 @@ class ProductsController {
     async update(req, res, next) {
         const { name, price,short_description,long_description } = req.body;
         const product =await Products.findOne({slug:req.params.slug});
-        console.log(product);
-        console.log(req.body);
+
         try {
             if(req.body.imageRepresent!=null){           
               
@@ -145,8 +144,10 @@ class ProductsController {
                     return res.status(404).json({ success: false, message: "Product not Found !" });
                 }
             }
-            if(req.body.listImage!= null){
-                const describes=await Describe.find({_id:product._id});
+            if(req.body.listImage!= null || req.body.listImage.length>0){
+                console.log(product);
+                console.log(req.body);
+                const describes=await Describe.find({idProducts:product._id});
                 describes.map(async (des)=>{
                     await cloudinary.uploader.destroy(des.image[0].cloud_id);
                     await Describe.findOneAndDelete({_id:des._id});
