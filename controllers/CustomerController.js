@@ -101,22 +101,18 @@ class CustomerController {
         const Customers=await Customer.find({});
         let customers=[];
         Customers.map((cus)=>{
-            if (cus.idPermission != permission._id) {
+            if (!cus.idPermission.equals(permission._id)) {
                 customers.push(cus);
             }
-       
         })
-        console.log(customers); 
-        
         res.status(200).json({success: true,customers});
         
     }
      //Manage Account Admin
     //[GET] get detail account
     // api/account/:id
-
     async detail(req,res){
-
+        
     }
     //Manage Account Admin
     //[POST] create account for staff
