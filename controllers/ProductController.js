@@ -55,7 +55,7 @@ class ProductsController {
     async store(req, res, next) {
         const brand = await Brand.findOne({ _id:req.body.idBrand });
         console.log(req.body);
-        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name+ "/imageRepresent"});
+        const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent);
         if (brand) {
             try {    
                 const { name,price,short_description,long_description} = req.body;
@@ -75,7 +75,7 @@ class ProductsController {
                 if (product) {
                     const files=req.body.listImage;
                     files.map(async (file)=>{
-                        const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+product.name+'/Detail'});
+                        const img=await cloudinary.uploader.upload(file);
                         const describe = new Describe({
                             idProducts:product._id,
                             image:[{
@@ -115,7 +115,7 @@ class ProductsController {
             if(req.body.imageRepresent!=null){
                 const product =await Products.findOne({slug:req.params.slug});
                 await cloudinary.uploader.destroy(product.imageRepresent[0].cloud_id);
-                const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent,{folder:'Product_Image/'+req.body.name + "/imageRepresent"});
+                const imageUpload=await cloudinary.uploader.upload(req.body.imageRepresent);
                 let pro = {
                     name,
                     price,
@@ -154,7 +154,7 @@ class ProductsController {
                 })
                 const files=req.body.listImage;
                 files.map(async (file)=>{
-                    const img=await cloudinary.uploader.upload(file,{folder:'Product_Image/'+req.body.name+'/Detail'});
+                    const img=await cloudinary.uploader.upload(file);
                     const describe = new Describe({
                     idProducts:idProduct._id,
                     image:[{
@@ -186,9 +186,6 @@ class ProductsController {
                 await cloudinary.uploader.destroy(des.image[0].cloud_id);
                 await Describe.findOneAndDelete({_id:des._id});
             });
-            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/imageRepresent');
-            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/Detail');
-            await cloudinary.api.delete_folder('Product_Image/'+product.name);
             await WareHouses.findOneAndDelete({idProduct:product._id});
             await Products.findOneAndDelete({_id:req.params.id});
             res.status(200).json({ success: true, message: "Product Deleted successfully !!!" });
