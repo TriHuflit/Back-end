@@ -186,7 +186,7 @@ class ProductsController {
                 await cloudinary.uploader.destroy(des.image[0].cloud_id);
                 await Describe.findOneAndDelete({_id:des._id});
             });
-            // await cloudinary.api.delete_folder('Product_Image/'+product.name+'/imageRepresent');
+            await cloudinary.api.delete_folder('Product_Image/'+product.name+'/imageRepresent');
             // await cloudinary.api.delete_folder('Product_Image/'+product.name+'/Detail');
             // await cloudinary.api.delete_folder('Product_Image/'+product.name);
             await WareHouses.findOneAndDelete({idProduct:product._id});
