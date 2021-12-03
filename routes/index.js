@@ -4,7 +4,10 @@ const cateRouter =require('./category');
 const subCateRouter = require ('./subcategory');
 const brandRouter =require('./brand');
 const accountRouter=require('./account');
+const voucherRouter=require('./voucher');
 function route(app){
+
+    app.use('/api/voucher', voucherRouter);
 
     app.use('/api/products',productRouter);
 
@@ -17,6 +20,8 @@ function route(app){
     app.use('/api/account',accountRouter);
 
     app.use('/api/auth',authRouter);
+
+ 
 
 }
 

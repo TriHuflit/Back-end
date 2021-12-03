@@ -189,3 +189,35 @@ GET http://localhost:5000/api/account/staff
 ####
 
 GET http://localhost:5000/api/account/user
+
+####
+
+POST  http://localhost:5000/api/voucher/add
+Content-Type: application/json
+
+{
+    "title":"Tile01",
+    "name":"voucher01",
+    "discount":30,
+    "condition":100000,
+    "desciption":"mô tả cho vouchers",
+    "dateStart":"12/05/2021",
+    "dateEnd":"12/07/2021"
+
+}
+
+####
+
+PUT  http://localhost:5000/api/voucher/update/61a98bc9e65794f5ad5a7d59
+Content-Type: application/json
+
+{
+     "title":"Tile02",
+    "name":"voucher02",
+    "discount":30,
+    "condition":100000,
+    "desciption":"mô tả cho vouchers",
+    "dateStart":"03/12/2021",
+    "dateEnd":"04/12/2021"
+
+}
