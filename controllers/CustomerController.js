@@ -164,10 +164,11 @@ class CustomerController {
         message: "Email already exist",
       });
     }
+    const hashedPassword = await argon2.hash("123456");
     const newCustomer = await new Customer({
       name,
       username,
-      password: "123456",
+      password: hashedPassword,
       phone,
       gender,
       email,

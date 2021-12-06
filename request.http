@@ -13,8 +13,8 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-    "username":"tri",
-    "password":"1234"
+    "username":"trilxag1001",
+    "password":"123456"
 }
 
 #########################################
@@ -223,7 +223,7 @@ PUT  http://localhost:5000/api/voucher/update/61a98bc9e65794f5ad5a7d59
 Content-Type: application/json
 
 {
-     "title":"Tile02",
+    "title":"Tile02",
     "name":"voucher02",
     "discount":30,
     "condition":100000,
@@ -247,11 +247,11 @@ Content-Type: application/json
 }
 ###
 
-PUT http://localhost:5000/api/account/staff/update/61ae318db8ae89d98b0d3d26
+PUT http://localhost:5000/api/account/staff/update/61ae34b582b9d676887665cf
 Content-Type: application/json
 
 {
     "permission":"Staff"
 }
 ###
-DELETE http://localhost:5000/api/account/staff/delete/61ae318db8ae89d98b0d3d26
+DELETE http://localhost:5000/api/account/staff/delete/61ae34b582b9d676887665cf
