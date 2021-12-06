@@ -4,7 +4,13 @@ const customer = require("../controllers/CustomerController");
 
 router.get("/customer", customer.indexUser);
 
+router.get("/staff/create", customer.create);
+
 router.post("/staff/store", customer.store);
+
+router.get("/staff/detail/:id", customer.detail);
+
+router.get("/staff/edit/:id", customer.edit);
 
 router.put("/staff/update/:id", customer.update);
 

@@ -128,7 +128,7 @@ class CustomerController {
       "-password"
     );
     const permission = await Permission.findOne({ _id: customer.idPermission });
-    customer.set("Role", permission.name, { strict: false });
+    customer.set("role", permission.name, { strict: false });
     if (!customer) {
       res.status(404).json({ success: false, message: "User Not Found !!!" });
     }
@@ -186,6 +186,20 @@ class CustomerController {
     return res
       .status(200)
       .json({ success: true, message: "Add New User Successfully!" });
+  }
+  //Manage Account Admin
+  //[GET] show info for update account
+  // api/account/edit/:id
+  async edit(req, res) {
+    const customer = await Customer.findOne({ _id: req.params.id }).select(
+      "-password"
+    );
+    const permission = await Permission.find({});
+    customer.set("listrole", permission, { strict: false });
+    if (!customer) {
+      res.status(404).json({ success: false, message: "User Not Found !!!" });
+    }
+    res.status(200).json({ success: true, customer });
   }
   //Manage Account Admin
   //[PUT] update account
