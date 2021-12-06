@@ -80,9 +80,8 @@ class CustomerController {
       const permission = await Permission.findOne({
         _id: customer.idPermission,
       });
-      customer.set("permission", permission.name, { strict: false });
       const accessToken = jwt.sign(
-        { CustomerId: customer._id, Role: customer.idPermission },
+        { CustomerId: customer._id, Role: permission.name },
         process.env.ACCESS_TOKEN_SECRET
       );
       res.json({
