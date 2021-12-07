@@ -235,7 +235,8 @@ class CustomerController {
     const idPermission = await Permission.findOne({
       name: Role,
     });
-
+    console.log(Role);
+    console.log(idPermission);
     if (!customer) {
       return res
         .status(404)
