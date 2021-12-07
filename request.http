@@ -198,7 +198,6 @@ GET http://localhost:5000/api/account/staff/detail/61ae34b582b9d676887665cf
 GET http://localhost:5000/api/account/staff/edit/61ae34b582b9d676887665cf
 
 ####
-
 GET http://localhost:5000/api/account/customer
 
 ####
@@ -247,11 +246,23 @@ Content-Type: application/json
 }
 ###
 
-PUT http://localhost:5000/api/account/staff/update/61ae34b582b9d676887665cf
+PUT http://localhost:5000/api/account/staff/update/61ae4da9568460183547dde8
 Content-Type: application/json
 
 {
     "permission":"Staff"
 }
 ###
-DELETE http://localhost:5000/api/account/staff/delete/61ae34b582b9d676887665cf
+DELETE http://localhost:5000/api/account/staff/delete/61ae4a55e79913f16346fa3c
+
+####
+GET http://localhost:5000/api/permission
+
+
+####
+POST  http://localhost:5000/api/permission/store
+Content-Type: application/json
+
+{
+    "name":"Admin"
+}

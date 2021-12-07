@@ -20,7 +20,7 @@ function authorize(roles = []) {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         req.CustomerId = decoded.CustomerId;
         req.Role = decoded.Role;
-        console.log(req.Role);
+        console.log(decoded);
         console.log(roles);
         if (roles.length && !roles.includes(req.Role)) {
           // user's role is not authorized

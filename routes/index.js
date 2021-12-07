@@ -5,14 +5,17 @@ const subCateRouter = require("./subcategory");
 const brandRouter = require("./brand");
 const accountRouter = require("./account");
 const voucherRouter = require("./voucher");
+const permissionRouter = require("./permission");
 function route(app) {
   app.use("/api/voucher", voucherRouter);
-
-  app.use("/api/products", productRouter);
 
   app.use("/api/category", cateRouter);
 
   app.use("/api/subcategory", subCateRouter);
+
+  app.use("/api/permission", permissionRouter);
+
+  app.use("/api/products", productRouter);
 
   app.use("/api/brand", brandRouter);
 

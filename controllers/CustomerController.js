@@ -40,6 +40,7 @@ class CustomerController {
       const accessToken = jwt.sign(
         {
           CustomerId: newCustomer._id,
+          Role: Role._id,
         },
         process.env.ACCESS_TOKEN_SECRET
       );
@@ -81,7 +82,7 @@ class CustomerController {
         _id: customer.idPermission,
       });
       const accessToken = jwt.sign(
-        { CustomerId: customer._id, Role: permission.name },
+        { Role: permission._id },
         process.env.ACCESS_TOKEN_SECRET
       );
       res.json({
@@ -102,7 +103,18 @@ class CustomerController {
   async indexUser(req, res) {
     const permission = await Permission.findOne({ name: "User" });
     const customers = await Customer.find({ idPermission: permission._id });
-    res.status(200).json({ success: true, customers });
+    var len = customers.length;
+    var curIdx = 0;
+    if (customers.length > 0) {
+      customers.forEach(function (cus) {
+        cus.set("Role", permission.name, { strict: false });
+        ++curIdx;
+        if (curIdx == len) {
+          return res.status(200).json({ success: true, customers });
+        }
+      });
+    }
+    return res.status(200).json({ success: true, customers });
   }
   //Manage Account Admin
   //[GET] get all account staff
@@ -110,14 +122,23 @@ class CustomerController {
 
   async indexStaff(req, res) {
     const permission = await Permission.findOne({ name: "User" });
-    const Customers = await Customer.find({});
-    let customers = [];
-    Customers.map((cus) => {
-      if (!cus.idPermission.equals(permission._id)) {
-        customers.push(cus);
-      }
+    const customers = await Customer.find({});
+    var len = customers.length;
+    var curIdx = 0;
+    var customer = [];
+    customers.forEach(function (cus) {
+      Permission.findOne({ _id: cus.idPermission }, function (err, role) {
+        if (err) console.log(err);
+        else {
+          cus.set("Role", role.name, { strict: false });
+          customer.push(cus);
+          ++curIdx;
+          if (curIdx == len) {
+            res.status(200).json({ success: true, user: customer });
+          }
+        }
+      });
     });
-    res.status(200).json({ success: true, customers });
   }
   //Manage Account Admin
   //[GET] get detail account
