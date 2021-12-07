@@ -188,7 +188,7 @@ class CustomerController {
         message: "Email already exist",
       });
     }
-    const hashedPassword = await argon2.hash("123456");
+    const hashedPassword = await argon2.hash(process.env.PASSWORD_DEFAULT);
     const newCustomer = await new Customer({
       name,
       username,
