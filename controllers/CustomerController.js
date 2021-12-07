@@ -231,7 +231,9 @@ class CustomerController {
 
   async update(req, res) {
     const Role = req.body;
+    console.log(req.params.id);
     const customer = await Customer.findOne({ _id: req.params.id });
+    console.log(customer._id);
     const idPermission = await Permission.findOne({
       name: Role.permission,
     });
@@ -241,6 +243,7 @@ class CustomerController {
         .status(404)
         .json({ success: false, message: "User Not Found !!!" });
     }
+    console.log(idPermission._id);
     let newCus = {
       idPermission: idPermission._id,
     };
