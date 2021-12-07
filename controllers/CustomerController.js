@@ -113,8 +113,9 @@ class CustomerController {
           res.status(200).json({ success: true, customers });
         }
       });
+    } else {
+      res.status(200).json({ success: true, customers });
     }
-    return res.status(200).json({ success: true, customers });
   }
   //Manage Account Admin
   //[GET] get all account staff
