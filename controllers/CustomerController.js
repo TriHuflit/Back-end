@@ -230,13 +230,11 @@ class CustomerController {
   // api/account/update/:id
 
   async update(req, res) {
-    const Role = req.body;
+    const { Role } = req.body;
     const customer = await Customer.findOne({ _id: req.params.id });
     const idPermission = await Permission.findOne({
       name: Role,
     });
-    console.log(Role);
-    console.log(idPermission);
     if (!customer) {
       return res
         .status(404)
