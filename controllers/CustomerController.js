@@ -170,7 +170,7 @@ class CustomerController {
   // api/account/store
 
   async store(req, res) {
-    const permission = await Permission.findOne({ name: req.body.permission });
+    const permission = await Permission.findOne({ name: req.body.Role });
     const { name, username, phone, gender, email, address } = req.body;
     //check username and password
     var checkUser = await Customer.findOne({ username });
