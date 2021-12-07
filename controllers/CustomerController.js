@@ -110,7 +110,7 @@ class CustomerController {
         cus.set("Role", permission.name, { strict: false });
         ++curIdx;
         if (curIdx == len) {
-          return res.status(200).json({ success: true, customers });
+          res.status(200).json({ success: true, customers });
         }
       });
     }
@@ -127,19 +127,19 @@ class CustomerController {
     var curIdx = 0;
     var customer = [];
     customers.forEach(function (cus) {
-      if (!cus.idPermission.equals(permission._id)) {
-        Permission.findOne({ _id: cus.idPermission }, function (err, role) {
-          if (err) console.log(err);
-          else {
+      Permission.findOne({ _id: cus.idPermission }, function (err, role) {
+        if (err) console.log(err);
+        else {
+          if (!cus.idPermission.equals(permission._id)) {
             cus.set("Role", role.name, { strict: false });
             customer.push(cus);
-            ++curIdx;
-            if (curIdx == len) {
-              res.status(200).json({ success: true, user: customer });
-            }
           }
-        });
-      }
+        }
+        ++curIdx;
+        if (curIdx == len) {
+          res.status(200).json({ success: true, user: customer });
+        }
+      });
     });
   }
   //Manage Account Admin
