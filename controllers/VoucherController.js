@@ -15,10 +15,10 @@ class VoucherController {
           desciption: "$desciption",
           discount: "$discount",
           dateStart: {
-            $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
+            $dateToString: { format: "%m-%d-%Y", date: "$dateStart" },
           },
           dateEnd: {
-            $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
+            $dateToString: { format: "%m-%d-%Y", date: "$dateStart" },
           },
         },
       },
