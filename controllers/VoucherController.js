@@ -1,23 +1,29 @@
 const moment = require("moment");
+
 const Vouchers = require("../models/Vouchers");
 
 class VoucherController {
   //GET api/voucher
   async index(req, res) {
-    const vouchers = await Vouchers.find({});
-    let lenght = vouchers.length;
-    let count = 0;
-    vouchers.map((voucher) => {
-      const dateStart = moment(voucher.dateStart).format("MM-DD-YYYY");
-      const dateEnd = moment(voucher.dateEnd).format("MM-DD-YYYY");
-      voucher.set("DateStart", dateStart, { strict: false });
-      voucher.set("DateEnd", dateEnd, { strict: false });
-
-      count++;
-      if (lenght == count) {
-        return res.status(200).json({ success: true, vouchers });
-      }
-    });
+    // const vouchers = await Vouchers.find({});
+    const vouchers = await Vouchers.aggregate([
+      {
+        $project: {
+          title: "$title",
+          name: "$name",
+          condition: "$condition",
+          desciption: "$desciption",
+          discount: "$discount",
+          dateStart: {
+            $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
+          },
+          dateEnd: {
+            $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
+          },
+        },
+      },
+    ]);
+    return res.status(200).json({ success: true, vouchers });
   }
   //POST api/voucher/add
   async addVoucher(req, res) {
