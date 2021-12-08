@@ -8,8 +8,8 @@ class VoucherController {
     let lenght = vouchers.length;
     let count = 0;
     vouchers.map((voucher) => {
-      const dateStart = moment(voucher.dateStart).format("DD-MM-YYYY");
-      const dateEnd = moment(voucher.dateEnd).format("DD-MM-YYYY");
+      const dateStart = moment(voucher.dateStart).format("MM-DD-YYYY");
+      const dateEnd = moment(voucher.dateEnd).format("MM-DD-YYYY");
       voucher.set("DateStart", dateStart, { strict: false });
       voucher.set("DateEnd", dateEnd, { strict: false });
 
