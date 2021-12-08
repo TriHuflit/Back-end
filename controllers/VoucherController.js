@@ -1,10 +1,23 @@
+const moment = require("moment");
 const Vouchers = require("../models/Vouchers");
 
 class VoucherController {
   //GET api/voucher
   async index(req, res) {
-    const voucher = await Vouchers.find({});
-    return res.status(200).json({ success: true, voucher });
+    const vouchers = await Vouchers.find({});
+    let lenght = vouchers.length;
+    let count = 0;
+    vouchers.map((voucher) => {
+      const dateStart = moment(voucher.dateStart).format("DD-MM-YYYY");
+      const dateEnd = moment(voucher.dateEnd).format("DD-MM-YYYY");
+      voucher.set("DateStart", dateStart, { strict: false });
+      voucher.set("DateEnd", dateEnd, { strict: false });
+
+      count++;
+      if (lenght == count) {
+        return res.status(200).json({ success: true, vouchers });
+      }
+    });
   }
   //POST api/voucher/add
   async addVoucher(req, res) {
@@ -20,10 +33,12 @@ class VoucherController {
       dateEnd,
     });
     if (!newVoucher) {
-      res.status(400).json({ success: false, message: "Add Voucher failed" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Add Voucher failed" });
     }
     newVoucher.save();
-    res
+    return res
       .status(200)
       .json({ success: true, message: "Add Voucher succesfully", newVoucher });
   }
@@ -51,13 +66,11 @@ class VoucherController {
         .status(400)
         .json({ success: false, message: "Update Voucher failed" });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Update Voucher succesfully",
-        UpdateVoucher,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Update Voucher succesfully",
+      UpdateVoucher,
+    });
   }
 }
 

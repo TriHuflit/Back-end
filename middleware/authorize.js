@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const Customers = require("../models/Customers");
+const Permissons = require("../models/Permissons");
 require("dotenv").config();
 
 function authorize(roles = []) {
@@ -6,7 +8,7 @@ function authorize(roles = []) {
     roles = [roles];
   }
   return [
-    (req, res, next) => {
+    async (req, res, next) => {
       const authHeader = req.header("Authorization");
       const token = authHeader && authHeader.split(" ")[1];
 
@@ -20,8 +22,6 @@ function authorize(roles = []) {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         req.CustomerId = decoded.CustomerId;
         req.Role = decoded.Role;
-        console.log(decoded);
-        console.log(roles);
         if (roles.length && !roles.includes(req.Role)) {
           // user's role is not authorized
           return res.status(401).json({ message: "Unauthorized" });

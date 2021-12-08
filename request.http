@@ -13,7 +13,7 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-    "username":"trilxag1001",
+    "username":"trilxag",
     "password":"123456"
 }
 
@@ -70,7 +70,7 @@ GET http://localhost:5000/api/products/nnnn
 ######
 PUT http://localhost:5000/api/products/61968a52c3f081542e91b764
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjcxY2MxZWQwNDM1NTY3NjMxMTRlIiwiaWF0IjoxNjM3MjQ5NDg5fQ.sQi5cZJl6737w9-ECXNWFobZb0H2eY5xcqjyzAC9Nas
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IjYxYWVkM2IzNzgxMmZhMDY4ZWVlNmQ0OSIsImlhdCI6MTYzODg2OTIyNH0.H8CE0J4mBmLCYlVmN455sHtJDJu7t4I4k2Pc-JrmV5U
 
 {
    "name":"Royal Canin Urinary S/O – Thức Ăn Hạt Cho Mèo Bị Sỏi Thận",
@@ -90,6 +90,7 @@ GET  http://localhost:5000/api/products/search?search=product2
 
 ####
 GET  http://localhost:5000/api/products/sortPrice?sort=-1
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2Mzg4NjkzMzJ9.IHLFBxjZhq__2S8GOImp_5rcHL8kiMjNqky5c4uTCYE
 ####
 GET http://localhost:5000/api/category
 ####
@@ -200,6 +201,8 @@ GET http://localhost:5000/api/account/staff/edit/61ae34b582b9d676887665cf
 ####
 GET http://localhost:5000/api/account/customer
 
+###
+GET http://localhost:5000/api/voucher
 ####
 
 POST  http://localhost:5000/api/voucher/add
@@ -237,12 +240,12 @@ Content-Type: application/json
 
 {
     "name":"Nguyễn Hữu Trí",
-    "username":"trilxag1001",
+    "username":"trilxag",
     "phone":"0783432182",
     "gender":"Nam",
-    "email":"trilxag1005@gmail.com",
+    "email":"trilxag1006@gmail.com",
     "address":"Địa chỉ nè",
-    "permission":"Admin"
+    "permission":"User"
 }
 ###
 
@@ -264,5 +267,14 @@ POST  http://localhost:5000/api/permission/store
 Content-Type: application/json
 
 {
-    "name":"Admin"
+    "name":"Staff"
 }
+####
+PUT  http://localhost:5000/api/permission/update/61aed62e570a83dbfcfaa4d6
+Content-Type: application/json
+
+{
+    "name":"Staff"
+}
+####
+DELETE http://localhost:5000/api/permission/delete/61aed62e570a83dbfcfaa4d6

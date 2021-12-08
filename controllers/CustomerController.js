@@ -82,7 +82,7 @@ class CustomerController {
         _id: customer.idPermission,
       });
       const accessToken = jwt.sign(
-        { Role: permission._id },
+        { CustomerId: customer._id, Role: permission.name },
         process.env.ACCESS_TOKEN_SECRET
       );
       res.json({

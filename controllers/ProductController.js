@@ -11,31 +11,64 @@ const { find } = require("../models/Products");
 class ProductsController {
   //[GET] /api/products/
   async index(req, res, next) {
-    Products.find({}, function (err, pros) {
-      if (err) console.log(err);
-      else {
-        var len = pros.length;
-        var curIdx = 0;
-        var newPros = [];
-        pros.forEach(function (pro) {
-          Brand.findOne({ _id: pro.idBrand }, function (err, ret) {
-            if (err) console.log(err);
-            else {
-              // combine those two objects here...
-              pro.set("brand", ret.name, { strict: false });
-              newPros.push(pro);
-              ++curIdx;
-              if (curIdx == len) {
-                //console.log(newUsers);
-                return res
-                  .status(200)
-                  .json({ success: true, product: newPros });
+    let perPage = 3;
+    let page = req.params.page || 1;
+    await Products.find() // find tất cả các data
+      .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
+      .limit(perPage)
+      .exec((err, products) => {
+        Products.countDocuments((err, count) => {
+          if (err) return next(err);
+          var len = products.length;
+          var curIdx = 0;
+          var newPros = [];
+          products.forEach(function (pro) {
+            Brand.findOne({ _id: pro.idBrand }, function (err, ret) {
+              if (err) console.log(err);
+              else {
+                // combine those two objects here...
+                pro.set("brand", ret.name, { strict: false });
+                newPros.push(pro);
+                ++curIdx;
+                if (curIdx == len) {
+                  //console.log(newUsers);
+                  return res.status(200).json({
+                    success: true,
+                    product: newPros,
+                    current: page,
+                    pages: Math.ceil(count / perPage),
+                  });
+                }
               }
-            }
+            });
           });
         });
-      }
-    });
+      });
+    // Products.find({}, function (err, pros) {
+    //   if (err) console.log(err);
+    //   else {
+    //     var len = pros.length;
+    //     var curIdx = 0;
+    //     var newPros = [];
+    //     pros.forEach(function (pro) {
+    //       Brand.findOne({ _id: pro.idBrand }, function (err, ret) {
+    //         if (err) console.log(err);
+    //         else {
+    //           // combine those two objects here...
+    //           pro.set("brand", ret.name, { strict: false });
+    //           newPros.push(pro);
+    //           ++curIdx;
+    //           if (curIdx == len) {
+    //             //console.log(newUsers);
+    //             return res
+    //               .status(200)
+    //               .json({ success: true, product: newPros });
+    //           }
+    //         }
+    //       });
+    //     });
+    //   }
+    // });
   }
   //[GET] /api/products/:slug
   async detail(req, res, next) {
