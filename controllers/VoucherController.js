@@ -29,7 +29,6 @@ class VoucherController {
   async addVoucher(req, res) {
     const { title, name, discount, condition, desciption, dateStart, dateEnd } =
       req.body;
-    console.log(req.body);
     const newVoucher = await new Vouchers({
       title,
       name,
@@ -39,8 +38,6 @@ class VoucherController {
       dateStart,
       dateEnd,
     });
-
-    console.log(newVoucher);
     if (!newVoucher) {
       return res
         .status(400)
@@ -54,7 +51,6 @@ class VoucherController {
 
   // PUT api/voucher/update/:id
   async UpdateVoucher(req, res) {
-    console.log(req.body);
     const { title, name, discount, condition, desciption, dateStart, dateEnd } =
       req.body;
     const newVoucher = {
@@ -66,8 +62,6 @@ class VoucherController {
       dateStart,
       dateEnd,
     };
-    console.log(newVoucher);
-    console.log(req.params.id);
     const UpdateVoucher = await Vouchers.findOneAndUpdate(
       { _id: req.params.id },
       newVoucher,
