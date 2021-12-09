@@ -29,6 +29,7 @@ class VoucherController {
   async addVoucher(req, res) {
     const { title, name, discount, condition, desciption, dateStart, dateEnd } =
       req.body;
+    console.log(req.body);
     const newVoucher = await new Vouchers({
       title,
       name,
@@ -38,6 +39,8 @@ class VoucherController {
       dateStart,
       dateEnd,
     });
+
+    console.log(newVoucher);
     if (!newVoucher) {
       return res
         .status(400)
