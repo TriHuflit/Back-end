@@ -163,7 +163,7 @@ class SubCategoryController {
   }
 
   async getProductsBySub(req, res) {
-    const Sub = await SubCategory.findOne({ name: req.params.slug });
+    const Sub = await SubCategory.findOne({ slug: req.params.slug });
     var pros = [];
     const brands = await Brand.find({ idSub: Sub._id });
     let length = brands.length;

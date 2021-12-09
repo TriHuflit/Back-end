@@ -139,7 +139,7 @@ class CategoryController {
     }
   }
   async getProductsByCate(req, res) {
-    const Cate = await Category.findOne({ name: req.params.slug });
+    const Cate = await Category.findOne({ slug: req.params.slug });
     var pros = [];
     const Subs = await SubCategory.find({ idCate: Cate._id });
     for (let i = 0; i < Subs.length; i++) {
