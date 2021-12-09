@@ -18,7 +18,7 @@ class VoucherController {
             $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
           },
           dateEnd: {
-            $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
+            $dateToString: { format: "%Y-%m-%d", date: "$dateEnd" },
           },
         },
       },
