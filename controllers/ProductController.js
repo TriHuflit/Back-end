@@ -1,13 +1,10 @@
 const Products = require("../models/Products");
 const Brand = require("../models/Brands");
 const WareHouses = require("../models/WareHouses");
-const SubCategory = require("../models/SubCategorys");
-const Category = require("../models/Categories");
 const Describe = require("../models/DescribeProducts");
 const { multipleMongoosetoObject } = require("../ultis/mongoose");
 const cloudinary = require("../ultis/cloudinary");
 const OrderDetails = require("../models/OrderDetails");
-const { find } = require("../models/Products");
 class ProductsController {
   //[GET] /api/products/
   async index(req, res, next) {
@@ -44,31 +41,6 @@ class ProductsController {
           });
         });
       });
-    // Products.find({}, function (err, pros) {
-    //   if (err) console.log(err);
-    //   else {
-    //     var len = pros.length;
-    //     var curIdx = 0;
-    //     var newPros = [];
-    //     pros.forEach(function (pro) {
-    //       Brand.findOne({ _id: pro.idBrand }, function (err, ret) {
-    //         if (err) console.log(err);
-    //         else {
-    //           // combine those two objects here...
-    //           pro.set("brand", ret.name, { strict: false });
-    //           newPros.push(pro);
-    //           ++curIdx;
-    //           if (curIdx == len) {
-    //             //console.log(newUsers);
-    //             return res
-    //               .status(200)
-    //               .json({ success: true, product: newPros });
-    //           }
-    //         }
-    //       });
-    //     });
-    //   }
-    // });
   }
   //[GET] /api/products/:slug
   async detail(req, res, next) {

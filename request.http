@@ -1,9 +1,9 @@
-POST https://blooming-mountain-13837.herokuapp.com/api/auth/register
+POST  http://localhost:5000/api/auth/register
 Content-Type: application/json
 
 {
-    "username":"tri",
-    "password":"1234",
+    "username":"trilxag",
+    "password":"123456",
     "email":"trilxag1003@gmail.com",
     "phone":"0903234765"
 }
@@ -11,6 +11,16 @@ Content-Type: application/json
 #########################################
 POST http://localhost:5000/api/auth/login
 Content-Type: application/json
+
+
+{
+    "username":"trilxag",
+    "password":"123456"
+}
+###
+POST http://localhost:5000/api/auth/user/login
+Content-Type: application/json
+
 
 {
     "username":"trilxag",
@@ -21,7 +31,7 @@ POST http://localhost:5000/api/auth/token
 Content-Type: application/json
 
 {
-    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2MzkwNDQ2NjUsImV4cCI6MTYzOTEzMTA2NX0.lGN80mE3SyR1lSDhgwBD-5sa-xKITsHGaMbfAmQkwvQ"
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2MzkwNDU0NjAsImV4cCI6MTYzOTEzMTg2MH0.PFLGJTxumDOohKdCdFWVAJSBmPY9p6uEJ4SNNF8ILjw"
 }
 #########################################
 POST http://localhost:5000/api/products/store
@@ -96,7 +106,7 @@ GET  http://localhost:5000/api/products/search?search=product2
 
 ####
 GET  http://localhost:5000/api/products/sortPrice?sort=-1
-Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2MzkwNDE5NzUsImV4cCI6MTYzOTA0MjAzNX0.8UaUkTfDhcoSlqhj2N3ZAbViI2XqTTMScrPBqF-6qPs
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2MzkwNDU0NzcsImV4cCI6MTYzOTA0NTUzN30.LAc6Gkn-C_kBCu8sU4absRorRCfu4m-DDXtN7nKmNoo
 ####
 GET http://localhost:5000/api/category
 ####

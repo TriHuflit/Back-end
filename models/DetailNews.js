@@ -13,9 +13,12 @@ const DetailNews = new Schema(
       require: true,
     },
     image: {
-      data: Buffer,
-      contentType: String,
-      require: true,
+      url: {
+        type: String,
+      },
+      cloud_id: {
+        type: String,
+      },
     },
   },
   {

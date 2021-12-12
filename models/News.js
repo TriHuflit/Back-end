@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const slug = require("mongoose-slug-generator");
+mongoose.slug = slug;
 const News = new Schema(
   {
     idCus: {
@@ -11,6 +12,19 @@ const News = new Schema(
     title: {
       type: String,
       require: true,
+    },
+    image: {
+      url: {
+        type: String,
+      },
+      cloud_id: {
+        type: String,
+      },
+    },
+    slug: {
+      type: String,
+      slug: "title",
+      unique: true,
     },
   },
   {

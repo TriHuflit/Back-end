@@ -3,6 +3,7 @@ const Permission = require("../models/Permissons");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const sendMail = require("../config/sendmail");
 class AuthController {
   //[POST] http://localhost:5000/api/auth/register
   //User
@@ -33,7 +34,7 @@ class AuthController {
         idPermission: Role._id,
       });
       await newCustomer.save();
-
+      sendMail(email, newCustomer._id);
       res.status(200).json({
         success: true,
         message: "User created successfully",
@@ -43,9 +44,8 @@ class AuthController {
       res.status(500).json({ success: false, message: error });
     }
   }
-
-  //POST http://localhost:5000/api/auth/login
-  async login(req, res) {
+  //POST http://localhost:5000/api/auth/user/login
+  async userLogin(req, res) {
     const { username, password } = req.body;
 
     try {
@@ -66,10 +66,75 @@ class AuthController {
           message: "Incorrected username or password",
           data: req.body,
         });
+      if (!customer.emailComfirm) {
+        return res.status(401).json({
+          success: false,
+          message: "Verify email before login !!!",
+          data: req.body,
+        });
+      }
       //Correct
       const permission = await Permission.findOne({
         _id: customer.idPermission,
       });
+      const accessToken = jwt.sign(
+        { CustomerId: customer._id, Role: permission.name },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: "60s" }
+      );
+      const refreshToken = jwt.sign(
+        { CustomerId: customer._id, Role: permission.name },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: "1d" }
+      );
+
+      customer.refreshToken = refreshToken;
+      customer.save();
+      res.json({
+        success: true,
+        message: "Logged in successfully",
+        customer,
+        accessToken,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: error });
+    }
+  }
+  //POST http://localhost:5000/api/auth/login
+  async login(req, res) {
+    const { username, password } = req.body;
+
+    try {
+      const customer = await Customer.findOne({ username });
+      const permission = await Permission.findOne({
+        _id: customer.idPermission,
+      });
+      // Check Permission
+      if (permission.name == "User") {
+        return res.status(403).json({
+          success: false,
+          message: "Authorized",
+        });
+      }
+      //Check Usernam
+      if (!customer)
+        return res.status(400).json({
+          success: false,
+          message: "Incorrected username or password",
+          data: req.body,
+        });
+      //Check Password
+      const passwordValid = await argon2.verify(customer.password, password);
+
+      if (!passwordValid)
+        return res.status(400).json({
+          success: false,
+          message: "Incorrected username or password",
+          data: req.body,
+        });
+      //Correct
+
       const accessToken = jwt.sign(
         { CustomerId: customer._id, Role: permission.name },
         process.env.ACCESS_TOKEN_SECRET,
@@ -126,6 +191,15 @@ class AuthController {
     } catch (error) {
       console.log(error);
     }
+  }
+  async verifyEmail(req, res) {
+    const customer = await Customer.findOne({ _id: req.params.id });
+    if (!customer) {
+      return res.status(404).json("User Not Found !");
+    }
+    customer.emailComfirm = true;
+    customer.save();
+    return res.status(200).json("Email Comfirm !!!");
   }
 }
 
