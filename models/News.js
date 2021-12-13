@@ -5,9 +5,7 @@ mongoose.slug = slug;
 const News = new Schema(
   {
     author: {
-      type: Schema.Types.ObjectId,
-      ref: "Customers",
-      require: true,
+      type: String,
     },
     title: {
       type: String,
