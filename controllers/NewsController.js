@@ -63,22 +63,13 @@ class NewsController {
       return res.status(500).json(err);
     }
   }
-  //[GET] api/news/edit/:slug
-  async edit(req, res) {
-    const news = await News.findOne({ slug: req.params.slug });
-    news.content = news.content.replace(/"/g, "'");
-    if (!news) {
-      return res
-        .status(404)
-        .json({ success: false, message: "News Not Found" });
-    }
-    return res.status(200).json({ success: true, news });
-  }
+
   //[POST] api/news/update/:slug
   async update(req, res) {
     const { author, title, content } = req.body;
-
+    console.log(req.params.slug);
     const news = await News.findOne({ slug: req.params.slug });
+    console.log(news);
     if (!news) {
       return res
         .status(404)
