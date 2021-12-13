@@ -104,9 +104,24 @@ class AuthController {
   //POST http://localhost:5000/api/auth/login
   async login(req, res) {
     const { username, password } = req.body;
+    const customer = await Customer.findOne({ username });
+    //Check Usernam
+    if (!customer)
+      return res.status(400).json({
+        success: false,
+        message: "Incorrected username or password",
+        data: req.body,
+      });
+    //Check Password
+    const passwordValid = await argon2.verify(customer.password, password);
 
+    if (!passwordValid)
+      return res.status(400).json({
+        success: false,
+        message: "Incorrected username or password",
+        data: req.body,
+      });
     try {
-      const customer = await Customer.findOne({ username });
       const permission = await Permission.findOne({
         _id: customer.idPermission,
       });
@@ -117,22 +132,7 @@ class AuthController {
           message: "Authorized",
         });
       }
-      //Check Usernam
-      if (!customer)
-        return res.status(400).json({
-          success: false,
-          message: "Incorrected username or password",
-          data: req.body,
-        });
-      //Check Password
-      const passwordValid = await argon2.verify(customer.password, password);
 
-      if (!passwordValid)
-        return res.status(400).json({
-          success: false,
-          message: "Incorrected username or password",
-          data: req.body,
-        });
       //Correct
 
       const accessToken = jwt.sign(
@@ -199,7 +199,7 @@ class AuthController {
     }
     customer.emailComfirm = true;
     customer.save();
-    return res.status(200).json("Email Comfirm !!!");
+    return res.status(200).json("Email Comfirm Successfully!!!");
   }
 }
 

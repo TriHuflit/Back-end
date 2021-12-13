@@ -20,6 +20,9 @@ const DetailNews = new Schema(
         type: String,
       },
     },
+    author: {
+      type: String,
+    },
   },
   {
     timestamps: true,
