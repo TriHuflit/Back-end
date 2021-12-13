@@ -10,6 +10,8 @@ router.post("/verifyEmail/:id", auth.verifyEmail);
 
 router.post("/user/login", auth.userLogin);
 
+router.post("/logout/:id", auth.logout);
+
 router.post("/login", auth.login);
 
 module.exports = router;

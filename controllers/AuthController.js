@@ -201,6 +201,15 @@ class AuthController {
     customer.save();
     return res.status(200).json("Email Comfirm Successfully!!!");
   }
+  async logout(req, res) {
+    const customer = await Customer.findOne({ _id: req.params.id });
+    if (!customer) {
+      return res.status(404).json("User Not Found !");
+    }
+    customer.refreshToken = "";
+    customer.save();
+    return res.status(200).json("LogOut Successfully");
+  }
 }
 
 module.exports = new AuthController();

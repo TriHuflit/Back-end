@@ -20,7 +20,24 @@ class NewsController {
   }
   //[POST] api/news/store
   async store(req, res) {
-    const news = req.body;
+    const { author, title, content } = req.body;
+    const image = await cloudinary.uploader.upload(req.body.image);
+    const news = await new News({
+      author,
+      title,
+      content,
+      image: {
+        url: image.secure_url,
+        cloud_id: image.public_id,
+      },
+    });
+    news.save();
+    if (news) {
+      return res
+        .status(200)
+        .json({ success: true, message: "Add News Successfully !!!" });
+    }
+    return res.status(400).json({ success: false, message: "Add News Failed" });
   }
   //[POST] api/news/delete/:slug
   async delete(req, res) {
@@ -31,11 +48,6 @@ class NewsController {
         .json({ success: false, message: "News Not Found" });
     }
     try {
-      const detailNews = await DetailNews.find({ idNews: news._id });
-      detailNews.map(async (detail) => {
-        await cloudinary.uploader.destroy(detail.image.cloud_id);
-      });
-      await DetailNews.deleteMany({ idNews: news._id });
       await cloudinary.uploader.destroy(news.image.cloud_id);
       await News.deleteOne({ _id: news._id });
       return res

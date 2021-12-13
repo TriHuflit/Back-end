@@ -4,7 +4,7 @@ const slug = require("mongoose-slug-generator");
 mongoose.slug = slug;
 const News = new Schema(
   {
-    idCus: {
+    author: {
       type: Schema.Types.ObjectId,
       ref: "Customers",
       require: true,
@@ -12,6 +12,9 @@ const News = new Schema(
     title: {
       type: String,
       require: true,
+    },
+    content: {
+      type: String,
     },
     image: {
       url: {
