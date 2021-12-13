@@ -21,6 +21,9 @@ class NewsController {
   //[POST] api/news/store
   async store(req, res) {
     const { author, title, content } = req.body;
+    console.log(content);
+    var ct = content.toString();
+    console.log(ct);
     const image = await cloudinary.uploader.upload(req.body.image);
     const news = await new News({
       author,
@@ -78,30 +81,51 @@ class NewsController {
         .json({ success: false, message: "News Not Found" });
     }
     try {
-      await cloudinary.uploader.destroy(news.image.cloud_id);
-      const image = await cloudinary.uploader.upload(req.body.image);
-      let updateNews = {
-        author,
-        title,
-        content,
-        image: {
-          url: image.secure_url,
-          cloud_id: image.public_id,
-        },
-      };
-      const Newsupdate = await News.findByIdAndUpdate(
-        { _id: news._id },
-        updateNews,
-        { new: true }
-      );
-      if (!Newsupdate) {
+      if (image != null) {
+        await cloudinary.uploader.destroy(news.image.cloud_id);
+        const image = await cloudinary.uploader.upload(req.body.image);
+        let updateNews = {
+          author,
+          title,
+          content,
+          image: {
+            url: image.secure_url,
+            cloud_id: image.public_id,
+          },
+        };
+        const Newsupdate = await News.findByIdAndUpdate(
+          { _id: news._id },
+          updateNews,
+          { new: true }
+        );
+        if (!Newsupdate) {
+          return res
+            .status(400)
+            .json({ success: false, message: "Update News Failed" });
+        }
         return res
-          .status(400)
-          .json({ success: false, message: "Update News Failed" });
+          .status(200)
+          .json({ success: true, message: "Update News Successfully" });
+      } else {
+        let updateNews = {
+          author,
+          title,
+          content,
+        };
+        const Newsupdate = await News.findByIdAndUpdate(
+          { _id: news._id },
+          updateNews,
+          { new: true }
+        );
+        if (!Newsupdate) {
+          return res
+            .status(400)
+            .json({ success: false, message: "Update News Failed" });
+        }
+        return res
+          .status(200)
+          .json({ success: true, message: "Update News Successfully" });
       }
-      return res
-        .status(200)
-        .json({ success: true, message: "Update News Successfully" });
     } catch (err) {
       return res.status(500).json(err);
     }
