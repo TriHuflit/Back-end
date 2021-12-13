@@ -5,6 +5,9 @@ class NewsController {
   //[GET] api/news
   async index(req, res) {
     const news = await News.find({});
+    news.map((n) => {
+      n.content = n.content.replace(/"/g, "'");
+    });
     return res.status(200).json({ success: true, news });
   }
   //[GET] api/news/:slug
