@@ -76,7 +76,7 @@ class NewsController {
         .json({ success: false, message: "News Not Found" });
     }
     try {
-      if (image != null) {
+      if (req.body.image != null) {
         await cloudinary.uploader.destroy(news.image.cloud_id);
         const image = await cloudinary.uploader.upload(req.body.image);
         let updateNews = {
