@@ -7,12 +7,15 @@ const accountRouter = require("./account");
 const voucherRouter = require("./voucher");
 const permissionRouter = require("./permission");
 const mediaRouter = require("./media");
+const orderRouter = require("./order");
 function route(app) {
   app.use("/api/voucher", voucherRouter);
 
   app.use("/api/category", cateRouter);
 
   app.use("/api/subcategory", subCateRouter);
+
+  app.use("/api/order", orderRouter);
 
   app.use("/api/permission", permissionRouter);
 

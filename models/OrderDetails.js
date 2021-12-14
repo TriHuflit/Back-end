@@ -12,10 +12,12 @@ const OrderDetails = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Products",
     },
-    idWarehouses: {
-      type: Schema.Types.ObjectId,
-      ref: "WareHouses",
-    },
+    idWarehouses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "WareHouses",
+      },
+    ],
     Price: {
       type: Number,
       required: true,
