@@ -12,55 +12,69 @@ class OrderController {
   async store(req, res) {
     const { Cus, Voucher, phoneReviecve, addressRecieve, payments } = req.body;
     const voucher = await Vouchers.findOne({ name: Voucher });
-
-    const newOrder = await new Order({
-      idCus: Cus,
-      idVoucher: voucher._id,
-      phoneReviecve,
-      addressRecieve,
-      payments,
-    });
-    newOrder.save();
-    if (!newOrder) {
-      return res.status(400).json({ success: false, message: "Order Failed" });
-    }
     const { OrderDetail } = req.body;
-    OrderDetail.map(async (detail) => {
-      const product = await Products.findOne({ name: detail.product });
-      const warehouses = await WareHouses.find({
-        idProduct: product._id,
-      }).where("amountStock>0");
-      console.log(warehouses);
-      let amountRequired = detail.amountStock;
-      var arrayWare = [];
-      warehouses.map(async (ware) => {
-        const warehouse = await WareHouses.findOne({ _id: ware._id });
-
-        amountRequired = warehouse.amountStock - amountRequired;
-        warehouse.amountStock = warehouse.amountStock - amountRequired;
-        warehouse.save();
-        arrayWare.push(ware._id);
-        if (amountRequired >= 0) {
-          return;
-        }
+    try {
+      const newOrder = await new Order({
+        idCus: Cus,
+        idVoucher: voucher._id,
+        phoneReviecve,
+        addressRecieve,
+        payments,
       });
-      const newDetail = await new OrderDetails({
-        idOrder: newOrder._id,
-        idProducts: product._id,
-        idWarehouses: arrayWare,
-        Price: detail.price,
-        amount: detail.amount,
-      });
-      newDetail.save();
-      if (!newDetail) {
+      newOrder.save();
+      if (!newOrder) {
         return res
           .status(400)
-          .json({ success: false, message: "OrderDetail Error" });
+          .json({ success: false, message: "Order Failed" });
       }
-    });
-    return res
-      .status(200)
-      .json({ success: true, message: "Order Successfully" });
+      OrderDetail.map(async (detail) => {
+        const product = await Products.findOne({ name: detail.product });
+        let amountRequired = detail.amount;
+        const idWarehouses = [];
+        const warehouses = await WareHouses.aggregate([
+          { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
+        ]);
+        if (!idWarehouses) {
+          return res
+            .status(400)
+            .json({ success: false, message: "Order Failed" });
+        }
+        warehouses.map(async (ware) => {
+          const warehouse = await WareHouses.findOne({ _id: ware._id });
+          if (amountRequired - warehouse.amountStock > 0) {
+            amountRequired = amountRequired - warehouse.amountStock;
+            warehouse.amountStock = 0;
+          } else {
+            warehouse.amountStock = warehouse.amountStock - amountRequired;
+            amountRequired = 0;
+          }
+          warehouse.save();
+          idWarehouses.push(ware);
+          if (amountRequired <= 0) {
+            const newDetail = await new OrderDetails({
+              idOrder: newOrder._id,
+              idProducts: product._id,
+              idWarehouses,
+              Price: detail.price,
+              amount: detail.amount,
+            });
+            newDetail.save();
+            if (!newDetail) {
+              return res
+                .status(400)
+                .json({ success: false, message: "OrderDetail Error" });
+            }
+          }
+        });
+      });
+      return res
+        .status(200)
+        .json({ success: true, message: "Order Successfully" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal Server Error" });
+    }
   }
   // Staff
   //[GET] api/order/staff/

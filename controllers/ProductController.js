@@ -8,14 +8,14 @@ const OrderDetails = require("../models/OrderDetails");
 class ProductsController {
   //[GET] /api/products/
   async index(req, res, next) {
-    let perPage = 8;
+    let perPage = 6;
     let page = req.params.page || 1;
     await Products.find() // find tất cả các data
       .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
       .limit(perPage)
       .exec((err, products) => {
         Products.countDocuments((err, count) => {
-          if (err) return next(err);
+          if (err) return next(serr);
           var len = products.length;
           var curIdx = 0;
           var newPros = [];

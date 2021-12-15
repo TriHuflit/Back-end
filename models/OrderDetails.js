@@ -25,7 +25,6 @@ const OrderDetails = new Schema(
     amount: {
       type: Number,
       required: true,
-      default: "1",
     },
   },
   {

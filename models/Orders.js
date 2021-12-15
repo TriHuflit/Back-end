@@ -24,6 +24,9 @@ const Orders = new Schema(
       type: String,
       required: true,
     },
+    totalPrice: {
+      type: Number,
+    },
     status: {
       type: String,
       enum: [
