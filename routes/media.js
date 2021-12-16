@@ -8,6 +8,6 @@ router.post("/news/store", newsController.store);
 
 router.put("/news/update/:slug", newsController.update);
 
-router.delete("news/delete/:slug", newsController.delete);
+router.delete("/news/delete/:slug", newsController.delete);
 
 module.exports = router;
