@@ -8,6 +8,8 @@ router.get("/search", productController.getProductsByKey);
 
 router.delete("/delete/:id", productController.delete);
 
+router.get('/getCatFoods', productController.getCatFoods);
+
 router.get("/sortDate", productController.getProductsBySortTime);
 
 router.get("/sortPrice", authorize.authorize("Admin"), productController.getProductsBySortPrice);

@@ -1,5 +1,6 @@
 const Products = require("../models/Products");
 const Brand = require("../models/Brands");
+const SubCategorys = require('../models/SubCategorys');
 const WareHouses = require("../models/WareHouses");
 const Describe = require("../models/DescribeProducts");
 const { multipleMongoosetoObject } = require("../ultis/mongoose");
@@ -10,6 +11,7 @@ class ProductsController {
   async index(req, res, next) {
     let perPage = 6;
     let page = req.query.page || 1;
+    console.log(page);
     await Products.find() // find tất cả các data
       .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
       .limit(perPage)
@@ -258,5 +260,36 @@ class ProductsController {
       .then((products) => res.send(products))
       .catch(next);
   }
+  //[GET] Cat Foods
+  async getCatFoods(req, res) {
+    const idSub = await SubCategorys.findOne({ name: "Thức ăn cho mèo" }).select("_id");
+    if (!idSub) {
+      return res.status(404).json("Subcategory Not Found")
+    }
+    try {
+      const brands = await Brands.find({ idSub: idSub });
+      var CatFoods = [];
+      let length = brands.length;
+      let temp = -1;
+      brands.map(async (brand) => {
+        const CatFood = await Products.aggregate([
+          { $match: { _id: brand._id } },
+          { $sample: { size: 5 } }
+        ])
+        CatFood.forEach(async (cat) => {
+          CatFoods.push(cat);
+        })
+        temp++;
+        if (temp == length - 1)
+          return res.status(200).json({ success: true, CatFoods });
+      })
+    } catch (error) {
+      return res.status(400).json("Interval Server Error");
+    }
+
+
+
+  }
+
 }
 module.exports = new ProductsController();
