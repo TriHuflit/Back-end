@@ -173,7 +173,6 @@ class SubCategoryController {
       products.forEach(async (pro) => {
         pros.push(pro);
       });
-      console.log(temp);
       temp++;
       if (temp == length - 1)
         return res.status(200).json({ success: true, product: pros });

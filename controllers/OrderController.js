@@ -7,10 +7,27 @@ const WareHouses = require("../models/WareHouses");
 class OrderController {
   // User
   //[GET] api/order/user/:id
-  async getallOrder(req, res) {}
+  async getOrder(req, res) {
+
+  }
+  // User
+  //[GET] api/order/user/:id
+  async getOrder(req, res) {
+
+  }
+  //[POST] api/order/user/cancel/:id
+  async cancel(req, res) {
+    const order = await Order.findOne({ _id: req.params.id });
+    if (!order) {
+      res.status(404).json({ success: true, message: "Order Not Found !" });
+    }
+    order.status = "Hủy đơn";
+    order.save();
+    res.status(200).json({ success: true, message: "Cancel Order Successfully !" });
+  }
   //[POST] api/order/user/store
   async store(req, res) {
-    const { Cus, Voucher, phoneReviecve, addressRecieve, payments } = req.body;
+    const { Cus, Voucher, phoneReviecve, addressRecieve, payments, totalPrice } = req.body;
     const voucher = await Vouchers.findOne({ name: Voucher });
     const { OrderDetail } = req.body;
     try {
@@ -78,7 +95,29 @@ class OrderController {
   }
   // Staff
   //[GET] api/order/staff/
-  async index(req, res) {}
+  async index(req, res) {
+    const order = await Order.find({}).sort({ createdAt: 1 });
+    res.status(200).json({ success: true, order });
+  }
+  // Staff
+  //[GET] api/order/staff/
+  async OrderWait(req, res) {
+    const order = await Order.find({ status: "Chờ xác nhận" }).sort({ createdAt: 1 });
+    res.status(200).json({ success: true, order });
+  }
+
+
+  //[POST] api/order/staff/comfirm/:id
+  async comfirm(req, res) {
+    const order = await Order.findOne({ _id: req.params.id });
+    if (!order) {
+      res.status(404).json({ success: true, message: "Order Not Found !" });
+    }
+    order.status = "Đã xác nhận";
+    order.save();
+    res.status(200).json({ success: true, message: "Comfirm Order Successfully !" });
+  }
+
 }
 
 module.exports = new OrderController();

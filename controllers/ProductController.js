@@ -267,14 +267,14 @@ class ProductsController {
       return res.status(404).json("Subcategory Not Found")
     }
     try {
-      const brands = await Brands.find({ idSub: idSub });
+      const brands = await Brand.find({ idSub: idSub });
       var CatFoods = [];
       let length = brands.length;
       let temp = -1;
       brands.map(async (brand) => {
         const CatFood = await Products.aggregate([
-          { $match: { _id: brand._id } },
-          { $sample: { size: 5 } }
+          { $match: { idBrand: brand._id } },
+          { $sample: { size: 2 } }
         ])
         CatFood.forEach(async (cat) => {
           CatFoods.push(cat);
@@ -286,9 +286,6 @@ class ProductsController {
     } catch (error) {
       return res.status(400).json("Interval Server Error");
     }
-
-
-
   }
 
 }
