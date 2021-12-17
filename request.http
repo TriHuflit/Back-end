@@ -34,7 +34,7 @@ Content-Type: application/json
     "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFiNjJlZTRiMGMxMjQ3OTkxM2NiZWJjIiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2Mzk3MTM1MDQsImV4cCI6MTYzOTc5OTkwNH0.Y9if--dxdmdS6dKYaFV4fsoz2d229Huu6FCK0RCRQ8c"
 }
 ####
-POST https://blooming-mountain-13837.herokuapp.com/api/auth/verifyEmail/61bc0c4cea07ff64763f3474
+GET https://blooming-mountain-13837.herokuapp.com/api/auth/verifyEmail/61bc0c4cea07ff64763f3474
 #########################################
 POST http://localhost:5000/api/products/store
 Content-Type: application/json
