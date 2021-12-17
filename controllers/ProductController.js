@@ -9,7 +9,7 @@ class ProductsController {
   //[GET] /api/products/
   async index(req, res, next) {
     let perPage = 6;
-    let page = req.params.page || 1;
+    let page = req.query.page || 1;
     await Products.find() // find tất cả các data
       .skip(perPage * page - perPage) // Trong page đầu tiên sẽ bỏ qua giá trị là 0
       .limit(perPage)

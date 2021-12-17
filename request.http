@@ -31,12 +31,14 @@ POST http://localhost:5000/api/auth/token
 Content-Type: application/json
 
 {
-    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2MzkwNDU0NjAsImV4cCI6MTYzOTEzMTg2MH0.PFLGJTxumDOohKdCdFWVAJSBmPY9p6uEJ4SNNF8ILjw"
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFiNjJlZTRiMGMxMjQ3OTkxM2NiZWJjIiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2Mzk3MTM1MDQsImV4cCI6MTYzOTc5OTkwNH0.Y9if--dxdmdS6dKYaFV4fsoz2d229Huu6FCK0RCRQ8c"
 }
+####
+POST https://blooming-mountain-13837.herokuapp.com/api/auth/verifyEmail/61bc0c4cea07ff64763f3474
 #########################################
 POST http://localhost:5000/api/products/store
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjE5NjEzMmNiYmRhZDEzYjA3MDA3NzYwIiwiaWF0IjoxNjM3NTA5MjQ1fQ.AsKKUyE1CmAHDgtBROgH5K_DEySkRi06uL73Gn3o5Qg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFiNjJlZTRiMGMxMjQ3OTkxM2NiZWJjIiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2Mzk3MTMxNDMsImV4cCI6MTYzOTcxMzIwM30.meAsJyKAkbpKRYtDnSsEqywI6WIHm4J4l-r0wnbgdKc
 
 {
    "name":"Royal Canin Urinary S/O – Thức Ăn Hạt Cho Mèo Bị Sỏi Thận",
@@ -106,7 +108,7 @@ GET  http://localhost:5000/api/products/search?search=product2
 
 ####
 GET  http://localhost:5000/api/products/sortPrice?sort=-1
-Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFhZWUxODU2YWQ5NmNiN2FlZGFmNGM1IiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2MzkwNDU0NzcsImV4cCI6MTYzOTA0NTUzN30.LAc6Gkn-C_kBCu8sU4absRorRCfu4m-DDXtN7nKmNoo
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiNjFiNjJlZTRiMGMxMjQ3OTkxM2NiZWJjIiwiUm9sZSI6IlVzZXIiLCJpYXQiOjE2Mzk3MTM1ODYsImV4cCI6MTYzOTcxMzY0Nn0.oInn5Tci-oCc0DS_DOnuBtBWRlNS_FT0XqE_gw8NmDU
 ####
 GET http://localhost:5000/api/category
 ####

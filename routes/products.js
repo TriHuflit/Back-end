@@ -10,7 +10,7 @@ router.delete("/delete/:id", productController.delete);
 
 router.get("/sortDate", productController.getProductsBySortTime);
 
-router.get("/sortPrice", productController.getProductsBySortPrice);
+router.get("/sortPrice", authorize.authorize("Admin"), productController.getProductsBySortPrice);
 
 const uploadImage = store.fields([
   { name: "imageRepresent", maxCount: 1 },

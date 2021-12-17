@@ -6,7 +6,7 @@ router.post("/register", auth.register);
 
 router.post("/token", auth.token);
 
-router.post("/verifyEmail/:id", auth.verifyEmail);
+router.get("/verifyEmail/:id", auth.verifyEmail);
 
 router.post("/user/login", auth.userLogin);
 
