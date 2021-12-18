@@ -143,7 +143,7 @@ class OrderController {
             },
           },
         ]);
-        ods.push(od);
+        ods.push(od[0]);
         temp++;
         if (temp == length - 1)
           return res.status(200).json({ success: true, orders: ods });
