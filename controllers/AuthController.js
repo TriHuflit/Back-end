@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const sendMail = require("../config/sendmail");
 class AuthController {
-  //[POST] http://localhost:5000/api/auth/register
+  //[POST] http://localhost:5000/api/auth/user/register
   //User
   async register(req, res) {
     const { username, password, email, phone } = req.body;

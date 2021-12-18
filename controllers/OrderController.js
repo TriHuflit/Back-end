@@ -8,12 +8,20 @@ class OrderController {
   // User
   //[GET] api/order/user/:id
   async getOrder(req, res) {
-
+    const orders = await Order.find({ idCus: req.params.id, status="Chờ xác nhận" });
+    return res.status(200).json({ success, orders });
   }
   // User
   //[GET] api/order/user/:id
-  async getOrder(req, res) {
-
+  async getOrderDone(req, res) {
+    const orders = await Order.find({ idCus: req.params.id, status="Đã xác nhận" });
+    return res.status(200).json({ success, orders });
+  }
+  // User
+  //[GET] api/order/user/:id
+  async getOrderCancel(req, res) {
+    const orders = await Order.find({ idCus: req.params.id, status="Hủy đơn" });
+    return res.status(200).json({ success, orders });
   }
   //[POST] api/order/user/cancel/:id
   async cancel(req, res) {
@@ -27,12 +35,12 @@ class OrderController {
   }
   //[POST] api/order/user/store
   async store(req, res) {
-    const { Cus, Voucher, phoneReviecve, addressRecieve, payments, totalPrice } = req.body;
+    const { customer, voucher, phoneReviecve, addressRecieve, payments, totalPrice, note } = req.body;
     const voucher = await Vouchers.findOne({ name: Voucher });
     const { OrderDetail } = req.body;
     try {
       const newOrder = await new Order({
-        idCus: Cus,
+        idCus: Customer,
         idVoucher: voucher._id,
         phoneReviecve,
         addressRecieve,

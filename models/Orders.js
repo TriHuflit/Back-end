@@ -43,6 +43,9 @@ const Orders = new Schema(
       enum: ["Đã thanh toán", "Thanh toán tiền mặt"],
       required: true,
     },
+    note: {
+      type: String,
+    }
   },
   {
     timestamps: true,
