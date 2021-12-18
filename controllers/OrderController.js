@@ -37,7 +37,6 @@ class OrderController {
   async store(req, res) {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
-    console.log(vouch);
     const { listOrder } = req.body;
     const newOrder = await new Order({
       idCus: id,
@@ -58,13 +57,13 @@ class OrderController {
     try {
 
       listOrder.map(async (detail) => {
-        console.log(detail);
         let amountRequired = detail.num;
+        const product = await Products.findOne({ _id: detail._id });
         const idWarehouses = [];
         const warehouses = await WareHouses.aggregate([
-          { $match: { idProducts: detail._id, amountStock: { $gte: 1 } } },
+          { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
         ]);
-        if (!idWarehouses) {
+        if (!warehouses) {
           return res
             .status(400)
             .json({ success: false, message: "Order Failed" });
