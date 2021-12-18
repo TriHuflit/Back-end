@@ -14,6 +14,7 @@ class VoucherController {
           condition: "$condition",
           desciption: "$desciption",
           discount: "$discount",
+          type: "$type",
           dateStart: {
             $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
           },
@@ -37,6 +38,7 @@ class VoucherController {
       desciption,
       dateStart,
       dateEnd,
+      type
     });
     if (!newVoucher) {
       return res
