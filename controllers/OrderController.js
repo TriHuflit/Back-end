@@ -37,8 +37,8 @@ class OrderController {
   async store(req, res) {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
+    console.log(vouch);
     const { listOrder } = req.body;
-    console.log(listOrder);
     const newOrder = await new Order({
       idCus: id,
       idVoucher: vouch._id,
@@ -58,6 +58,7 @@ class OrderController {
     try {
 
       listOrder.map(async (detail) => {
+        console.log(detail);
         let amountRequired = detail.num;
         const idWarehouses = [];
         const warehouses = await WareHouses.aggregate([
@@ -69,6 +70,7 @@ class OrderController {
             .json({ success: false, message: "Order Failed" });
         }
         warehouses.map(async (ware) => {
+          console.log(ware);
           const warehouse = await WareHouses.findOne({ _id: ware._id });
           if (amountRequired - warehouse.amountStock > 0) {
             amountRequired = amountRequired - warehouse.amountStock;
@@ -79,14 +81,17 @@ class OrderController {
           }
           warehouse.save();
           idWarehouses.push(ware);
+          const price = detail.price * detail.num;
+          console.log(price);
           if (amountRequired <= 0) {
             const newDetail = await new OrderDetails({
               idOrder: newOrder._id,
               idProducts: detail._id,
               idWarehouses,
-              Price: detail.price * detail.num,
+              Price: price,
               amount: detail.num,
             });
+            console.log(newDetail);
             newDetail.save();
             if (!newDetail) {
               return res
