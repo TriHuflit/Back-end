@@ -30,6 +30,15 @@ const Customers = new Schema(
       type: String,
       required: true,
     },
+    avatar: {
+      url: {
+        type: String,
+      },
+      cloud_id: {
+        type: String,
+      }
+    }
+    ,
     idPermission: {
       type: Schema.Types.ObjectId,
       ref: "Permissons",

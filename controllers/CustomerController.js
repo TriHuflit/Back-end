@@ -196,6 +196,16 @@ class CustomerController {
       .status(200)
       .json({ success: true, message: "Detele Successfully !" });
   }
+  //Manager Accout User
+  //[GET] infouser api/user/account/:id
+  async infouser(req, res) {
+    const customer = await Customer.findOne({ _id: req.params.id });
+    if (!customer) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User Not Found !!!" });
+    }
+  }
 }
 
 module.exports = new CustomerController();

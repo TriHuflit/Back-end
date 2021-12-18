@@ -37,7 +37,7 @@ class AuthController {
       sendMail(email, newCustomer._id);
       res.status(200).json({
         success: true,
-        message: "User created successfully",
+        message: "Register successfully please comfirm your email before Login !!!",
       });
     } catch (error) {
       console.log(error);
@@ -94,7 +94,7 @@ class AuthController {
         success: true,
         message: "Logged in successfully",
         customer,
-        accessToken,
+        token: { accessToken, refreshToken },
       });
     } catch (error) {
       console.log(error);
@@ -159,6 +159,9 @@ class AuthController {
       res.status(500).json({ success: false, message: error });
     }
   }
+
+
+
   async token(req, res) {
     const { refreshToken } = req.body;
     if (!refreshToken) return res.status(401);
