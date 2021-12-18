@@ -51,7 +51,12 @@ class ProductsController {
       res.status(400).json({ success: false, message: "Product not found !" });
     }
     const brand = await Brand.findOne({ _id: product.idBrand }).select("name");
-    product.set("brand", brand, { strict: false });
+    const warehouses = await WareHouses.aggregate([
+      { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
+      { $group: { _id: "$idProducts", amountStock: { $sum: "$amountStock" } } },
+    ]);
+    product.set("brand", brand.name, { strict: false });
+    product.set("amountStock", warehouses[0].amountStock, { strict: false });
     const listImage = await Describe.find({ idProducts: product._id }).select(
       "image"
     );

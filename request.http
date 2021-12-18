@@ -1,10 +1,10 @@
-POST  http://localhost:5000/api/auth/register
+POST  https://blooming-mountain-13837.herokuapp.com/api/auth/user/register
 Content-Type: application/json
 
 {
     "username":"trilxag",
     "password":"123456",
-    "email":"trilxag1003@gmail.com",
+    "email":"trilxag1004@gmail.com",
     "phone":"0903234765"
 }
 
@@ -101,7 +101,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiN
    "contentDescribe":" update content Describe"
 }
 ######
-GET http://localhost:5000/api/products
+GET http://localhost:5000/api/products/petland-bentonite-cat-litter-cat-ve-sinh-cho-meo-dat-set-hat-tron-5l-and-10l
 
 #####
 GET  http://localhost:5000/api/products/search?search=product2
@@ -296,3 +296,5 @@ Content-Type: application/json
 }
 ####
 DELETE http://localhost:5000/api/permission/delete/61aed62e570a83dbfcfaa4d6
+###
+GET  http://localhost:5000/api/products/getCatFoods

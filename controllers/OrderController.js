@@ -38,20 +38,23 @@ class OrderController {
     const { customer, voucher, phoneReviecve, addressRecieve, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
     const { OrderDetail } = req.body;
+    const newOrder = await new Order({
+      idCus: customer,
+      idVoucher: vouch._id,
+      phoneReviecve,
+      addressRecieve,
+      payments,
+      totalPrice,
+      note
+    });
+    newOrder.save();
+    if (!newOrder) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Order Failed" });
+    }
     try {
-      const newOrder = await new Order({
-        idCus: Customer,
-        idVoucher: voucher._id,
-        phoneReviecve,
-        addressRecieve,
-        payments,
-      });
-      newOrder.save();
-      if (!newOrder) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Order Failed" });
-      }
+
       OrderDetail.map(async (detail) => {
         const product = await Products.findOne({ name: detail.product });
         let amountRequired = detail.amount;
