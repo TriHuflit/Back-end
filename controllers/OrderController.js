@@ -177,8 +177,8 @@ class OrderController {
   }
 
 
-  //[POST] api/order/staff/comfirm/:id
-  async comfirm(req, res) {
+  //[POST] api/order/staff/confirm/:id
+  async confirm(req, res) {
     const order = await Order.findOne({ _id: req.params.id });
     if (!order) {
       res.status(404).json({ success: true, message: "Order Not Found !" });
@@ -186,7 +186,7 @@ class OrderController {
     order.status = "Đã xác nhận";
     order.idStaff = req.body.staff;
     order.save();
-    res.status(200).json({ success: true, message: "Comfirm Order Successfully !" });
+    res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
   }
 
 }
