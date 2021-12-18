@@ -41,7 +41,7 @@ class OrderController {
     const newOrder = await new Order({
       idCus: id,
       idVoucher: vouch._id,
-      phoneReviecve: phone,
+      phoneRecieve: phone,
       addressRecieve: address,
       payments,
       totalPrice,
