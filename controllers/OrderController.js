@@ -117,37 +117,40 @@ class OrderController {
     var ods = [];
     let length = orders.length;
     let temp = -1;
-    orders.map(async (order) => {
-      const staff = await Customers.findOne({ _id: order.idStaff });
-      const nameStaff = ""
-      if (staff) {
-        nameStaff = staff.name;
-      }
-      const voucher = await Vouchers.findOne({ _id: order.idVoucher });
+    try {
+      orders.map(async (order) => {
+        const staff = await Customers.findOne({ _id: order.idStaff });
+        const nameStaff = ""
+        if (staff) {
+          nameStaff = staff.name;
+        }
+        const voucher = await Vouchers.findOne({ _id: order.idVoucher });
 
-      const od = await Order.aggregate([
-        { $match: { _id: order._id } },
-        {
-          $project: {
-            _id: order._id,
-            name: "$nameRecieve",
-            Staff: nameStaff,
-            address: "$addressRecieve",
-            totalPrice: "$totalPrice",
-            Voucher: voucher.name,
-            status: "$status",
-            dateOrder: {
-              $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+        const od = await Order.aggregate([
+          { $match: { _id: order._id } },
+          {
+            $project: {
+              _id: order._id,
+              name: "$nameRecieve",
+              Staff: nameStaff,
+              address: "$addressRecieve",
+              totalPrice: "$totalPrice",
+              Voucher: voucher.name,
+              status: "$status",
+              dateOrder: {
+                $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+              },
             },
           },
-        },
-
-      ]);
-      ods.push(od);
-      temp++;
-      if (temp == length)
-        return res.status(200).json({ success: true, orders: ods });
-    })
+        ]);
+        ods.push(od);
+        temp++;
+        if (temp == length)
+          return res.status(200).json({ success: true, orders: ods });
+      })
+    } catch {
+      return res.status(500).json({ message: "Interval Server Error" });
+    }
   }
   // Staff
   //[GET] api/order/staff/
