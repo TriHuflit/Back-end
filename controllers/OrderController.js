@@ -181,6 +181,7 @@ class OrderController {
   async confirm(req, res) {
     const order = await Order.findOne({ _id: req.params.id });
     console.log(req.body.staff);
+    console.log(req.body);
     const staff = await Customers.findOne({ _id: req.body.staff });
     if (!order) {
       res.status(404).json({ success: true, message: "Order Not Found !" });
