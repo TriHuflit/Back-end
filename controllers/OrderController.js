@@ -138,7 +138,7 @@ class OrderController {
               Voucher: voucher.name,
               status: "$status",
               dateOrder: {
-                $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+                $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
               },
             },
           },
