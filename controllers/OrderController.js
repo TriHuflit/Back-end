@@ -184,6 +184,7 @@ class OrderController {
       res.status(404).json({ success: true, message: "Order Not Found !" });
     }
     order.status = "Đã xác nhận";
+    order.staff = req.body.staff;
     order.save();
     res.status(200).json({ success: true, message: "Comfirm Order Successfully !" });
   }
