@@ -205,6 +205,41 @@ class CustomerController {
         .status(404)
         .json({ success: false, message: "User Not Found !!!" });
     }
+    return res.status(200).json({ success: true, customer });
+  }
+  //[POST] editouser api/user/account/update/:id
+  async updateinfo(req, res) {
+    const customer = await Customer.findOne({ _id: req.params.id });
+    if (!customer) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User Not Found !!!" });
+    }
+    try {
+      const { name, password, email, phone, gender, birth, address } = req.body;
+      let newcustomer = ({
+        name,
+        password,
+        email,
+        phone,
+        gender,
+        birth,
+        address
+      })
+      const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
+      if (updateCus) {
+        return res
+          .status(200)
+          .json({ success: true, message: "Update Infomation Successfully !!!" });
+      }
+      return res
+        .status(400)
+        .json({ success: false, message: "Update Infomation Failed !!!" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Interval Server error" });
+    }
   }
 }
 

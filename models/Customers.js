@@ -30,6 +30,10 @@ const Customers = new Schema(
       type: String,
       required: true,
     },
+    birth: {
+      type: Date
+    }
+    ,
     avatar: {
       url: {
         type: String,
