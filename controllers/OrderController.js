@@ -180,11 +180,13 @@ class OrderController {
   //[POST] api/order/staff/confirm/:id
   async confirm(req, res) {
     const order = await Order.findOne({ _id: req.params.id });
+    const staff = await Customers.findOne({ _id: req.body.staff });
     if (!order) {
       res.status(404).json({ success: true, message: "Order Not Found !" });
     }
+
     order.status = "Đã xác nhận";
-    order.idStaff = req.body.staff;
+    order.idStaff = staff._id;
     order.save();
     res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
   }
