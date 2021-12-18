@@ -64,8 +64,6 @@ class OrderController {
         const warehouses = await WareHouses.aggregate([
           { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
         ]);
-        console.log(detail);
-        console.log(warehouses);
         if (!warehouses) {
           return res
             .status(400)
@@ -120,7 +118,7 @@ class OrderController {
   // Staff
   //[GET] api/order/staff/
   async OrderWait(req, res) {
-    const order = await Order.find({ status: "Chờ xác nhận" }).sort({ createdAt: 1 });
+    const order = await Order.find({}).sort({ createdAt: 1 });
     res.status(200).json({ success: true, order });
   }
 
