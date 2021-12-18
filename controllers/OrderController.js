@@ -38,7 +38,7 @@ class OrderController {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
     const listOrder = req.body.listOrder;
-    console.log(req.body);
+
     const newOrder = await new Order({
       idCus: id,
       idVoucher: vouch._id,
@@ -63,6 +63,7 @@ class OrderController {
         const warehouses = await WareHouses.aggregate([
           { $match: { idProducts: detail._id, amountStock: { $gte: 1 } } },
         ]);
+        console.log(warehouses);
         if (!warehouses) {
           return res
             .status(400)
