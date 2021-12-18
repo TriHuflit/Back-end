@@ -59,10 +59,9 @@ class OrderController {
 
       listOrder.map(async (detail) => {
         let amountRequired = detail.num;
-        const product = await Products.findOne({ _id: detail._id });
         const idWarehouses = [];
         const warehouses = await WareHouses.aggregate([
-          { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
+          { $match: { idProducts: detail._id, amountStock: { $gte: 1 } } },
         ]);
         if (!warehouses) {
           return res
@@ -70,7 +69,6 @@ class OrderController {
             .json({ success: false, message: "Order Failed" });
         }
         warehouses.map(async (ware) => {
-          console.log(ware);
           const warehouse = await WareHouses.findOne({ _id: ware._id });
           if (amountRequired - warehouse.amountStock > 0) {
             amountRequired = amountRequired - warehouse.amountStock;

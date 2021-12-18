@@ -17,8 +17,6 @@ const WareHouses = new Schema(
     },
     amountStock: {
       type: Number,
-      required: true,
-      default: 1,
     },
     real_price: {
       type: Number,
