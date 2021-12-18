@@ -14,7 +14,7 @@ class VoucherController {
           condition: "$condition",
           desciption: "$desciption",
           discount: "$discount",
-          type: "$type",
+          typeVoucher: "$typeVoucher",
           dateStart: {
             $dateToString: { format: "%Y-%m-%d", date: "$dateStart" },
           },
@@ -28,7 +28,7 @@ class VoucherController {
   }
   //POST api/voucher/add
   async addVoucher(req, res) {
-    const { title, name, discount, condition, desciption, dateStart, dateEnd } =
+    const { title, name, discount, condition, desciption, dateStart, dateEnd, typeVoucher } =
       req.body;
     const newVoucher = await new Vouchers({
       title,
@@ -38,7 +38,7 @@ class VoucherController {
       desciption,
       dateStart,
       dateEnd,
-      type
+      typeVoucher
     });
     if (!newVoucher) {
       return res

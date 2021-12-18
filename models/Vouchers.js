@@ -27,7 +27,7 @@ const Vouchers = new Schema({
         type: Date,
         require: true,
     },
-    type: {
+    typeVoucher: {
         type: String,
         enum: [
             "Voucher Ship",
