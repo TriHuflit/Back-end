@@ -58,11 +58,10 @@ class OrderController {
     try {
 
       listOrder.map(async (detail) => {
-        const product = await Products.findOne({ name: detail.product });
-        let amountRequired = detail.amount;
+        let amountRequired = detail.num;
         const idWarehouses = [];
         const warehouses = await WareHouses.aggregate([
-          { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
+          { $match: { idProducts: detail._id, amountStock: { $gte: 1 } } },
         ]);
         if (!idWarehouses) {
           return res
@@ -83,10 +82,10 @@ class OrderController {
           if (amountRequired <= 0) {
             const newDetail = await new OrderDetails({
               idOrder: newOrder._id,
-              idProducts: product._id,
+              idProducts: detail._id,
               idWarehouses,
-              Price: detail.price,
-              amount: detail.amount,
+              Price: detail.price * detail.num,
+              amount: detail.num,
             });
             newDetail.save();
             if (!newDetail) {
