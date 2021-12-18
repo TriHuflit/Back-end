@@ -60,8 +60,9 @@ class OrderController {
       listOrder.map(async (detail) => {
         let amountRequired = detail.num;
         const idWarehouses = [];
+        const product = await Products.findOne({ _id: detail._id });
         const warehouses = await WareHouses.aggregate([
-          { $match: { idProducts: detail._id, amountStock: { $gte: 1 } } },
+          { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
         ]);
         console.log(detail);
         console.log(warehouses);
