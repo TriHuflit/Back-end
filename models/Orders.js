@@ -16,7 +16,11 @@ const Orders = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Vouchers",
     },
-    phoneReviecve: {
+    nameRecieve: {
+      type: String,
+      required: true,
+    },
+    phoneRecieve: {
       type: String,
       required: true,
     },
@@ -39,8 +43,8 @@ const Orders = new Schema(
       default: "Chờ xác nhận",
     },
     payments: {
-      type: String,
-      enum: ["Đã thanh toán", "Thanh toán tiền mặt"],
+      type: Boolean,
+      default: false,
       required: true,
     },
     note: {

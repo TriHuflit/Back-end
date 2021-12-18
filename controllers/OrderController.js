@@ -35,14 +35,14 @@ class OrderController {
   }
   //[POST] api/order/user/store
   async store(req, res) {
-    const { customer, voucher, phoneReviecve, addressRecieve, payments, totalPrice, note } = req.body;
+    const { id, voucher, phone, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
-    const { OrderDetail } = req.body;
+    const { listOrder } = req.body;
     const newOrder = await new Order({
-      idCus: customer,
+      idCus: id,
       idVoucher: vouch._id,
-      phoneReviecve,
-      addressRecieve,
+      phoneReviecve: phone,
+      addressRecieve: address,
       payments,
       totalPrice,
       note
@@ -55,7 +55,7 @@ class OrderController {
     }
     try {
 
-      OrderDetail.map(async (detail) => {
+      listOrder.map(async (detail) => {
         const product = await Products.findOne({ name: detail.product });
         let amountRequired = detail.amount;
         const idWarehouses = [];
