@@ -35,12 +35,13 @@ class OrderController {
   }
   //[POST] api/order/user/store
   async store(req, res) {
-    const { id, voucher, phone, address, payments, totalPrice, note } = req.body;
+    const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
     const { listOrder } = req.body;
     const newOrder = await new Order({
       idCus: id,
       idVoucher: vouch._id,
+      nameRecieve: name,
       phoneRecieve: phone,
       addressRecieve: address,
       payments,
