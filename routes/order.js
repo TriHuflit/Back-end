@@ -4,7 +4,7 @@ const OrderController = require("../controllers/OrderController");
 
 Router.get("/staff", OrderController.index);
 
-Router.post("/staff/comfirm/:id", OrderController.comfirm);
+Router.post("/staff/confirm/:id", OrderController.confirm);
 
 Router.post("/user/store", OrderController.store);
 
