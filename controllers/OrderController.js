@@ -63,6 +63,7 @@ class OrderController {
         const warehouses = await WareHouses.aggregate([
           { $match: { idProducts: detail._id, amountStock: { $gte: 1 } } },
         ]);
+        console.log(detail);
         console.log(warehouses);
         if (!warehouses) {
           return res
