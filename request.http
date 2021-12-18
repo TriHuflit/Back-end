@@ -101,7 +101,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDdXN0b21lcklkIjoiN
    "contentDescribe":" update content Describe"
 }
 ######
-GET http://localhost:5000/api/products/petland-bentonite-cat-litter-cat-ve-sinh-cho-meo-dat-set-hat-tron-5l-and-10l
+GET http://localhost:5000/api/products/petland-bentonite-cat-litter-cat-ve-sinh-cho-meo-dat-set-hat-tron-5l-and-10l 
 
 #####
 GET  http://localhost:5000/api/products/search?search=product2
@@ -298,3 +298,5 @@ Content-Type: application/json
 DELETE http://localhost:5000/api/permission/delete/61aed62e570a83dbfcfaa4d6
 ###
 GET  http://localhost:5000/api/products/getCatFoods
+###
+GET http://localhost:5000/api/order/staff/

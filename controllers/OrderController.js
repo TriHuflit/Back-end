@@ -3,6 +3,7 @@ const OrderDetails = require("../models/OrderDetails");
 const Vouchers = require("../models/Vouchers");
 const Products = require("../models/Products");
 const WareHouses = require("../models/WareHouses");
+const Customers = require("../models/Customers");
 
 class OrderController {
   // User
@@ -112,14 +113,64 @@ class OrderController {
   // Staff
   //[GET] api/order/staff/
   async index(req, res) {
-    const order = await Order.find({}).sort({ createdAt: 1 });
-    res.status(200).json({ success: true, order });
+    const orders = await Order.find({}).sort({ createdAt: 1 });
+    var ods = [];
+    let length = orders.length;
+    let temp = -1;
+    orders.map(async (order) => {
+      const staff = await Customers.findOne({ _id: order.idStaff });
+      const nameStaff = ""
+      if (staff) {
+        nameStaff = staff.name;
+      }
+      const voucher = await Vouchers.findOne({ _id: order.idVoucher });
+
+      const od = await Order.aggregate([
+        { $match: { _id: order._id } },
+        {
+          $project: {
+            _id: order._id,
+            name: "$nameRecieve",
+            Staff: nameStaff,
+            address: "$addressRecieve",
+            totalPrice: "$totalPrice",
+            Voucher: voucher.name,
+            status: "$status",
+            dateOrder: {
+              $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+            },
+          },
+        },
+
+      ]);
+      ods.push(od);
+      temp++;
+      if (temp == length)
+        return res.status(200).json({ success: true, orders: ods });
+    })
   }
   // Staff
   //[GET] api/order/staff/
   async OrderWait(req, res) {
-    const order = await Order.find({}).sort({ createdAt: 1 });
-    res.status(200).json({ success: true, order });
+    const order = await Order.find({}).sort({ createdAt: 1 }).select("_id ");
+    const staff = await Customers.findOne({ _id: order.idStaff });
+    const customer = await Customers.findOne({ _id: order.idCus });
+    const voucher = await Vouchers.findOne({ _id: order.idVoucher });
+    const orders = await Order.aggregate([
+      {
+        $project: {
+          _id: "$_id",
+          Customer: customer.name,
+          Staff: staff.name,
+          totalPrice: "$totalPrice",
+          Voucher: voucher.name,
+          dateOrder: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+          },
+        },
+      },
+    ]);
+    res.status(200).json({ success: true, orders });
   }
 
 
