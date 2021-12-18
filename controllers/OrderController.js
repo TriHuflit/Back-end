@@ -38,6 +38,7 @@ class OrderController {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
     const listOrder = req.body.listOrder;
+    console.log(req.body);
     const newOrder = await new Order({
       idCus: id,
       idVoucher: vouch._id,
@@ -81,7 +82,6 @@ class OrderController {
           warehouse.save();
           idWarehouses.push(ware);
           const price = detail.price * detail.num;
-          console.log(price);
           if (amountRequired <= 0) {
             const newDetail = await new OrderDetails({
               idOrder: newOrder._id,
@@ -90,15 +90,16 @@ class OrderController {
               Price: price,
               amount: detail.num,
             });
-            console.log(newDetail);
             newDetail.save();
             if (!newDetail) {
               return res
                 .status(400)
                 .json({ success: false, message: "OrderDetail Error" });
             }
+            return;
           }
         });
+
       });
       return res
         .status(200)
