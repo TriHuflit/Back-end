@@ -128,7 +128,10 @@ class OrderController {
           nameStaff = staff.name;
         }
         const voucher = await Vouchers.findOne({ _id: order.idVoucher });
-
+        var vouchername = "";
+        if (voucher) {
+          vouchername = voucher.name;
+        }
         const od = await Order.aggregate([
           { $match: { _id: order._id } },
           {
@@ -138,7 +141,7 @@ class OrderController {
               Staff: nameStaff,
               address: "$addressRecieve",
               totalPrice: "$totalPrice",
-              Voucher: voucher.name,
+              Voucher: vouchername,
               status: "$status",
               dateOrder: {
                 $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
