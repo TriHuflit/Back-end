@@ -31,7 +31,7 @@ const Customers = new Schema(
       required: true,
     },
     birth: {
-      type: Date
+      type: String
     }
     ,
     avatar: {

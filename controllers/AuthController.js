@@ -32,7 +32,7 @@ class AuthController {
         password: hashedPassword,
         address: "",
         gender: "Nam",
-        birth: Date.now(),
+        birth: "01/01/1999",
         phone,
         email,
         idPermission: Role._id,
@@ -93,6 +93,7 @@ class AuthController {
       );
 
       customer.refreshToken = refreshToken;
+
       customer.save();
       res.json({
         success: true,
@@ -152,6 +153,7 @@ class AuthController {
 
       customer.refreshToken = refreshToken;
       customer.save();
+
       res.json({
         success: true,
         message: "Logged in successfully",
