@@ -32,6 +32,7 @@ class AuthController {
         password: hashedPassword,
         address: "",
         gender: "Nam",
+        birth: Date.now(),
         phone,
         email,
         idPermission: Role._id,

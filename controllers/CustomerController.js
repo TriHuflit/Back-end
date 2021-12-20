@@ -219,14 +219,14 @@ class CustomerController {
     }
     try {
       const { name, email, phone, gender, birth, address } = req.body;
-      var avatar;
-      if (Object.keys(customer.avatar).length === 0) {
-        avatar = await cloudinary.uploader.upload(req.body.avatar);
-      }
-      else {
-        await cloudinary.uploader.destroy(customer.avatar.cloud_id);
-        avatar = await cloudinary.uploader.upload(req.body.avatar);
-      }
+      // var avatar;
+      // if (Object.keys(customer.avatar).length === 0) {
+      //   avatar = await cloudinary.uploader.upload(req.body.avatar);
+      // }
+      // else {
+      //   await cloudinary.uploader.destroy(customer.avatar.cloud_id);
+      //   avatar = await cloudinary.uploader.upload(req.body.avatar);
+      // }
 
       let newcustomer = ({
         name,
@@ -235,10 +235,6 @@ class CustomerController {
         gender,
         birth,
         address,
-        avatar: {
-          url: avatar.secure_url,
-          cloud_id: avatar.public_id,
-        }
       })
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {
