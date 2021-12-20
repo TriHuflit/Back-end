@@ -8,7 +8,11 @@ const voucherRouter = require("./voucher");
 const permissionRouter = require("./permission");
 const mediaRouter = require("./media");
 const orderRouter = require("./order");
+const customerRouter = require("./customer");
 function route(app) {
+
+  app.use("/api/customer", customerRouter);
+
   app.use("/api/voucher", voucherRouter);
 
   app.use("/api/category", cateRouter);
