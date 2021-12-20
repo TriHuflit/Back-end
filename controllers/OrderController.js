@@ -38,11 +38,14 @@ class OrderController {
   async store(req, res) {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
+    if (vouch) {
+      voucher = vouch._id
+    }
     const listOrder = req.body.listOrder;
     console.log(req.body);
     const newOrder = await new Order({
       idCus: id,
-      idVoucher: vouch._id,
+      idVoucher: voucher,
       nameRecieve: name,
       phoneRecieve: phone,
       addressRecieve: address,
