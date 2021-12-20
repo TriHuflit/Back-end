@@ -8,7 +8,7 @@ class AuthController {
   //[POST] http://localhost:5000/api/auth/user/register
   //User
   async register(req, res) {
-    const { username, password, email, phone, comfirm } = req.body;
+    const { username, password, email, phone } = req.body;
     try {
       var customer = await Customer.findOne({ username });
       //Check for existing user
@@ -25,10 +25,12 @@ class AuthController {
         });
       const hashedPassword = await argon2.hash(password);
       const Role = await Permission.findOne({ name: "User" });
+
       const newCustomer = new Customer({
         name: username,
         username,
         password: hashedPassword,
+        address: "",
         phone,
         email,
         idPermission: Role._id,

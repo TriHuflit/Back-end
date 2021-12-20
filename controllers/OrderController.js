@@ -38,8 +38,9 @@ class OrderController {
   async store(req, res) {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
+    var newOrder
     if (vouch) {
-      const newOrder = await new Order({
+      newOrder = await new Order({
         idCus: id,
         idVoucher: vouch._id,
         nameRecieve: name,
@@ -52,7 +53,7 @@ class OrderController {
       newOrder.save();
     }
     else {
-      const newOrder = await new Order({
+      newOrder = await new Order({
         idCus: id,
         nameRecieve: name,
         phoneRecieve: phone,
