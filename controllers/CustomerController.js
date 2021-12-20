@@ -2,6 +2,7 @@ const Customer = require("../models/Customers");
 const Permission = require("../models/Permissons");
 const Order = require("../models/Orders.js");
 const argon2 = require("argon2");
+const cloudinary = require("../ultis/cloudinary");
 require("dotenv").config();
 
 class CustomerController {
@@ -217,6 +218,15 @@ class CustomerController {
     }
     try {
       const { name, password, email, phone, gender, birth, address } = req.body;
+      var avatar;
+      if (Object.keys(customer.avatar).length === 0) {
+        avatar = await cloudinary.uploader.upload(req.body.avatar);
+      }
+      else {
+        await cloudinary.uploader.destroy(customer.avatar.cloud_id);
+        avatar = await cloudinary.uploader.upload(req.body.avatar);
+      }
+
       let newcustomer = ({
         name,
         password,
@@ -224,7 +234,11 @@ class CustomerController {
         phone,
         gender,
         birth,
-        address
+        address,
+        avatar: {
+          url: avatar.secure_url,
+          cloud_id: avatar.public_id,
+        }
       })
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {

@@ -39,7 +39,7 @@ class OrderController {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
     const listOrder = req.body.listOrder;
-
+    console.log(req.body);
     const newOrder = await new Order({
       idCus: id,
       idVoucher: vouch._id,
