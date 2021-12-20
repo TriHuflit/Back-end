@@ -15,6 +15,7 @@ const Orders = new Schema(
     idVoucher: {
       type: Schema.Types.ObjectId,
       ref: "Vouchers",
+      default: "",
     },
     nameRecieve: {
       type: String,

@@ -4,7 +4,7 @@ const Vouchers = require("../models/Vouchers");
 const Products = require("../models/Products");
 const WareHouses = require("../models/WareHouses");
 const Customers = require("../models/Customers");
-
+const mongoose = require("mongoose");
 class OrderController {
   // User
   //[GET] api/order/user/:id
@@ -39,21 +39,32 @@ class OrderController {
     const { id, voucher, phone, name, address, payments, totalPrice, note } = req.body;
     const vouch = await Vouchers.findOne({ name: voucher });
     if (vouch) {
-      voucher = vouch._id
+      const newOrder = await new Order({
+        idCus: id,
+        idVoucher: vouch._id,
+        nameRecieve: name,
+        phoneRecieve: phone,
+        addressRecieve: address,
+        payments,
+        totalPrice,
+        note
+      });
+      newOrder.save();
+    }
+    else {
+      const newOrder = await new Order({
+        idCus: id,
+        nameRecieve: name,
+        phoneRecieve: phone,
+        addressRecieve: address,
+        payments,
+        totalPrice,
+        note
+      });
+      newOrder.save();
     }
     const listOrder = req.body.listOrder;
-    console.log(req.body);
-    const newOrder = await new Order({
-      idCus: id,
-      idVoucher: voucher,
-      nameRecieve: name,
-      phoneRecieve: phone,
-      addressRecieve: address,
-      payments,
-      totalPrice,
-      note
-    });
-    newOrder.save();
+
     if (!newOrder) {
       return res
         .status(400)
@@ -141,7 +152,7 @@ class OrderController {
               Staff: nameStaff,
               address: "$addressRecieve",
               totalPrice: "$totalPrice",
-              Voucher: vouchername,
+              Voucher: voucher.name,
               status: "$status",
               dateOrder: {
                 $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
