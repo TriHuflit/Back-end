@@ -208,7 +208,7 @@ class CustomerController {
     }
     return res.status(200).json({ success: true, customer });
   }
-  //[POST] editouser api/user/account/update/:id
+  //[POST] editouser api/customer/account/update/:id
   async updateinfo(req, res) {
     const customer = await Customer.findOne({ _id: req.params.id });
     if (!customer) {

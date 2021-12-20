@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const customer = require("../controllers/CustomerController");
 
+
+router.put("/customer/account/update/:id", customer.updateinfo);
+
 router.get("/customer", customer.indexUser);
 
 router.get("/staff/create", customer.create);
