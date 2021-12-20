@@ -32,7 +32,7 @@ class AuthController {
         password: hashedPassword,
         address: "",
         gender: "Nam",
-        birth: "1999/01/01",
+        birth: "",
         phone,
         email,
         idPermission: Role._id,
