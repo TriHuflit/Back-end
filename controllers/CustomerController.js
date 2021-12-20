@@ -217,7 +217,7 @@ class CustomerController {
         .json({ success: false, message: "User Not Found !!!" });
     }
     try {
-      const { name, emil, phone, gender, birth, address } = req.body;
+      const { name, email, phone, gender, birth, address } = req.body;
       var avatar;
       if (Object.keys(customer.avatar).length === 0) {
         avatar = await cloudinary.uploader.upload(req.body.avatar);
