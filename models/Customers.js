@@ -13,7 +13,7 @@ const Customers = new Schema(
     },
     gender: {
       type: String,
-      enum: ["Nam", "Nữ"],
+      enum: ["Nam", "Nữ", "Khác"],
     },
     email: {
       type: String,
