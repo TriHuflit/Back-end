@@ -153,7 +153,7 @@ class OrderController {
               Staff: nameStaff,
               address: "$addressRecieve",
               totalPrice: "$totalPrice",
-              Voucher: voucher.name,
+              Voucher: vouchername,
               status: "$status",
               dateOrder: {
                 $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
