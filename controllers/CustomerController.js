@@ -220,7 +220,7 @@ class CustomerController {
     try {
       const { name, email, phone, gender, birth, address } = req.body;
       var avatar;
-      if (req.body.avatar != "") {
+      if (customer.avatar.cloud_id != "") {
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
       else {
@@ -235,6 +235,10 @@ class CustomerController {
         gender,
         birth,
         address,
+        avatar: {
+          url: avatar.secure_url,
+          cloud_id: avatar.public_id
+        }
       })
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {
