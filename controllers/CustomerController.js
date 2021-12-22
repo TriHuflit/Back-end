@@ -220,7 +220,7 @@ class CustomerController {
     try {
       const { name, email, phone, gender, birth, address } = req.body;
       var avatar;
-      if (customer.avatar.cloud_id != "") {
+      if (customer.avatar.cloud_id == '') {
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
       else {
