@@ -8,7 +8,7 @@ class AuthController {
   //[POST] http://localhost:5000/api/auth/user/register
   //User
   async register(req, res) {
-    const { username, password, email, phone } = req.body;
+    const { username, password, email, phone, avatar } = req.body;
     try {
       var customer = await Customer.findOne({ username });
       //Check for existing user
@@ -33,6 +33,10 @@ class AuthController {
         address: "",
         gender: "Nam",
         birth: "",
+        avatar: {
+          url: avatar,
+          cloud_id: ""
+        },
         phone,
         email,
         idPermission: Role._id,
