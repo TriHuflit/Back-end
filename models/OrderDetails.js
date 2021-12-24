@@ -26,6 +26,13 @@ const OrderDetails = new Schema(
       type: Number,
       required: true,
     },
+    status: {
+      enum: [
+        "Đã đánh giá",
+        "Chưa đánh giá"
+      ],
+      default: "Chưa đánh giá"
+    },
   },
   {
     timestamps: true,

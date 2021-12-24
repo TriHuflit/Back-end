@@ -8,6 +8,11 @@ const Rates = new Schema(
       ref: "Customers",
       require: true,
     },
+    idProduct: {
+      type: Schema.Types.ObjectId,
+      ref: "Products",
+      require: true,
+    },
     content: {
       type: String,
     },
