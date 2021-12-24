@@ -10,7 +10,7 @@ Router.get("/staff/statistical/:id", OrderController.getDetailStati);
 
 Router.post("/staff/confirm/:id", OrderController.confirm);
 
-Router.get("/user/:id", OrderController.getOrders);
+Router.get("/user/all/:id", OrderController.getOrders);
 
 Router.post("/user/store", OrderController.store);
 

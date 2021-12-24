@@ -9,7 +9,7 @@ const Reports = require("../models/Reports");
 const ObjectId = mongoose.Types.ObjectId;
 class OrderController {
   // User
-  //[GET] api/order/user/:id
+  //[GET] api/order/user/all/:id
   async getOrders(req, res) {
     const orders = await Order.find({ idCus: req.params.id });
     return res.status(200).json({ success: true, orders });
