@@ -10,8 +10,8 @@ const ObjectId = mongoose.Types.ObjectId;
 class OrderController {
   // User
   //[GET] api/order/user/:id
-  async getOrder(req, res) {
-    const orders = await Order.find({ idCus: req.params.id, status: "Chờ xác nhận" });
+  async getOrders(req, res) {
+    const orders = await Order.find({ idCus: req.params.id });
     return res.status(200).json({ success: true, orders });
   }
   // User
