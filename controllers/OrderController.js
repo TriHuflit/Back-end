@@ -48,7 +48,7 @@ class OrderController {
             }
           }
         ])
-        newdetail.push(detail);
+        newdetail.push(detail[0]);
         ++curIdx;
         if (curIdx == len) { return res.status(200).json({ success: true, orders, orderdetails: newdetail }); }
       })
