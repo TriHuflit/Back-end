@@ -5,24 +5,34 @@ const Products = require("../models/Products");
 const WareHouses = require("../models/WareHouses");
 const Customers = require("../models/Customers");
 const mongoose = require("mongoose");
+const Reports = require("../models/Reports");
+const ObjectId = mongoose.Types.ObjectId;
 class OrderController {
   // User
   //[GET] api/order/user/:id
   async getOrder(req, res) {
     const orders = await Order.find({ idCus: req.params.id, status: "Chờ xác nhận" });
-    return res.status(200).json({ success, orders });
+    return res.status(200).json({ success: true, orders });
   }
   // User
   //[GET] api/order/user/:id
   async getOrderDone(req, res) {
     const orders = await Order.find({ idCus: req.params.id, status: "Đã xác nhận" });
-    return res.status(200).json({ success, orders });
+    return res.status(200).json({ success: true, orders });
   }
   // User
   //[GET] api/order/user/:id
   async getOrderCancel(req, res) {
     const orders = await Order.find({ idCus: req.params.id, status: "Hủy đơn" });
-    return res.status(200).json({ success, orders });
+    return res.status(200).json({ success: true, orders });
+  }
+  //[GET] api/order/detail/:id
+  async detailOrder(req, res) {
+    const order = await Order.find({ _id: req.params.id });
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order Not Found" });
+    }
+    return res.status(200).json({ success: true, order });
   }
   //[POST] api/order/user/cancel/:id
   async cancel(req, res) {
@@ -208,7 +218,45 @@ class OrderController {
     order.save();
     res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
   }
-
+  //[GET] statistical api/order/statistical
+  async getStati(req, res) {
+    const reports = await Reports.aggregate([
+      {
+        $project: {
+          id: "$_id",
+          year: { $year: "$statistical" },
+          month: { $month: "$statistical" }
+        }
+      }
+    ]);
+    res.status(200).json({ success: true, reports });
+  }
+  //[GET] statistical api/order/staff/statistical/:id
+  async getDetailStati(req, res) {
+    const report = await Reports.aggregate([
+      { $match: { _id: ObjectId(req.params.id) } },
+      {
+        $project: {
+          year: { $year: "$statistical" },
+          month: { $month: "$statistical" }
+        }
+      }
+    ])
+    console.log(report[0].year);
+    const orders = await Order.find({
+      $expr: {
+        $eq: [{ $year: "$createdAt" }, report[0].year],
+        $eq: [{ $month: "$createdAt" }, report[0].month]
+      }
+      , status: "Chờ xác nhận"
+    }, {
+      _id: 1, nameRecieve: 1, totalPrice: 1, dateOrder: {
+        $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+      },
+    });
+    console.log(orders[0].createdAt);
+    res.status(200).json({ success: true, orders });
+  }
 }
 
 module.exports = new OrderController();
