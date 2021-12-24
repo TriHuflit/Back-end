@@ -25,7 +25,7 @@ class OrderController {
   }
   //[GET]  detail Order api/order/user/detail/:id
   async getDetailOrder(req, res) {
-    const orders = await Order.findOne({ _id: req.params.id }, { _id: 1, nameRecieve: 1, addressRecieve: 1, totalPrice: 1 });
+    const orders = await Order.findOne({ _id: req.params.id }, { _id: 1, nameRecieve: 1, addressRecieve: 1, totalPrice: 1, status: 1 });
     if (!orders) {
       return res.status(404).json({ success: false, message: "Order Not Found" });
     }
@@ -44,7 +44,6 @@ class OrderController {
               imageProduct: product.imageRepresent[0].url,
               amount: "$amount",
               price: "$Price",
-              status: "$status"
             }
           }
         ])
