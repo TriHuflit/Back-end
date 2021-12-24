@@ -3,12 +3,12 @@ const OrderDetails = require("../models/OrderDetails");
 class RateController {
     //[POST] api/rate/:id
     async rate(req, res) {
-        const { idProduct, idOrder, rateNumber, content } = req.body;
+        const { idProduct, idOrder, rateNumber, rateContent } = req.body;
         const rate = new Rate({
             idCus: req.params.id,
             idProduct: idProduct,
             start: rateNumber,
-            content
+            content: rateContent
         })
         await rate.save();
         if (!rate) {
