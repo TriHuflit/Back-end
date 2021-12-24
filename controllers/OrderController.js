@@ -6,6 +6,7 @@ const WareHouses = require("../models/WareHouses");
 const Customers = require("../models/Customers");
 const mongoose = require("mongoose");
 const Reports = require("../models/Reports");
+const Rates = require("../models/Rates");
 const ObjectId = mongoose.Types.ObjectId;
 class OrderController {
   // User
@@ -48,6 +49,8 @@ class OrderController {
             }
           }
         ])
+        const rate = await Rates.findOne({ idProduct: product._id, idCus: orders.idCus });
+        detail[0].set("rate", rate, { strict: false });
         newdetail.push(detail[0]);
         ++curIdx;
         if (curIdx == len) { return res.status(200).json({ success: true, orders, orderdetails: newdetail }); }
