@@ -31,7 +31,8 @@ const OrderDetails = new Schema(
         "Đã đánh giá",
         "Chưa đánh giá"
       ],
-      default: "Chưa đánh giá"
+      default: "Chưa đánh giá",
+      type: String
     },
   },
   {
