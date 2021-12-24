@@ -3,9 +3,9 @@ const OrderDetails = require("../models/OrderDetails");
 class RateController {
     //[POST] api/rate/:id
     async rate(req, res) {
-        const { idProduct, idUser, idOrder, rateNumber, content } = req.body;
+        const { idProduct, idOrder, rateNumber, content } = req.body;
         const rate = new Rate({
-            idCus: idUser,
+            idCus: req.params.id,
             idProduct: idProduct,
             start: rateNumber,
             content
