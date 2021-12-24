@@ -14,6 +14,15 @@ class OrderController {
     const orders = await Order.find({ idCus: req.params.id });
     return res.status(200).json({ success: true, orders });
   }
+  //[GET]  detail Order api/order/user/detail/:id
+  async getDetailOrder(req, res) {
+    const orders = await Order.findOne({ _id: req.params.id }, { _id: 1, nameRecieve: 1, addressRecieve: 1, totalPrice: 1 });
+    if (!orders) {
+      return res.status(404).json({ success: false, message: "Order Not Found" });
+    }
+    const orderdetail = await OrderDetails.find({ idOrder: orders._id }, { name: 1, price: 1, amout: 1 });
+    return res.status(200).json({ success: true, orders, orderdetail });
+  }
   // User
   //[GET] api/order/user/:id
   async getOrderDone(req, res) {

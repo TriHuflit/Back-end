@@ -12,6 +12,8 @@ Router.post("/staff/confirm/:id", OrderController.confirm);
 
 Router.get("/user/all/:id", OrderController.getOrders);
 
+Router.get("/user/detail/:id", OrderController.getDetailOrder);
+
 Router.post("/user/store", OrderController.store);
 
 module.exports = Router;
