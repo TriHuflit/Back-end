@@ -11,7 +11,17 @@ class OrderController {
   // User
   //[GET] api/order/user/all/:id
   async getOrders(req, res) {
-    const orders = await Order.find({ idCus: req.params.id });
+    console.log(req.params.id)
+    const orders = await Order.aggregate([
+      { $match: { idCus: ObjectId(req.params.id) } },
+      {
+        $addFields: {
+          dateOrder: {
+            $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+          },
+        }
+      }
+    ]);
     return res.status(200).json({ success: true, orders });
   }
   //[GET]  detail Order api/order/user/detail/:id
