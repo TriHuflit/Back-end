@@ -34,7 +34,6 @@ class OrderController {
       var len = orderdetails.length;
       var curIdx = 0;
       var newdetail = [];
-      console.log(orderdetails);
       orderdetails.map(async (orderdetail) => {
         const product = await Products.findOne({ _id: orderdetail.idProducts });
         const detail = await OrderDetails.aggregate([
@@ -45,6 +44,7 @@ class OrderController {
               imageProduct: product.imageRepresent[0].url,
               amount: "$amount",
               price: "$Price",
+              status: "$status"
             }
           }
         ])
