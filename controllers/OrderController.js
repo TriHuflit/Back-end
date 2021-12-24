@@ -117,7 +117,7 @@ class OrderController {
       newOrder.save();
     }
     const listOrder = req.body.listOrder;
-    console.log(listOrder);
+
     if (!newOrder) {
       return res
         .status(400)
@@ -126,7 +126,7 @@ class OrderController {
     try {
 
       listOrder.map(async (detail) => {
-        console.log(detail);
+
         let amountRequired = detail.num;
         const idWarehouses = [];
         const product = await Products.findOne({ _id: detail._id });
@@ -139,7 +139,7 @@ class OrderController {
             .json({ success: false, message: "Order Failed" });
         }
         warehouses.map(async (ware) => {
-          console.log(ware);
+          if (amountRequired <= 0) { return; }
           const warehouse = await WareHouses.findOne({ _id: ware._id });
           if (amountRequired - warehouse.amountStock > 0) {
             amountRequired = amountRequired - warehouse.amountStock;
