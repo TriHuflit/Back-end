@@ -11,7 +11,6 @@ class OrderController {
   // User
   //[GET] api/order/user/all/:id
   async getOrders(req, res) {
-    console.log(req.params.id)
     const orders = await Order.aggregate([
       { $match: { idCus: ObjectId(req.params.id) } },
       {
@@ -30,8 +29,32 @@ class OrderController {
     if (!orders) {
       return res.status(404).json({ success: false, message: "Order Not Found" });
     }
-    const orderdetail = await OrderDetails.find({ idOrder: orders._id }, { name: 1, price: 1, amout: 1 });
-    return res.status(200).json({ success: true, orders, orderdetail });
+    try {
+      const orderdetails = await OrderDetails.find({ idOrder: orders._id });
+      var len = orderdetails.length;
+      var curIdx = 0;
+      var newdetail = [];
+      console.log(orderdetails);
+      orderdetails.map(async (orderdetail) => {
+        const product = await Products.findOne({ _id: orderdetail.idProducts });
+        const detail = await OrderDetails.aggregate([
+          { $match: { _id: ObjectId(orderdetail._id) } },
+          {
+            $project: {
+              product: product.name,
+              imageProduct: product.imageRepresent[0].url,
+              amount: "$amount",
+              price: "$Price",
+            }
+          }
+        ])
+        newdetail.push(detail);
+        ++curIdx;
+        if (curIdx == len) { return res.status(200).json({ success: true, orders, orderdetails: newdetail }); }
+      })
+    } catch (error) {
+      return res.status(500).json({ message: "Interval Server Error" });
+    }
   }
   // User
   //[GET] api/order/user/:id
@@ -94,7 +117,7 @@ class OrderController {
       newOrder.save();
     }
     const listOrder = req.body.listOrder;
-
+    console.log(listOrder);
     if (!newOrder) {
       return res
         .status(400)
@@ -103,6 +126,7 @@ class OrderController {
     try {
 
       listOrder.map(async (detail) => {
+        console.log(detail);
         let amountRequired = detail.num;
         const idWarehouses = [];
         const product = await Products.findOne({ _id: detail._id });
@@ -115,6 +139,7 @@ class OrderController {
             .json({ success: false, message: "Order Failed" });
         }
         warehouses.map(async (ware) => {
+          console.log(ware);
           const warehouse = await WareHouses.findOne({ _id: ware._id });
           if (amountRequired - warehouse.amountStock > 0) {
             amountRequired = amountRequired - warehouse.amountStock;
