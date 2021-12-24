@@ -138,7 +138,7 @@ class OrderController {
             .status(400)
             .json({ success: false, message: "Order Failed" });
         }
-        warehouses.map(async (ware) => {
+        for (const ware of warehouses) {
           if (amountRequired <= 0) { return; }
           const warehouse = await WareHouses.findOne({ _id: ware._id });
           if (amountRequired - warehouse.amountStock > 0) {
@@ -167,7 +167,10 @@ class OrderController {
             }
             return;
           }
-        });
+        }
+        // warehouses.map(async (ware) => {
+
+        // });
 
       });
       return res
