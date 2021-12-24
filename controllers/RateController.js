@@ -15,7 +15,7 @@ class RateController {
             return res.status(400).json({ success: false, message: "Rated Product Failed !" });
         }
         const orderdetail = await OrderDetails.findOne({ idOrder: idOrder });
-        orderdetail.status = "Chưa đánh giá";
+        orderdetail.status = "Đã đánh giá";
         orderdetail.save();
         if (!orderdetail) {
             return res.status(400).json({ success: false, message: "Change status Orderdetail Failed !" });
