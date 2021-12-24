@@ -38,7 +38,7 @@ const Orders = new Schema(
         "Đã xác nhận",
         "Hủy đơn",
         "Đang giao hàng",
-        "Đã giao",
+        "Đã nhận hàng",
       ],
       default: "Chờ xác nhận",
     },
