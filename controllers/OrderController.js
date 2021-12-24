@@ -218,7 +218,7 @@ class OrderController {
     order.save();
     res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
   }
-  //[GET] statistical api/order/statistical
+  //[GET] statistical api/order/staff/statistical
   async getStati(req, res) {
     const reports = await Reports.aggregate([
       {
@@ -231,6 +231,18 @@ class OrderController {
     ]);
     res.status(200).json({ success: true, reports });
   }
+  //POST  api/order/staff/statistical/store
+  async addStati(req, res) {
+    const { monthYear } = req.body;
+    const report = new Reposts({
+      statistical: monthYear
+    })
+    await report.save();
+    if (report) {
+      res.status(200).json({ success: true, message: "Add Repost Successfully !!!" });
+    }
+    res.status(500).json({ success: false, message: "Interval Server Error" });
+  }
   //[GET] statistical api/order/staff/statistical/:id
   async getDetailStati(req, res) {
     const report = await Reports.aggregate([
@@ -242,7 +254,6 @@ class OrderController {
         }
       }
     ])
-    console.log(report[0].year);
     const orders = await Order.find({
       $expr: {
         $eq: [{ $year: "$createdAt" }, report[0].year],
@@ -254,8 +265,7 @@ class OrderController {
         $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
       },
     });
-    console.log(orders[0].createdAt);
-    res.status(200).json({ success: true, orders });
+    res.status(200).json({ success: true, orders, time: { month: report[0].month, year: report[0].year } });
   }
 }
 
