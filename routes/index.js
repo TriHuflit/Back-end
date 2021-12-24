@@ -9,7 +9,10 @@ const permissionRouter = require("./permission");
 const mediaRouter = require("./media");
 const orderRouter = require("./order");
 const customerRouter = require("./customer");
+const rateRouter = require("./rate");
 function route(app) {
+
+  app.use("/api/rate", rateRouter);
 
   app.use("/api/customer", customerRouter);
 

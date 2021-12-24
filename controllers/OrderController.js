@@ -314,10 +314,7 @@ class OrderController {
     });
     res.status(200).json({ success: true, orders, time: { month: report[0].month, year: report[0].year } });
   }
-  //[POST] api/order/rate/:id
-  async rate(req, res) {
 
-  }
 }
 
 module.exports = new OrderController();
