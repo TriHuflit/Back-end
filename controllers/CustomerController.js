@@ -211,7 +211,7 @@ class CustomerController {
   //[POST] updateinfo api/customer/account/update/:id
   async updateinfo(req, res) {
     const customer = await Customer.findOne({ _id: req.params.id });
-    console.log(customer);
+
     if (!customer) {
       return res
         .status(404)
@@ -219,6 +219,7 @@ class CustomerController {
     }
     try {
       const { name, email, phone, gender, birth, address } = req.body;
+      console.log(req.body);
       var avatar;
       var newcustomer;
       if (customer.avatar == null) {
