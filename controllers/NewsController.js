@@ -19,7 +19,7 @@ class NewsController {
           }
         }
       },
-      { $sort: { createdAt: -1 } }
+      { $sort: { dateCreate: -1 } }
     ]);
     news.map((n) => {
       n.content = n.content.replace(/"/g, "'");
