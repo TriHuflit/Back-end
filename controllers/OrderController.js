@@ -26,7 +26,7 @@ class OrderController {
   }
   //[GET]  detail Order api/order/staff/detail/:id
   async getDetailOrderStaff(req, res) {
-    const orders = await Order.aggregate([
+    const order = await Order.aggregate([
       { $match: { _id: ObjectId(req.params.id) } },
       {
         $addFields: {
@@ -37,11 +37,12 @@ class OrderController {
       }
     ]);
 
-    if (!orders) {
+    if (!order) {
       return res.status(404).json({ success: false, message: "Order Not Found" });
     }
     try {
-      const orderdetails = await OrderDetails.find({ idOrder: orders[0]._id });
+      var orders = order[0];
+      const orderdetails = await OrderDetails.find({ idOrder: order[0]._id });
       var len = orderdetails.length;
       var curIdx = 0;
       var newdetail = [];
