@@ -274,7 +274,7 @@ class ProductsController {
       return res.status(404).json("Subcategory Not Found")
     }
     try {
-      const brands = await Brand.find({ idSub: idSub });
+      const brands = await Brand.find({ idSub: idSub._id });
       var CatFoods = [];
       let length = brands.length;
       let temp = -1;
@@ -302,7 +302,7 @@ class ProductsController {
       return res.status(404).json("Subcategory Not Found")
     }
     try {
-      const brands = await Brand.find({ idSub: idSub });
+      const brands = await Brand.find({ idSub: idSub._id });
       var DogFoods = [];
       let length = brands.length;
       let temp = -1;
@@ -316,7 +316,7 @@ class ProductsController {
         })
         temp++;
         if (temp == length - 1)
-          return res.status(200).json({ success: true, DogFoods, slug });
+          return res.status(200).json({ success: true, DogFoods: { DogFoods, slug } });
       })
     } catch (error) {
       return res.status(400).json("Interval Server Error");
