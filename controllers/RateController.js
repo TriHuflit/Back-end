@@ -14,7 +14,7 @@ class RateController {
         if (!rate) {
             return res.status(400).json({ success: false, message: "Rated Product Failed !" });
         }
-        const orderdetail = await OrderDetails.findOne({ idOrder: idOrder, idProduct: idProduct });
+        const orderdetail = await OrderDetails.findOne({ idOrder: idOrder, idProducts: idProduct });
         orderdetail.status = "Đã đánh giá";
         orderdetail.save();
         if (!orderdetail) {

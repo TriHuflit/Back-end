@@ -38,13 +38,8 @@ class OrderController {
       orderdetails.map(async (orderdetail) => {
 
         const product = await Products.findOne({ _id: orderdetail.idProducts });
-        const rate = await Rates.findOne({ idProduct: product._id }).select("content start");
-        var feedback;
-        if (rate != null) {
-
-          feedback = rate.start;
-          console.log(feedback);
-        }
+        const rate = await Rates.findOne({ idProduct: product._id }).select("-__v");
+        console.log(rate);
         const detail = await OrderDetails.aggregate([
           { $match: { _id: ObjectId(orderdetail._id) } },
           {
@@ -56,12 +51,10 @@ class OrderController {
               amount: "$amount",
               price: "$Price",
               status: "$status",
-              rate: feedback,
+              rate: rate,
             }
           }
         ])
-
-
         newdetail.push(detail[0]);
         ++curIdx;
         if (curIdx == len) { return res.status(200).json({ success: true, orders, orderdetails: newdetail }); }

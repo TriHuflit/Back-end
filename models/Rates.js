@@ -16,10 +16,6 @@ const Rates = new Schema(
     content: {
       type: String,
     },
-    // image: {
-    //   data: Buffer,
-    //   contentType: String,
-    // },
     start: {
       type: Number,
       require: true,
