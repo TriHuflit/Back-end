@@ -366,7 +366,7 @@ class OrderController {
         $eq: [{ $year: "$createdAt" }, report[0].year],
         $eq: [{ $month: "$createdAt" }, report[0].month]
       }
-      , status: "Chờ xác nhận"
+      , status: "Đã nhận hàng"
     }, {
       _id: 1, nameRecieve: 1, totalPrice: 1, dateOrder: {
         $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
