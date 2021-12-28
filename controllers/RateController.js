@@ -7,7 +7,7 @@ class RateController {
         const rate = new Rate({
             idCus: req.params.id,
             idProduct: idProduct,
-            start: rateNumber,
+            star: rateNumber,
             content: rateContent
         })
         await rate.save();
