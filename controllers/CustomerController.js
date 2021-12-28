@@ -221,12 +221,13 @@ class CustomerController {
       const { name, email, phone, gender, birth, address } = req.body;
       var avatar;
       console.log(name);
-      if (customer.avatar.cloud_id == '') {
-        avatar = await cloudinary.uploader.upload(req.body.avatar);
-      }
-      else {
+      if (customer.avatar.cloud_id !== '') {
         console.log(avatar);
         await cloudinary.uploader.destroy(customer.avatar.cloud_id);
+        avatar = await cloudinary.uploader.upload(req.body.avatar);
+
+      }
+      else {
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
       console.log(avatar);
