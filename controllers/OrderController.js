@@ -137,9 +137,9 @@ class OrderController {
       order.save();
       const orderdetails = await OrderDetails.find({ idOrder: order._id });
       orderdetails.map(async (orderdetail) => {
-
-        var warehouses = await WareHouses.find({ _id: orderdetail.idWarehouses[0]._id });
-        warehouses.amountStock = orderdetail.amount;
+        var warehouses = await WareHouses.findOne({ _id: orderdetail.idWarehouses[0]._id });
+        console.log(warehouses);
+        warehouses.amountStock = warehouses.amountStock + orderdetail.amount;
         warehouses.save();
       })
       res.status(200).json({ success: true, message: "Cancel Order Successfully !" });
