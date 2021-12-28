@@ -1,5 +1,6 @@
 const Products = require("../models/Products");
 const Brand = require("../models/Brands");
+const Category = require("../models/Categories");
 const SubCategorys = require('../models/SubCategorys');
 const WareHouses = require("../models/WareHouses");
 const Describe = require("../models/DescribeProducts");
@@ -267,7 +268,8 @@ class ProductsController {
   }
   //[GET] Cat Foods
   async getCatFoods(req, res) {
-    const idSub = await SubCategorys.findOne({ name: "Thức ăn cho mèo" }).select("_id");
+    const idSub = await SubCategorys.findOne({ name: "Thức ăn cho mèo" });
+    const slug = await Category.findOne({ _id: idSub.idCate }).select("-_id slug");
     if (!idSub) {
       return res.status(404).json("Subcategory Not Found")
     }
@@ -286,7 +288,35 @@ class ProductsController {
         })
         temp++;
         if (temp == length - 1)
-          return res.status(200).json({ success: true, CatFoods });
+          return res.status(200).json({ success: true, CatFoods, slug });
+      })
+    } catch (error) {
+      return res.status(400).json("Interval Server Error");
+    }
+  }
+  //[GET] Cat Foods
+  async getDogFoods(req, res) {
+    const idSub = await SubCategorys.findOne({ name: "Thức ăn cho chó" });
+    const slug = await Category.findOne({ _id: idSub.idCate }).select("-_id slug");
+    if (!idSub) {
+      return res.status(404).json("Subcategory Not Found")
+    }
+    try {
+      const brands = await Brand.find({ idSub: idSub });
+      var DogFoods = [];
+      let length = brands.length;
+      let temp = -1;
+      brands.map(async (brand) => {
+        const DogFood = await Products.aggregate([
+          { $match: { idBrand: brand._id } },
+          { $sample: { size: 2 } }
+        ])
+        DogFood.forEach(async (cat) => {
+          DogFoods.push(cat);
+        })
+        temp++;
+        if (temp == length - 1)
+          return res.status(200).json({ success: true, DogFoods, slug });
       })
     } catch (error) {
       return res.status(400).json("Interval Server Error");
