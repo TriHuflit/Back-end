@@ -35,6 +35,7 @@ class OrderController {
       var len = orderdetails.length;
       var curIdx = 0;
       var newdetail = [];
+      console.log(orderdetails);
       orderdetails.map(async (orderdetail) => {
         const product = await Products.findOne({ _id: orderdetail.idProducts });
         const rate = await Rates.findOne({ idProduct: product._id });
@@ -43,6 +44,7 @@ class OrderController {
           {
             $project: {
               _id: "$_id",
+              idProducts: "$idProducts",
               product: product.name,
               imageProduct: product.imageRepresent[0].url,
               amount: "$amount",
