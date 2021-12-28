@@ -134,12 +134,7 @@ class OrderController {
     }
     order.status = "Hủy đơn";
     order.save();
-    const orderdetails = await OrderDetails.find({ idOrder: order._id });
-    orderdetails.map((orderdetail) => {
-      orderdetail.warehouses.map((ware) => {
-        const warehouses = await WareHouses.find({ _id: orderdetail })
-      })
-    })
+
     res.status(200).json({ success: true, message: "Cancel Order Successfully !" });
   }
   //[POST] api/order/user/store
