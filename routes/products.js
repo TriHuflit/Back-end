@@ -14,7 +14,7 @@ router.get('/getDogFoods', productController.getDogFoods);
 
 router.get("/sortDate", productController.getProductsBySortTime);
 
-router.get("/sortPrice", authorize.authorize("Admin"), productController.getProductsBySortPrice);
+router.get("/sortPrice", productController.getProductsBySortPrice);
 
 const uploadImage = store.fields([
   { name: "imageRepresent", maxCount: 1 },

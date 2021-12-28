@@ -132,10 +132,20 @@ class OrderController {
     if (!order) {
       res.status(404).json({ success: true, message: "Order Not Found !" });
     }
-    order.status = "Hủy đơn";
-    order.save();
+    if (order.status == "Chờ xác nhận" || order.status == "Đã xác nhận") {
+      order.status = "Hủy đơn";
+      order.save();
+      const orderdetails = await OrderDetails.find({ idOrder: order._id });
+      orderdetails.map(async (orderdetail) => {
 
-    res.status(200).json({ success: true, message: "Cancel Order Successfully !" });
+        var warehouses = await WareHouses.find({ _id: orderdetail.idWarehouses[0]._id });
+        warehouses.amountStock = orderdetail.amount;
+        warehouses.save();
+      })
+      res.status(200).json({ success: true, message: "Cancel Order Successfully !" });
+    }
+    else
+      res.status(200).json({ success: true, message: "Can't Cancel Order Successfully !" });
   }
   //[POST] api/order/user/store
   async store(req, res) {
