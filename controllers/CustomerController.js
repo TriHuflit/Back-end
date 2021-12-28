@@ -219,7 +219,6 @@ class CustomerController {
     }
     try {
       const { name, email, phone, gender, birth, address } = req.body;
-      console.log(req.body);
       var avatar;
       var newcustomer;
       if (req.body.avatar == null) {

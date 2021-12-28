@@ -37,9 +37,7 @@ class OrderController {
       var newdetail = [];
       orderdetails.map(async (orderdetail) => {
         const product = await Products.findOne({ _id: orderdetail.idProducts });
-        const order = await Order.findOne({ _id: req.params.id });
         const rate = await Rates.findOne({ idProduct: product._id });
-        console.log(product._id);
         const detail = await OrderDetails.aggregate([
           { $match: { _id: ObjectId(orderdetail._id) } },
           {
@@ -72,14 +70,6 @@ class OrderController {
   async getOrderCancel(req, res) {
     const orders = await Order.find({ idCus: req.params.id, status: "Hủy đơn" });
     return res.status(200).json({ success: true, orders });
-  }
-  //[GET] api/order/detail/:id
-  async detailOrder(req, res) {
-    const order = await Order.find({ _id: req.params.id });
-    if (!order) {
-      return res.status(404).json({ success: false, message: "Order Not Found" });
-    }
-    return res.status(200).json({ success: true, order });
   }
   //[POST] api/order/user/cancel/:id
   async cancel(req, res) {
@@ -255,7 +245,15 @@ class OrderController {
     ]);
     res.status(200).json({ success: true, orders });
   }
-
+  async deliveryInProgress(req, res) {
+    const order = await Order.findOne({ _id: req.params.id });
+    if (!order) {
+      res.status(404).json({ success: true, message: "Order Not Found !" });
+    }
+    order.status = "Đang giao hàng";
+    order.save();
+    res.status(200).json({ success: true, message: "Delivery In Progress !" });
+  }
 
   //[POST] api/order/staff/confirm/:id
   async confirm(req, res) {
@@ -264,7 +262,6 @@ class OrderController {
     if (!order) {
       res.status(404).json({ success: true, message: "Order Not Found !" });
     }
-
     order.status = "Đã xác nhận";
     order.idStaff = staff._id;
     order.save();

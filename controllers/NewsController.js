@@ -1,10 +1,9 @@
 const News = require("../models/News");
-const DetailNews = require("../models/DetailNews");
 const cloudinary = require("../ultis/cloudinary");
 class NewsController {
   //[GET] api/news
   async index(req, res) {
-    const news = await News.find({});
+    const news = await News.find({}).sort({ createdAt: -1 });
     news.map((n) => {
       n.content = n.content.replace(/"/g, "'");
     });
@@ -18,8 +17,7 @@ class NewsController {
         .status(404)
         .json({ success: false, message: "News Not Found" });
     }
-    const detailNews = await DetailNews.find({ idNews: news._id });
-    return res.status(200).json({ success: true, detailNews });
+    return res.status(200).json({ success: true, news });
   }
   //[POST] api/news/store
   async store(req, res) {
