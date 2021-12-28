@@ -39,6 +39,11 @@ class OrderController {
 
         const product = await Products.findOne({ _id: orderdetail.idProducts });
         const rate = await Rates.findOne({ idProduct: product._id }).select("-__v");
+        var star = "";
+        if (rate != null) {
+          star = rate.star.toString();
+          rate.set('Star', star, { strict: false });
+        }
         console.log(rate);
         const detail = await OrderDetails.aggregate([
           { $match: { _id: ObjectId(orderdetail._id) } },

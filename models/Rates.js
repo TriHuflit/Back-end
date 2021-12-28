@@ -16,7 +16,7 @@ const Rates = new Schema(
     content: {
       type: String,
     },
-    start: {
+    star: {
       type: Number,
       require: true,
     },
