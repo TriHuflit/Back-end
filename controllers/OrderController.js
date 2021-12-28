@@ -299,16 +299,6 @@ class OrderController {
     ]);
     res.status(200).json({ success: true, orders });
   }
-  async deliveryInProgress(req, res) {
-    const order = await Order.findOne({ _id: req.params.id });
-    if (!order) {
-      res.status(404).json({ success: true, message: "Order Not Found !" });
-    }
-    order.status = "Đang giao hàng";
-    order.save();
-    res.status(200).json({ success: true, message: "Delivery In Progress !" });
-  }
-
   //[POST] api/order/staff/confirm/:id
   async confirm(req, res) {
     const order = await Order.findOne({ _id: req.params.id });
@@ -320,17 +310,20 @@ class OrderController {
       order.status = "Đã xác nhận";
       order.idStaff = staff._id;
       order.save();
+      res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
     }
     else if (order.status == "Đã xác nhận") {
       order.status = "Đang giao hàng";
       order.save();
+      res.status(200).json({ success: true, message: "Delivery in progress !" });
     }
     else if (order.status == "Đang giao hàng") {
       order.status = "Đã nhận hàng";
       order.save();
+      res.status(200).json({ success: true, message: "Received!" });
     }
 
-    res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
+
   }
   //[GET] statistical api/order/staff/statistical
   async getStati(req, res) {
