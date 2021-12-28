@@ -239,9 +239,9 @@ class ProductsController {
   //[GET] search by Keys
 
   async getProductsByKey(req, res, next) {
-    if (req.query.search) {
+    if (req.query.keys) {
       const regex = new RegExp(
-        req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"),
+        req.query.keys.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"),
         "gi"
       );
       await Products.find({ name: regex })
