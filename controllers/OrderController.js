@@ -316,9 +316,20 @@ class OrderController {
     if (!order) {
       res.status(404).json({ success: true, message: "Order Not Found !" });
     }
-    order.status = "Đã xác nhận";
-    order.idStaff = staff._id;
-    order.save();
+    if (order.status == "Chờ xác nhận") {
+      order.status = "Đã xác nhận";
+      order.idStaff = staff._id;
+      order.save();
+    }
+    else if (order.status == "Đã xác nhận") {
+      order.status = "Đang giao hàng";
+      order.save();
+    }
+    else if (order.status == "Đang giao hàng") {
+      order.status = "Đã nhận hàng";
+      order.save();
+    }
+
     res.status(200).json({ success: true, message: "Confirm Order Successfully !" });
   }
   //[GET] statistical api/order/staff/statistical
