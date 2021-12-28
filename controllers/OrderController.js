@@ -7,6 +7,7 @@ const Customers = require("../models/Customers");
 const mongoose = require("mongoose");
 const Reports = require("../models/Reports");
 const Rates = require("../models/Rates");
+const Warehouse = require("../models/WareHouses");
 const ObjectId = mongoose.Types.ObjectId;
 class OrderController {
   // User
@@ -133,6 +134,7 @@ class OrderController {
     }
     order.status = "Hủy đơn";
     order.save();
+
     res.status(200).json({ success: true, message: "Cancel Order Successfully !" });
   }
   //[POST] api/order/user/store
