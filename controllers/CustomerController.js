@@ -210,7 +210,7 @@ class CustomerController {
   }
   //[POST] updateinfo api/customer/account/update/:id
   async updateinfo(req, res) {
-    const customer = await Customer.findOne({ _id: req.params._id });
+    const customer = await Customer.findOne({ _id: req.params.id });
     console.log(customer);
     if (!customer) {
       return res
@@ -220,14 +220,16 @@ class CustomerController {
     try {
       const { name, email, phone, gender, birth, address } = req.body;
       var avatar;
+      console.log(name);
       if (customer.avatar.cloud_id == '') {
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
       else {
+        console.log(name);
         await cloudinary.uploader.destroy(customer.avatar.cloud_id);
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
-
+      console.log(name);
       let newcustomer = ({
         name,
         email,
@@ -240,6 +242,7 @@ class CustomerController {
           cloud_id: avatar.public_id
         }
       })
+      console.log(name);
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {
         return res
