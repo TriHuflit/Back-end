@@ -38,7 +38,13 @@ class OrderController {
       orderdetails.map(async (orderdetail) => {
 
         const product = await Products.findOne({ _id: orderdetail.idProducts });
-        const rate = await Rates.findOne({ idProduct: product._id }, { content: 1, start: 1 });
+        const rate = await Rates.findOne({ idProduct: product._id }).select("content start");
+        var feedback;
+        if (rate != null) {
+
+          feedback = rate.start;
+          console.log(feedback);
+        }
         const detail = await OrderDetails.aggregate([
           { $match: { _id: ObjectId(orderdetail._id) } },
           {
@@ -50,7 +56,7 @@ class OrderController {
               amount: "$amount",
               price: "$Price",
               status: "$status",
-              rate: rate,
+              rate: feedback,
             }
           }
         ])
