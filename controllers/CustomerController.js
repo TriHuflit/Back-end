@@ -222,7 +222,7 @@ class CustomerController {
       console.log(req.body);
       var avatar;
       var newcustomer;
-      if (customer.avatar == null) {
+      if (req.body.avatar == null) {
         newcustomer = ({
           name,
           email,
@@ -248,7 +248,7 @@ class CustomerController {
           }
         })
       }
-      console.log(newcustomer);
+
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {
         return res
