@@ -42,6 +42,7 @@ class OrderController {
           { $match: { _id: ObjectId(orderdetail._id) } },
           {
             $project: {
+              _id: "$_id",
               product: product.name,
               imageProduct: product.imageRepresent[0].url,
               amount: "$amount",
