@@ -316,7 +316,7 @@ class ProductsController {
         })
         temp++;
         if (temp == length - 1)
-          return res.status(200).json({ success: true, DogFoods: { DogFoods, slug } });
+          return res.status(200).json({ success: true, DogFoods, slug });
       })
     } catch (error) {
       return res.status(400).json("Interval Server Error");
