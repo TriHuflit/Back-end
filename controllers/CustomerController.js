@@ -248,6 +248,7 @@ class CustomerController {
           }
         })
       }
+      console.log(newcustomer);
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {
         return res
