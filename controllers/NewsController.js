@@ -1,9 +1,26 @@
 const News = require("../models/News");
 const cloudinary = require("../ultis/cloudinary");
 class NewsController {
-  //[GET] api/news
+  //[GET] api/media/news
   async index(req, res) {
-    const news = await News.find({}).sort({ createdAt: -1 });
+    const news = await News.aggregate([
+      {
+        $project: {
+          author: "$author",
+          title: "$title",
+          content: "$content",
+          image: "$image",
+          slug: "$slug",
+          dateCreate: {
+            $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+          },
+          dateUpdate: {
+            $dateToString: { format: "%d-%m-%Y", date: "$updatedAt" },
+          }
+        }
+      },
+      { $sort: { createdAt: -1 } }
+    ]);
     news.map((n) => {
       n.content = n.content.replace(/"/g, "'");
     });
