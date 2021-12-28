@@ -225,11 +225,11 @@ class CustomerController {
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
       else {
-        console.log(name);
+        console.log(avatar);
         await cloudinary.uploader.destroy(customer.avatar.cloud_id);
         avatar = await cloudinary.uploader.upload(req.body.avatar);
       }
-      console.log(name);
+      console.log(avatar);
       let newcustomer = ({
         name,
         email,
