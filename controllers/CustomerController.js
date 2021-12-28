@@ -220,30 +220,33 @@ class CustomerController {
     try {
       const { name, email, phone, gender, birth, address } = req.body;
       var avatar;
-      console.log(name);
-      if (customer.avatar.cloud_id !== '') {
-        console.log(avatar);
-        await cloudinary.uploader.destroy(customer.avatar.cloud_id);
-        avatar = await cloudinary.uploader.upload(req.body.avatar);
-
+      var newcustomer;
+      if (customer.avatar == null) {
+        newcustomer = ({
+          name,
+          email,
+          phone,
+          gender,
+          birth,
+          address,
+        })
       }
       else {
+        await cloudinary.uploader.destroy(customer.avatar.cloud_id);
         avatar = await cloudinary.uploader.upload(req.body.avatar);
+        newcustomer = ({
+          name,
+          email,
+          phone,
+          gender,
+          birth,
+          address,
+          avatar: {
+            url: avatar.secure_url,
+            cloud_id: avatar.public_id
+          }
+        })
       }
-      console.log(avatar);
-      let newcustomer = ({
-        name,
-        email,
-        phone,
-        gender,
-        birth,
-        address,
-        avatar: {
-          url: avatar.secure_url,
-          cloud_id: avatar.public_id
-        }
-      })
-      console.log(name);
       const updateCus = await Customer.findOneAndUpdate({ _id: req.params.id }, newcustomer, { new: true });
       if (updateCus) {
         return res
