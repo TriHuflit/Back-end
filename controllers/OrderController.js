@@ -37,7 +37,9 @@ class OrderController {
       var newdetail = [];
       orderdetails.map(async (orderdetail) => {
         const product = await Products.findOne({ _id: orderdetail.idProducts });
-        const rate = await Rates.findOne({ idProduct: product._id, idCus: orders.idCus });
+        const order = await Order.findOne({ _id: req.params.id });
+        const rate = await Rates.findOne({ idProduct: product._id });
+        console.log(product._id);
         const detail = await OrderDetails.aggregate([
           { $match: { _id: ObjectId(orderdetail._id) } },
           {

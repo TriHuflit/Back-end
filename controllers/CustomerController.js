@@ -210,7 +210,7 @@ class CustomerController {
   }
   //[POST] updateinfo api/customer/account/update/:id
   async updateinfo(req, res) {
-    const customer = await Customer.findOne({ _id: req.params.id });
+    const customer = await Customer.findOne({ _id: req.params._id });
     console.log(customer);
     if (!customer) {
       return res
