@@ -38,7 +38,7 @@ class OrderController {
       orderdetails.map(async (orderdetail) => {
 
         const product = await Products.findOne({ _id: orderdetail.idProducts });
-        const rate = await Rates.findOne({ idProduct: product._id }).select("-__v");
+        const rate = await Rates.findOne({ idProduct: product._id }).select("-__v _id content star");
         var star = "";
         if (rate != null) {
           star = rate.star.toString();
