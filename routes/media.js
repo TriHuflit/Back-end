@@ -12,7 +12,5 @@ router.delete("/news/delete/:slug", newsController.delete);
 
 router.get("/rate/rep/:id", rateController.repRate);
 
-router.get("/rate/:id", rateController.detail);
-
 router.get("/rate", rateController.index);
 module.exports = router;
