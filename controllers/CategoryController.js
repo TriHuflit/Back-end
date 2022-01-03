@@ -144,32 +144,29 @@ class CategoryController {
     const category = await Category.findOne({ slug: req.params.slug });
     const subCategory = await SubCategory.find({ idCate: category._id });
     var newPros = [];
+    var array;
     var curIdx = 0;
     var count = 0;
-    for (let j = 0; j < subCategory.length; j++) {
-      const brands = await Brands.find({ idSub: subCategory[j]._id });
-      brands.map((brand) => {
-        Products.find({ idBrand: brand._id }).exec((err, products) => {
-          if (err) console.log(err);
-          products.forEach((pro) => {
-            newPros.push(pro);
-          })
-          count = count + products.length;
-          curIdx++;
-          if (curIdx == subCategory.length) {
-            var countPros
-            if (page == 1) { countPros = 0 }
-            else countPros = (perPage * page - perPage) - 1;
-            return res.status(200).json({
-              success: true,
-              product: newPros.slice(perPage * page - perPage, perPage * page),
-              current: page,
-              pages: Math.ceil(count / perPage),
-            });
-          }
+    for (let i = 0; i < subCategory.length; i++) {
+      const brands = await Brands.find({ idSub: subCategory[i]._id });
+      for (let j = 0; j < brands.length; j++) {
+        array = await Products.find({ idBrand: brands[j]._id });
+        for (let k = 0; k < array.length; k++) {
+          newPros.push(array[k]);
+        }
+      }
+      curIdx++;
+      if (curIdx == subCategory.length) {
+        console.log(newPros.length);
+        return res.status(200).json({
+          success: true,
+          product: newPros.slice(perPage * page - perPage, perPage * page),
+          current: page,
+          pages: Math.ceil(count / perPage),
         });
-      });
+      }
     }
+
   }
 }
 
