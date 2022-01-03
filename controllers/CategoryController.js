@@ -144,7 +144,6 @@ class CategoryController {
     const category = await Category.findOne({ slug: req.params.slug });
     const subCategory = await SubCategory.find({ idCate: category._id });
     var newPros = [];
-    var len = subCategory.length;
     var curIdx = 0;
     var minus = 0;
     for (let j = 0; j < subCategory.length; j++) {

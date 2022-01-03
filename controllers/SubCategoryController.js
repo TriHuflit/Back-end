@@ -163,19 +163,38 @@ class SubCategoryController {
   }
 
   async getProductsBySub(req, res) {
+    let perPage = 8;
+    let page = req.query.page || 1;
     const Sub = await SubCategory.findOne({ slug: req.params.slug });
-    var pros = [];
+    if (!Sub) {
+      return res.status(404).json({ success: false, message: "Not Found Subcategory" })
+    }
+    var newPros = [];
     const brands = await Brand.find({ idSub: Sub._id });
-    let length = brands.length;
-    let temp = -1;
-    brands.map(async (brand) => {
-      const products = await Product.find({ idBrand: brand._id });
-      products.forEach(async (pro) => {
-        pros.push(pro);
+    var curIdx = 0;
+    var minus = 0;
+    brands.map((brand) => {
+      Product.find({ idBrand: brand._id }).exec((err, products) => {
+        Product.countDocuments((err, count) => {
+          if (products.length == 0) {
+            minus++;
+          }
+          if (err) console.log(err);
+          products.forEach((pro) => {
+            newPros.push(pro);
+            curIdx++;
+            count = count - minus;
+            if (curIdx == count) {
+              return res.status(200).json({
+                success: true,
+                product: newPros.slice(perPage * page - perPage, perPage * page),
+                current: page,
+                pages: Math.ceil(count / perPage),
+              });
+            }
+          })
+        })
       });
-      temp++;
-      if (temp == length - 1)
-        return res.status(200).json({ success: true, product: pros });
     });
   }
 }

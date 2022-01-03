@@ -256,7 +256,7 @@ class ProductsController {
   async getProductsBySortPrice(req, res) {
     let perPage = 6;
     let page = req.query.page || 1;
-    const category = await Category.findOne({ slug: req.body.slug });
+    const category = await Category.findOne({ slug: req.params.slug });
     const subCategory = await SubCategorys.find({ idCate: category._id });
     var newPros = [];
     var len = subCategory.length;
