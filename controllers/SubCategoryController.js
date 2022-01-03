@@ -177,9 +177,7 @@ class SubCategoryController {
     var count = 0;
     brands.map((brand) => {
       Product.find({ idBrand: brand._id }).exec((err, products) => {
-        if (products.length == 0) {
-          minus++;
-        }
+        count += products.length;
         if (err) console.log(err);
         products.forEach((pro) => {
           newPros.push(pro);

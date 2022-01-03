@@ -145,30 +145,25 @@ class CategoryController {
     const subCategory = await SubCategory.find({ idCate: category._id });
     var newPros = [];
     var curIdx = 0;
-    var minus = 0;
+    var count = 0;
     for (let j = 0; j < subCategory.length; j++) {
       const brands = await Brands.find({ idSub: subCategory[j]._id });
       brands.map((brand) => {
         Products.find({ idBrand: brand._id }).exec((err, products) => {
-          Products.countDocuments((err, count) => {
-            if (products.length == 0) {
-              minus++;
-            }
-            if (err) console.log(err);
-            products.forEach((pro) => {
-              newPros.push(pro);
-              curIdx++;
-              count = count - minus;
-              if (curIdx == count) {
-                return res.status(200).json({
-                  success: true,
-                  product: newPros.slice(perPage * page - perPage, perPage * page),
-                  current: page,
-                  pages: Math.ceil(count / perPage),
-                });
-              }
-            })
+          if (err) console.log(err);
+          products.forEach((pro) => {
+            newPros.push(pro);
           })
+          count = count + products.length;
+          curIdx++;
+          if (curIdx == subCategory.length) {
+            return res.status(200).json({
+              success: true,
+              product: newPros.slice(perPage * page - perPage, perPage * page),
+              current: page,
+              pages: Math.ceil(count / perPage),
+            });
+          }
         });
       });
     }
