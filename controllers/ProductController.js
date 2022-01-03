@@ -402,6 +402,8 @@ class ProductsController {
       return res.status(400).json("Interval Server Error");
     }
   }
+  async getListProductSame(req, res) {
 
+  }
 }
 module.exports = new ProductsController();

@@ -91,6 +91,24 @@ class RateController {
         }
         const customer = await Customer.findOne({ _id: rates.idCus });
         const product = await Product.findOne({ _id: rates.idProduct });
+        const repRates = await RepRates.find({ idRate: rates._id });
+        var newRep = [];
+        for (let j = 0; j < repRates.length; j++) {
+            const staff = await Customer.findOne({ _id: repRates[j].idStaff });
+            const repRate = await RepRates.aggregate([
+                { $match: { idRate: rates._id } },
+                {
+                    $project: {
+                        staff: staff.name,
+                        content: "$content",
+                        dateRep: {
+                            $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
+                        },
+                    }
+                }
+            ]);
+            newRep.push(repRate[0]);
+        }
         const rate = await Rate.aggregate([
             { $match: { _id: rates._id } },
             {
@@ -102,7 +120,8 @@ class RateController {
                     content: "$content",
                     dateRate: {
                         $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
-                    }
+                    },
+                    repRate: newRep
                 }
             }
         ]);
