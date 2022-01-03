@@ -151,6 +151,7 @@ class CategoryController {
       const brands = await Brands.find({ idSub: subCategory[i]._id });
       for (let j = 0; j < brands.length; j++) {
         array = await Products.find({ idBrand: brands[j]._id });
+        count += array.length;
         for (let k = 0; k < array.length; k++) {
           newPros.push(array[k]);
         }
