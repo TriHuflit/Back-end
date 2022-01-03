@@ -141,7 +141,7 @@ class CategoryController {
   async getProductsByCate(req, res) {
     let perPage = 8;
     let page = req.query.page || 1;
-    const category = await Category.findOne({ slug: req.body.slug });
+    const category = await Category.findOne({ slug: req.params.slug });
     const subCategory = await SubCategory.find({ idCate: category._id });
     var newPros = [];
     var len = subCategory.length;
