@@ -67,7 +67,7 @@ class ProductsController {
       for (let j = 0; j < repRates.length; j++) {
         const staff = await Customer.findOne({ _id: repRates[j].idStaff });
         const repRate = await RepRates.aggregate([
-          { $match: { idRate: rates[i]._id } },
+          { $match: { _id: repRates[j]._id } },
           {
             $project: {
               staff: staff.name,
