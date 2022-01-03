@@ -7,7 +7,6 @@ router.get("/create", subcategory.create);
 
 router.post("/store", subcategory.store);
 
-router.get("/sortPrice/:slug", subcategory.getProductsBySubSortPrice);
 
 router.get("/search/:slug", subcategory.getProductsBySub);
 
