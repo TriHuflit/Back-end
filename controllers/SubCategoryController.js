@@ -192,9 +192,10 @@ class SubCategoryController {
         }
         curIdx++;
         if (curIdx == brands.length) {
+          console.log(newPros.length);
           var countPros
           if (page == 1) { countPros = 0 }
-          else countPros = perPage * page - perPage - 1;
+          else countPros = perPage * page - perPage;
           return res.status(200).json({
             success: true,
             product: newPros.slice(countPros, perPage * page),
