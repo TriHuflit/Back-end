@@ -83,5 +83,30 @@ class RateController {
             }
         }
     }
+    //[GET] api/media/rate/:id
+    async detail(req, res) {
+        const rates = await Rate.findOne({ _id: req.params.id });
+        if (!rates) {
+            return res.status(404).json({ success: false, message: "Not Found" });
+        }
+        const customer = await Customer.findOne({ _id: rates.idCus });
+        const product = await Product.findOne({ _id: rates.idProduct });
+        const rate = await Rate.aggregate([
+            { $match: { _id: rates._id } },
+            {
+                $project: {
+                    customer: customer.name,
+                    star: "$star",
+                    product: product.name,
+                    avatar: "$avatar.url",
+                    content: "$content",
+                    dateRate: {
+                        $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
+                    }
+                }
+            }
+        ]);
+        return res.status(200).json({ success: true, rate: rate })
+    }
 }
 module.exports = new RateController();
