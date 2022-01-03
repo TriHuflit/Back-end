@@ -259,7 +259,6 @@ class ProductsController {
     const category = await Category.findOne({ slug: req.params.slug });
     const subCategory = await SubCategorys.find({ idCate: category._id });
     var newPros = [];
-    var len = subCategory.length;
     var curIdx = 0;
     var minus = 0;
     for (let j = 0; j < subCategory.length; j++) {
@@ -273,9 +272,16 @@ class ProductsController {
             if (err) console.log(err);
             products.forEach((pro) => {
               newPros.push(pro);
-              newPros.sort(function (a, b) {
-                return parseFloat(a.price) - parseFloat(b.price);
-              });
+              if (req.query.sort == 1) {
+                newPros.sort(function (a, b) {
+                  return parseFloat(a.price) - parseFloat(b.price);
+                });
+              }
+              else if (req.query.sort == -1) {
+                newPros.sort(function (a, b) {
+                  return parseFloat(b.price) - parseFloat(a.price);
+                });
+              }
               curIdx++;
               count = count - minus;
               if (curIdx == count) {

@@ -161,7 +161,44 @@ class SubCategoryController {
         .json({ success: false, message: "Interval server!" });
     }
   }
+  //api/subcategory/search/:slug?page=?&&sort=?
+  async getProductsBySubSortPrice(req, res) {
+    let perPage = 8;
+    let page = req.query.page || 1;
+    const Sub = await SubCategory.findOne({ slug: req.params.slug });
+    if (!Sub) {
+      return res.status(404).json({ success: false, message: "Not Found Subcategory" })
+    }
+    var newPros = [];
+    const brands = await Brand.find({ idSub: Sub._id });
+    var curIdx = 0;
+    var count = 0;
+    brands.map((brand) => {
+      Product.find({ idBrand: brand._id }).exec((err, products) => {
+        count += products.length;
+        if (err) console.log(err);
+        products.forEach((pro) => {
+          newPros.push(pro);
+        })
+        newPros.sort((a, b) => {
+          return parseFloat(a.price) - parseFloat(b.price);
+        })
+        curIdx++;
+        if (curIdx == brands.length) {
+          var countPros
+          if (page == 1) { countPros = 0 }
+          else countPros = perPage * page - perPage - 1;
+          return res.status(200).json({
+            success: true,
+            product: newPros.slice(countPros, perPage * page),
+            current: page,
+            pages: Math.ceil(count / perPage),
+          });
+        }
+      });
 
+    });
+  }
   async getProductsBySub(req, res) {
 
     let perPage = 8;
