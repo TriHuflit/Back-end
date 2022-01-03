@@ -161,7 +161,7 @@ class SubCategoryController {
         .json({ success: false, message: "Interval server!" });
     }
   }
-  //api/subcategory/search/:slug?page=?&&sort=?
+  //api/subcategory/sortPrice/:slug?page=?&&sort=?
   async getProductsBySubSortPrice(req, res) {
     let perPage = 8;
     let page = req.query.page || 1;
@@ -180,9 +180,16 @@ class SubCategoryController {
         products.forEach((pro) => {
           newPros.push(pro);
         })
-        newPros.sort((a, b) => {
-          return parseFloat(a.price) - parseFloat(b.price);
-        })
+        if (req.query.sort == 1) {
+          newPros.sort(function (a, b) {
+            return parseFloat(a.price) - parseFloat(b.price);
+          });
+        }
+        else if (req.query.sort == -1) {
+          newPros.sort(function (a, b) {
+            return parseFloat(b.price) - parseFloat(a.price);
+          });
+        }
         curIdx++;
         if (curIdx == brands.length) {
           var countPros
@@ -200,7 +207,6 @@ class SubCategoryController {
     });
   }
   async getProductsBySub(req, res) {
-
     let perPage = 8;
     let page = req.query.page || 1;
     const Sub = await SubCategory.findOne({ slug: req.params.slug });
@@ -222,7 +228,7 @@ class SubCategoryController {
         if (curIdx == brands.length) {
           var countPros
           if (page == 1) { countPros = 0 }
-          else countPros = perPage * page - perPage - 1;
+          else countPros = perPage * page - perPage;
           return res.status(200).json({
             success: true,
             product: newPros.slice(countPros, perPage * page),
