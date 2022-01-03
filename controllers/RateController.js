@@ -53,6 +53,52 @@ class RateController {
         }
 
     }
+    //[PUT] api/media/rate/update/:id
+    async updateRepRate(req, res) {
+        const rate = await Rate.findOne({ _id: req.params.id });
+        if (!rate) {
+            return res.status(404).json("Rate Not Found");
+        }
+        try {
+            const { idStaff, content } = req.body;
+            const newRep = ({
+                idRate: rate._id,
+                idStaff,
+                content
+            })
+            const updateRep = await RepRates.findOneAndUpdate({ _id: req.body.idRep }, newRep, { new: true })
+            if (!updateRep) {
+                return res.status(400).json({ success: false, message: "Update RepRate Failed" });
+            }
+            return res.status(200).json({ success: true, message: "Update RepRate Successfully !!!" });
+        } catch (error) {
+            return res.status(500).json("Interval Server Error");
+        }
+
+    }
+    //[POST] api/media/rate/rep/:id
+    async repRate(req, res) {
+        const rate = await Rate.findOne({ _id: req.params.id });
+        if (!rate) {
+            return res.status(404).json("Rate Not Found");
+        }
+        try {
+            const { idStaff, content } = req.body;
+            const newRep = await new RepRates({
+                idStaff,
+                idRate: rate._id,
+                content
+            })
+            newRep.save();
+            if (!newRep) {
+                return res.status(400).json({ success: false, message: "Rep Rate Failed" });
+            }
+            return res.status(200).json({ success: true, message: "Rep Rate Successfully !!!" });
+        } catch (error) {
+            return res.status(500).json("Interval Server Error");
+        }
+
+    }
     //[GET] api/media/rate
     async index(req, res) {
         const rates = await Rate.find({});
