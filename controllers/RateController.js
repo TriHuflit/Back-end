@@ -68,7 +68,7 @@ class RateController {
                         customer: customer.name,
                         star: "$star",
                         product: product.name,
-                        avatar: "$atavar.url",
+                        avatar: "$avatar.url",
                         content: "$content",
                         dateRate: {
                             $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }

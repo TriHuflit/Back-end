@@ -89,7 +89,7 @@ class ProductsController {
             star: "$star",
             product: product.name,
             content: "$content",
-            avatar: "$atavar.url",
+            avatar: "$avatar.url",
             dateRate: {
               $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
             },
@@ -297,6 +297,7 @@ class ProductsController {
 
   //[GET] Sort Price
   async getProductsBySortPrice(req, res) {
+
     let perPage = 8;
     let page = req.query.page || 1;
     const category = await Category.findOne({ slug: req.params.slug });
@@ -305,46 +306,37 @@ class ProductsController {
     }
     const subCategory = await SubCategorys.find({ idCate: category._id });
     var newPros = [];
+    var array;
     var curIdx = 0;
-    var minus = 0;
-    for (let j = 0; j < subCategory.length; j++) {
-      const brands = await Brand.find({ idSub: subCategory[j]._id });
-      brands.map((brand) => {
-        Products.find({ idBrand: brand._id }).exec((err, products) => {
-          Products.countDocuments((err, count) => {
-            if (products.length == 0) {
-              minus++;
-            }
-            if (err) console.log(err);
-            products.forEach((pro) => {
-              newPros.push(pro);
-              if (req.query.sort == 1) {
-                newPros.sort(function (a, b) {
-                  return parseFloat(a.price) - parseFloat(b.price);
-                });
-              }
-              else if (req.query.sort == -1) {
-                newPros.sort(function (a, b) {
-                  return parseFloat(b.price) - parseFloat(a.price);
-                });
-              }
-              curIdx++;
-              count = count - minus;
-              if (curIdx == count) {
-                var countPros
-                if (page == 1) { countPros = 0 }
-                else countPros = perPage * page - perPage;
-                return res.status(200).json({
-                  success: true,
-                  product: newPros.slice(countPros, perPage * page),
-                  current: page,
-                  pages: Math.ceil(count / perPage),
-                });
-              }
-            })
-          })
+    var count = 0;
+    for (let i = 0; i < subCategory.length; i++) {
+      const brands = await Brand.find({ idSub: subCategory[i]._id });
+      for (let j = 0; j < brands.length; j++) {
+        array = await Products.find({ idBrand: brands[j]._id });
+        count += array.length;
+        for (let k = 0; k < array.length; k++) {
+          newPros.push(array[k]);
+        }
+        if (req.query.sort == 1) {
+          newPros.sort(function (a, b) {
+            return parseFloat(a.price) - parseFloat(b.price);
+          });
+        }
+        else if (req.query.sort == -1) {
+          newPros.sort(function (a, b) {
+            return parseFloat(b.price) - parseFloat(a.price);
+          });
+        }
+      }
+      curIdx++;
+      if (curIdx == subCategory.length) {
+        return res.status(200).json({
+          success: true,
+          product: newPros.slice(perPage * page - perPage, perPage * page),
+          current: page,
+          pages: Math.ceil(count / perPage),
         });
-      });
+      }
     }
   }
   //[GET] Sort Time

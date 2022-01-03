@@ -158,7 +158,6 @@ class CategoryController {
       }
       curIdx++;
       if (curIdx == subCategory.length) {
-        console.log(newPros.length);
         return res.status(200).json({
           success: true,
           product: newPros.slice(perPage * page - perPage, perPage * page),
