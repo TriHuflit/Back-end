@@ -10,7 +10,7 @@ router.put("/news/update/:slug", newsController.update);
 
 router.delete("/news/delete/:slug", newsController.delete);
 
-router.put("/rate/update/:id", rateController.repRate);
+router.put("/rate/update/:id", rateController.updateRepRate);
 
 router.post("/rate/rep/:id", rateController.repRate);
 

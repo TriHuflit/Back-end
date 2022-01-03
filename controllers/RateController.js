@@ -66,6 +66,7 @@ class RateController {
                 idStaff,
                 content
             })
+            console.log(req.body.idRep);
             const updateRep = await RepRates.findOneAndUpdate({ _id: req.body.idRep }, newRep, { new: true })
             if (!updateRep) {
                 return res.status(400).json({ success: false, message: "Update RepRate Failed" });
@@ -76,20 +77,14 @@ class RateController {
         }
 
     }
-    //[POST] api/media/rate/rep/:id
-    async repRate(req, res) {
-        const rate = await Rate.findOne({ _id: req.params.id });
+    //[POST] api/media/rate/delete/:id
+    async delete(req, res) {
+        const Reprate = await RepRates.findOne({ _id: req.params.id });
         if (!rate) {
             return res.status(404).json("Rate Not Found");
         }
         try {
-            const { idStaff, content } = req.body;
-            const newRep = await new RepRates({
-                idStaff,
-                idRate: rate._id,
-                content
-            })
-            newRep.save();
+            const updateRep = await RepRates.findOneAndUpdate({ _id: req.body.idRep }, newRep, { new: true })
             if (!newRep) {
                 return res.status(400).json({ success: false, message: "Rep Rate Failed" });
             }
@@ -111,7 +106,7 @@ class RateController {
             for (let j = 0; j < repRates.length; j++) {
                 const staff = await Customer.findOne({ _id: repRates[j].idStaff });
                 const repRate = await RepRates.aggregate([
-                    { $match: { idRate: rates[i]._id } },
+                    { $match: { _id: repRates[j]._id } },
                     {
                         $project: {
                             staff: staff.name,
