@@ -18,7 +18,7 @@ class ProductsController {
       .limit(perPage)
       .exec((err, products) => {
         Products.countDocuments((err, count) => {
-          if (err) return next(serr);
+          if (err) return next(err);
           var len = products.length;
           var curIdx = 0;
           var newPros = [];
@@ -253,11 +253,44 @@ class ProductsController {
   }
 
   //[GET] Sort Price
-  async getProductsBySortPrice(req, res, next) {
-    await Products.find({})
-      .sort({ price: req.query.sort })
-      .then((products) => res.send(products))
-      .catch(next);
+  async getProductsBySortPrice(req, res) {
+    let perPage = 6;
+    let page = req.query.page || 1;
+    const category = await Category.findOne({ slug: req.body.slug });
+    const subCategory = await SubCategorys.find({ idCate: category._id });
+    var newPros = [];
+    var len = subCategory.length;
+    var curIdx = 0;
+    var minus = 0;
+    for (let j = 0; j < subCategory.length; j++) {
+      const brands = await Brand.find({ idSub: subCategory[j]._id });
+      brands.map((brand) => {
+        Products.find({ idBrand: brand._id }).exec((err, products) => {
+          Products.countDocuments((err, count) => {
+            if (products.length == 0) {
+              minus++;
+            }
+            if (err) console.log(err);
+            products.forEach((pro) => {
+              newPros.push(pro);
+              newPros.sort(function (a, b) {
+                return parseFloat(a.price) - parseFloat(b.price);
+              });
+              curIdx++;
+              count = count - minus;
+              if (curIdx == count) {
+                return res.status(200).json({
+                  success: true,
+                  product: newPros.slice(perPage * page - perPage, perPage * page),
+                  current: page,
+                  pages: Math.ceil(count / perPage),
+                });
+              }
+            })
+          })
+        });
+      });
+    }
   }
   //[GET] Sort Time
   async getProductsBySortTime(req, res, next) {
