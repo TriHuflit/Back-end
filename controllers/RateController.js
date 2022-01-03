@@ -6,12 +6,17 @@ const RepRates = require("../models/RepRates");
 class RateController {
     //[POST] api/rate/:id
     async rate(req, res) {
-        const { idProduct, idOrder, rateNumber, rateContent } = req.body;
+        const { idProduct, idOrder, rateNumber, rateContent, avatar } = req.body;
+        const customer = await Customer.findOne({ _id: req.params.id });
+        if (!customer) {
+            return res.status(404).json("Customer Not Found");
+        }
         const rate = new Rate({
-            idCus: req.params.id,
+            idCus: customer._id,
             idProduct: idProduct,
             star: rateNumber,
-            content: rateContent
+            content: rateContent,
+            avatar: customer.avatar,
         })
         await rate.save();
         if (!rate) {
@@ -63,6 +68,7 @@ class RateController {
                         customer: customer.name,
                         star: "$star",
                         product: product.name,
+                        avatar: "$atavar.url",
                         content: "$content",
                         dateRate: {
                             $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }

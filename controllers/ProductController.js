@@ -89,6 +89,7 @@ class ProductsController {
             star: "$star",
             product: product.name,
             content: "$content",
+            avatar: "$atavar.url",
             dateRate: {
               $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
             },

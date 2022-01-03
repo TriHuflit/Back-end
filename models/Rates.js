@@ -20,6 +20,14 @@ const Rates = new Schema(
       type: Number,
       require: true,
     },
+    avatar: {
+      url: {
+        type: String,
+      },
+      cloud_id: {
+        type: String,
+      }
+    }
   },
   {
     timestamps: true,
