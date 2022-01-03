@@ -7,6 +7,9 @@ const Describe = require("../models/DescribeProducts");
 const { multipleMongoosetoObject } = require("../ultis/mongoose");
 const cloudinary = require("../ultis/cloudinary");
 const OrderDetails = require("../models/OrderDetails");
+const Rate = require('../models/Rates');
+const RepRates = require("../models/RepRates");
+const Customer = require("../models/Customers");
 class ProductsController {
   //[GET] /api/products/
   async index(req, res, next) {
@@ -56,6 +59,45 @@ class ProductsController {
       { $match: { idProducts: product._id, amountStock: { $gte: 1 } } },
       { $group: { _id: "$idProducts", amountStock: { $sum: "$amountStock" } } },
     ]);
+    const rates = await Rate.find({ idProduct: product._id });
+    var newRate = [];
+    for (let i = 0; i < rates.length; i++) {
+      const repRates = await RepRates.find({ idRate: rates[i]._id });
+      var newRep = [];
+      for (let j = 0; j < repRates.length; j++) {
+        const staff = await Customer.findOne({ _id: repRates[j].idStaff });
+        const repRate = await RepRates.aggregate([
+          { $match: { idRate: rates[i]._id } },
+          {
+            $project: {
+              staff: staff.name,
+              content: "$content",
+              dateRep: {
+                $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
+              },
+            }
+          }
+        ]);
+        newRep.push(repRate[0]);
+      }
+      const customer = await Customer.findOne({ _id: rates[i].idCus });
+      const product = await Products.findOne({ _id: rates[i].idProduct });
+      const rate = await Rate.aggregate([
+        {
+          $project: {
+            customer: customer.name,
+            star: "$star",
+            product: product.name,
+            content: "$content",
+            dateRate: {
+              $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
+            },
+            repRate: newRep
+          }
+        }
+      ]);
+      newRate.push(rate[0]);
+    }
     product.set("brand", brand.name, { strict: false });
     product.set("amountStock", warehouses[0].amountStock, { strict: false });
     const listImage = await Describe.find({ idProducts: product._id }).select(
@@ -63,7 +105,7 @@ class ProductsController {
     );
     product.set("listImage", listImage, { strict: false });
 
-    return res.status(200).json({ success: true, product });
+    return res.status(200).json({ success: true, product, rate: newRate });
   }
   //[POST] api/product/store  --- create new product-----
   async store(req, res, next) {
@@ -257,6 +299,9 @@ class ProductsController {
     let perPage = 8;
     let page = req.query.page || 1;
     const category = await Category.findOne({ slug: req.params.slug });
+    if (!category) {
+      return res.status(404).json("Category Not Found");
+    }
     const subCategory = await SubCategorys.find({ idCate: category._id });
     var newPros = [];
     var curIdx = 0;
