@@ -164,7 +164,7 @@ class SubCategoryController {
 
   async getProductsBySub(req, res) {
 
-    let perPage = 6;
+    let perPage = 8;
     let page = req.query.page || 1;
     const Sub = await SubCategory.findOne({ slug: req.params.slug });
     if (!Sub) {
@@ -173,7 +173,6 @@ class SubCategoryController {
     var newPros = [];
     const brands = await Brand.find({ idSub: Sub._id });
     var curIdx = 0;
-    var minus = 0;
     var count = 0;
     brands.map((brand) => {
       Product.find({ idBrand: brand._id }).exec((err, products) => {
