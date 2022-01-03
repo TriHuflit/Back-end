@@ -281,7 +281,7 @@ class ProductsController {
               if (curIdx == count) {
                 var countPros
                 if (page == 1) { countPros = 0 }
-                else countPros = perPage * page - perPage - 1;
+                else countPros = perPage * page - perPage;
                 return res.status(200).json({
                   success: true,
                   product: newPros.slice(countPros, perPage * page),
