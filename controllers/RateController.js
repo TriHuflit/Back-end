@@ -97,7 +97,6 @@ class RateController {
     //[GET] api/media/rate/:id
     async detail(req, res) {
         const rates = await Rate.findOne({ _id: req.params.id });
-        var newRate = [];
         const repRates = await RepRates.find({ idRate: rates._id });
         var newRep = [];
         for (let j = 0; j < repRates.length; j++) {
