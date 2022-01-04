@@ -94,6 +94,48 @@ class RateController {
         }
 
     }
+    //[GET] api/media/rate/:id
+    async detail(req, res) {
+        const rates = await Rate.findOne({ _id: req.params.id });
+        var newRate = [];
+        const repRates = await RepRates.find({ idRate: rates._id });
+        var newRep = [];
+        for (let j = 0; j < repRates.length; j++) {
+            const staff = await Customer.findOne({ _id: repRates[j].idStaff });
+            const repRate = await RepRates.aggregate([
+                { $match: { _id: repRates[j]._id } },
+                {
+                    $project: {
+                        staff: staff.name,
+                        content: "$content",
+                        dateRep: {
+                            $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
+                        },
+                    }
+                }
+            ]);
+            newRep.push(repRate[0]);
+        }
+        const customer = await Customer.findOne({ _id: rates.idCus });
+        const product = await Product.findOne({ _id: rates.idProduct });
+        const rate = await Rate.aggregate([
+            {
+                $project: {
+                    customer: customer.name,
+                    star: "$star",
+                    product: product.name,
+                    avatar: "$avatar.url",
+                    content: "$content",
+                    dateRate: {
+                        $dateToString: { format: "%d-%m-%Y", date: "$createdAt" }
+                    },
+                    repRate: newRep
+                }
+            }
+        ]);
+
+        return res.status(200).json({ success: true, rate: rate[0] });
+    }
     //[GET] api/media/rate
     async index(req, res) {
         const rates = await Rate.find({});
