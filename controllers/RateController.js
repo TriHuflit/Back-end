@@ -80,15 +80,15 @@ class RateController {
     //[POST] api/media/rate/delete/:id
     async delete(req, res) {
         const Reprate = await RepRates.findOne({ _id: req.params.id });
-        if (!rate) {
+        if (!Reprate) {
             return res.status(404).json("Rate Not Found");
         }
         try {
-            const updateRep = await RepRates.findOneAndUpdate({ _id: req.body.idRep }, newRep, { new: true })
-            if (!newRep) {
-                return res.status(400).json({ success: false, message: "Rep Rate Failed" });
+            const deleteRep = await RepRates.findOneAndDelete({ _id: req.params.id });
+            if (!deleteRep) {
+                return res.status(400).json({ success: false, message: "Delete RepRate Failed" });
             }
-            return res.status(200).json({ success: true, message: "Rep Rate Successfully !!!" });
+            return res.status(200).json({ success: true, message: "Delete RepRate Successfully !!!" });
         } catch (error) {
             return res.status(500).json("Interval Server Error");
         }

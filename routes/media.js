@@ -12,6 +12,8 @@ router.delete("/news/delete/:slug", newsController.delete);
 
 router.put("/rate/update/:id", rateController.updateRepRate);
 
+router.delete("/rate/delete/:id", rateController.delete);
+
 router.post("/rate/rep/:id", rateController.repRate);
 
 router.get("/rate", rateController.index);
